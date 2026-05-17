@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as NousJoindreRouteImport } from './routes/nous-joindre'
 import { Route as GalerieRouteImport } from './routes/galerie'
 import { Route as DevenirPartenaireRouteImport } from './routes/devenir-partenaire'
@@ -19,6 +20,11 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjetsSentiersVertsRouteImport } from './routes/projets/sentiers-verts'
 import { Route as ProjetsJourneesSansPlastiqueRouteImport } from './routes/projets/journees-sans-plastique'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const NousJoindreRoute = NousJoindreRouteImport.update({
   id: '/nous-joindre',
   path: '/nous-joindre',
@@ -74,6 +80,7 @@ export interface FileRoutesByFullPath {
   '/devenir-partenaire': typeof DevenirPartenaireRoute
   '/galerie': typeof GalerieRoute
   '/nous-joindre': typeof NousJoindreRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/projets/journees-sans-plastique': typeof ProjetsJourneesSansPlastiqueRoute
   '/projets/sentiers-verts': typeof ProjetsSentiersVertsRoute
 }
@@ -85,6 +92,7 @@ export interface FileRoutesByTo {
   '/devenir-partenaire': typeof DevenirPartenaireRoute
   '/galerie': typeof GalerieRoute
   '/nous-joindre': typeof NousJoindreRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/projets/journees-sans-plastique': typeof ProjetsJourneesSansPlastiqueRoute
   '/projets/sentiers-verts': typeof ProjetsSentiersVertsRoute
 }
@@ -97,6 +105,7 @@ export interface FileRoutesById {
   '/devenir-partenaire': typeof DevenirPartenaireRoute
   '/galerie': typeof GalerieRoute
   '/nous-joindre': typeof NousJoindreRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/projets/journees-sans-plastique': typeof ProjetsJourneesSansPlastiqueRoute
   '/projets/sentiers-verts': typeof ProjetsSentiersVertsRoute
 }
@@ -110,6 +119,7 @@ export interface FileRouteTypes {
     | '/devenir-partenaire'
     | '/galerie'
     | '/nous-joindre'
+    | '/sitemap.xml'
     | '/projets/journees-sans-plastique'
     | '/projets/sentiers-verts'
   fileRoutesByTo: FileRoutesByTo
@@ -121,6 +131,7 @@ export interface FileRouteTypes {
     | '/devenir-partenaire'
     | '/galerie'
     | '/nous-joindre'
+    | '/sitemap.xml'
     | '/projets/journees-sans-plastique'
     | '/projets/sentiers-verts'
   id:
@@ -132,6 +143,7 @@ export interface FileRouteTypes {
     | '/devenir-partenaire'
     | '/galerie'
     | '/nous-joindre'
+    | '/sitemap.xml'
     | '/projets/journees-sans-plastique'
     | '/projets/sentiers-verts'
   fileRoutesById: FileRoutesById
@@ -144,12 +156,20 @@ export interface RootRouteChildren {
   DevenirPartenaireRoute: typeof DevenirPartenaireRoute
   GalerieRoute: typeof GalerieRoute
   NousJoindreRoute: typeof NousJoindreRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ProjetsJourneesSansPlastiqueRoute: typeof ProjetsJourneesSansPlastiqueRoute
   ProjetsSentiersVertsRoute: typeof ProjetsSentiersVertsRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/nous-joindre': {
       id: '/nous-joindre'
       path: '/nous-joindre'
@@ -224,6 +244,7 @@ const rootRouteChildren: RootRouteChildren = {
   DevenirPartenaireRoute: DevenirPartenaireRoute,
   GalerieRoute: GalerieRoute,
   NousJoindreRoute: NousJoindreRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   ProjetsJourneesSansPlastiqueRoute: ProjetsJourneesSansPlastiqueRoute,
   ProjetsSentiersVertsRoute: ProjetsSentiersVertsRoute,
 }
