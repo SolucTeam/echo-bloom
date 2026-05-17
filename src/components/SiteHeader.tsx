@@ -1,0 +1,78 @@
+import { Link } from "@tanstack/react-router";
+import { useState } from "react";
+import { Menu, X, Heart, Leaf } from "lucide-react";
+
+const nav = [
+  { to: "/", label: "Accueil" },
+  { to: "/a-propos", label: "À propos" },
+  { to: "/projets/journees-sans-plastique", label: "Journées sans Plastique" },
+  { to: "/projets/sentiers-verts", label: "Sentiers verts" },
+  { to: "/galerie", label: "Galerie" },
+  { to: "/blog", label: "Blog" },
+  { to: "/nous-joindre", label: "Contact" },
+] as const;
+
+export function SiteHeader() {
+  const [open, setOpen] = useState(false);
+  return (
+    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
+      <div className="container-x flex h-16 items-center justify-between gap-6">
+        <Link to="/" className="flex items-center gap-2 font-display font-bold text-lg">
+          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
+            <Leaf className="h-5 w-5" />
+          </span>
+          <span className="tracking-tight">Green<span className="text-secondary"> Ivory</span></span>
+        </Link>
+
+        <nav className="hidden lg:flex items-center gap-1">
+          {nav.map((n) => (
+            <Link
+              key={n.to}
+              to={n.to}
+              className="px-3 py-2 text-sm font-medium text-foreground/80 rounded-full hover:bg-accent hover:text-foreground transition-colors"
+              activeProps={{ className: "text-primary font-semibold" }}
+              activeOptions={{ exact: n.to === "/" }}
+            >
+              {n.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="flex items-center gap-3">
+          <Link to="/devenir-partenaire" className="btn-primary hidden sm:inline-flex !py-2.5 !px-5">
+            <Heart className="h-4 w-4" /> Faire un don
+          </Link>
+          <button
+            className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-full border border-border"
+            onClick={() => setOpen((v) => !v)}
+            aria-label="Menu"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
+      </div>
+
+      {open && (
+        <div className="lg:hidden border-t border-border bg-background">
+          <div className="container-x py-4 flex flex-col gap-1">
+            {nav.map((n) => (
+              <Link
+                key={n.to}
+                to={n.to}
+                onClick={() => setOpen(false)}
+                className="px-3 py-3 text-sm font-medium rounded-xl hover:bg-accent"
+                activeProps={{ className: "text-primary font-semibold bg-accent" }}
+                activeOptions={{ exact: n.to === "/" }}
+              >
+                {n.label}
+              </Link>
+            ))}
+            <Link to="/devenir-partenaire" onClick={() => setOpen(false)} className="btn-primary mt-2">
+              <Heart className="h-4 w-4" /> Faire un don
+            </Link>
+          </div>
+        </div>
+      )}
+    </header>
+  );
+}
