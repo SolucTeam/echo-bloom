@@ -19,6 +19,7 @@ import { Route as AProposRouteImport } from './routes/a-propos'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjetsSentiersVertsRouteImport } from './routes/projets/sentiers-verts'
 import { Route as ProjetsJourneesSansPlastiqueRouteImport } from './routes/projets/journees-sans-plastique'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
@@ -71,28 +72,35 @@ const ProjetsJourneesSansPlastiqueRoute =
     path: '/projets/journees-sans-plastique',
     getParentRoute: () => rootRouteImport,
   } as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
   '/galerie': typeof GalerieRoute
   '/nous-joindre': typeof NousJoindreRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/projets/journees-sans-plastique': typeof ProjetsJourneesSansPlastiqueRoute
   '/projets/sentiers-verts': typeof ProjetsSentiersVertsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
   '/galerie': typeof GalerieRoute
   '/nous-joindre': typeof NousJoindreRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/projets/journees-sans-plastique': typeof ProjetsJourneesSansPlastiqueRoute
   '/projets/sentiers-verts': typeof ProjetsSentiersVertsRoute
 }
@@ -100,12 +108,13 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
-  '/blog': typeof BlogRoute
+  '/blog': typeof BlogRouteWithChildren
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
   '/galerie': typeof GalerieRoute
   '/nous-joindre': typeof NousJoindreRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/blog/$slug': typeof BlogSlugRoute
   '/projets/journees-sans-plastique': typeof ProjetsJourneesSansPlastiqueRoute
   '/projets/sentiers-verts': typeof ProjetsSentiersVertsRoute
 }
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
     | '/galerie'
     | '/nous-joindre'
     | '/sitemap.xml'
+    | '/blog/$slug'
     | '/projets/journees-sans-plastique'
     | '/projets/sentiers-verts'
   fileRoutesByTo: FileRoutesByTo
@@ -132,6 +142,7 @@ export interface FileRouteTypes {
     | '/galerie'
     | '/nous-joindre'
     | '/sitemap.xml'
+    | '/blog/$slug'
     | '/projets/journees-sans-plastique'
     | '/projets/sentiers-verts'
   id:
@@ -144,6 +155,7 @@ export interface FileRouteTypes {
     | '/galerie'
     | '/nous-joindre'
     | '/sitemap.xml'
+    | '/blog/$slug'
     | '/projets/journees-sans-plastique'
     | '/projets/sentiers-verts'
   fileRoutesById: FileRoutesById
@@ -151,7 +163,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AProposRoute: typeof AProposRoute
-  BlogRoute: typeof BlogRoute
+  BlogRoute: typeof BlogRouteWithChildren
   DevenirBenevoleRoute: typeof DevenirBenevoleRoute
   DevenirPartenaireRoute: typeof DevenirPartenaireRoute
   GalerieRoute: typeof GalerieRoute
@@ -233,13 +245,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjetsJourneesSansPlastiqueRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
   }
 }
+
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AProposRoute: AProposRoute,
-  BlogRoute: BlogRoute,
+  BlogRoute: BlogRouteWithChildren,
   DevenirBenevoleRoute: DevenirBenevoleRoute,
   DevenirPartenaireRoute: DevenirPartenaireRoute,
   GalerieRoute: GalerieRoute,
@@ -251,3 +280,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
