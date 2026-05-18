@@ -39,9 +39,18 @@ export function SiteFooter() {
         <div>
           <h4 className="font-semibold mb-4">Nous contacter</h4>
           <ul className="space-y-3 text-sm opacity-90">
-            <li className="flex gap-2"><MapPin className="h-4 w-4 mt-0.5 shrink-0" /> Côte d’Ivoire — Abidjan, Bingerville</li>
-            <li className="flex gap-2"><Phone className="h-4 w-4 mt-0.5 shrink-0" /> (+225) 01 03 05 83 63</li>
-            <li className="flex gap-2"><Mail className="h-4 w-4 mt-0.5 shrink-0" /> info@greenivory.com</li>
+            <li className="flex gap-2">
+              <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
+              <span>Côte d’Ivoire — Abidjan, Bingerville</span>
+            </li>
+            <li className="flex gap-2">
+              <Phone className="h-4 w-4 mt-0.5 shrink-0" />
+              <a href="tel:+22501030583 63" className="hover:underline">(+225) 01 03 05 83 63</a>
+            </li>
+            <li className="flex gap-2">
+              <Mail className="h-4 w-4 mt-0.5 shrink-0" />
+              <a href="mailto:info@greenivory.com" className="hover:underline">info@greenivory.com</a>
+            </li>
           </ul>
         </div>
 
