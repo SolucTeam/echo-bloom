@@ -8,7 +8,11 @@ export const Route = createFileRoute("/projets/sentiers-verts")({
       { title: "Sentiers Verts — Green Ivory" },
       { name: "description", content: "Le programme Sentiers Verts Jobs forme et accompagne 50 jeunes éco-entrepreneurs pour la transition durable en Côte d’Ivoire." },
       { property: "og:title", content: "Sentiers Verts — Green Ivory" },
+      { property: "og:description", content: "Formation et accompagnement de jeunes éco-entrepreneurs ivoiriens." },
+      { property: "og:url", content: "https://greenivory-reborn.lovable.app/projets/sentiers-verts" },
+      { property: "og:type", content: "website" },
     ],
+    links: [{ rel: "canonical", href: "https://greenivory-reborn.lovable.app/projets/sentiers-verts" }],
   }),
   component: () => (
     <ProjectLayout
