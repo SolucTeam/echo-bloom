@@ -7,7 +7,12 @@ export const Route = createFileRoute("/devenir-partenaire")({
     meta: [
       { title: "Devenir partenaire / Faire un don — Green Ivory" },
       { name: "description", content: "Soutenez Green Ivory en devenant partenaire ou en faisant un don. Ensemble, accélérons la transition écologique." },
+      { property: "og:title", content: "Devenir partenaire — Green Ivory" },
+      { property: "og:description", content: "Soutenez nos projets et accélérez la transition écologique en Côte d'Ivoire." },
+      { property: "og:url", content: "https://greenivory-reborn.lovable.app/devenir-partenaire" },
+      { property: "og:type", content: "website" },
     ],
+    links: [{ rel: "canonical", href: "https://greenivory-reborn.lovable.app/devenir-partenaire" }],
   }),
   component: Partner,
 });
