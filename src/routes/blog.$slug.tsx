@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
 import { Calendar, User, ArrowLeft, ArrowRight, Tag, Clock } from "lucide-react";
-import { getPostBySlug, getRelatedPosts } from "@/data/blog-posts";
+import { getPostBySlug, getRelatedPosts, type BlogPost } from "@/data/blog-posts";
 
 const SITE_URL = "https://greenivory-reborn.lovable.app";
 
@@ -112,7 +112,7 @@ function ArticlePage() {
           </div>
 
           <div className="prose prose-lg max-w-none mt-10 space-y-6 text-base lg:text-lg leading-relaxed text-foreground/90">
-            {post.content.map((para, i) => (
+            {post.content.map((para: string, i: number) => (
               <p key={i}>{para}</p>
             ))}
           </div>
@@ -145,7 +145,7 @@ function ArticlePage() {
           <div className="bento p-6">
             <h3 className="font-semibold text-lg">À lire aussi</h3>
             <ul className="mt-4 space-y-4">
-              {related.map((r) => (
+              {related.map((r: BlogPost) => (
                 <li key={r.slug} className="flex gap-3">
                   <Link to="/blog/$slug" params={{ slug: r.slug }} className="shrink-0">
                     <img src={r.image} alt="" className="h-16 w-16 rounded-xl object-cover" />
