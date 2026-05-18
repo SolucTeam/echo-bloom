@@ -1,7 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
+import { POSTS } from "@/data/blog-posts";
 
-const BASE_URL = "";
+const BASE_URL = "https://greenivory-reborn.lovable.app";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {
@@ -17,6 +18,11 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/nous-joindre", priority: "0.6", changefreq: "yearly" as const },
           { path: "/devenir-partenaire", priority: "0.7", changefreq: "monthly" as const },
           { path: "/devenir-benevole", priority: "0.7", changefreq: "monthly" as const },
+          ...POSTS.map((p) => ({
+            path: `/blog/${p.slug}`,
+            priority: "0.6",
+            changefreq: "monthly" as const,
+          })),
         ];
         const xml = [
           `<?xml version="1.0" encoding="UTF-8"?>`,
