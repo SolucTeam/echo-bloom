@@ -12,7 +12,12 @@ export const Route = createFileRoute("/")({
     meta: [
       { title: "Green Ivory — Engageons-nous pour un avenir durable" },
       { name: "description", content: "ONG ivoirienne pour la promotion de l’emploi vert. Découvrez nos projets contre la pollution plastique, pour la biodiversité et le climat." },
+      { property: "og:title", content: "Green Ivory — Engageons-nous pour un avenir durable" },
+      { property: "og:description", content: "ONG ivoirienne pour la promotion de l'emploi vert et la protection de l'environnement." },
+      { property: "og:url", content: "https://greenivory-reborn.lovable.app/" },
+      { property: "og:type", content: "website" },
     ],
+    links: [{ rel: "canonical", href: "https://greenivory-reborn.lovable.app/" }],
   }),
   component: Home,
 });
