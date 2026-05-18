@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as NousJoindreRouteImport } from './routes/nous-joindre'
+import { Route as MerciRouteImport } from './routes/merci'
 import { Route as GalerieRouteImport } from './routes/galerie'
 import { Route as DevenirPartenaireRouteImport } from './routes/devenir-partenaire'
 import { Route as DevenirBenevoleRouteImport } from './routes/devenir-benevole'
@@ -30,6 +31,11 @@ const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
 const NousJoindreRoute = NousJoindreRouteImport.update({
   id: '/nous-joindre',
   path: '/nous-joindre',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MerciRoute = MerciRouteImport.update({
+  id: '/merci',
+  path: '/merci',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GalerieRoute = GalerieRouteImport.update({
@@ -91,6 +97,7 @@ export interface FileRoutesByFullPath {
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
   '/galerie': typeof GalerieRoute
+  '/merci': typeof MerciRoute
   '/nous-joindre': typeof NousJoindreRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -105,6 +112,7 @@ export interface FileRoutesByTo {
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
   '/galerie': typeof GalerieRoute
+  '/merci': typeof MerciRoute
   '/nous-joindre': typeof NousJoindreRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -120,6 +128,7 @@ export interface FileRoutesById {
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
   '/galerie': typeof GalerieRoute
+  '/merci': typeof MerciRoute
   '/nous-joindre': typeof NousJoindreRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/blog/$slug': typeof BlogSlugRoute
@@ -136,6 +145,7 @@ export interface FileRouteTypes {
     | '/devenir-benevole'
     | '/devenir-partenaire'
     | '/galerie'
+    | '/merci'
     | '/nous-joindre'
     | '/sitemap.xml'
     | '/blog/$slug'
@@ -150,6 +160,7 @@ export interface FileRouteTypes {
     | '/devenir-benevole'
     | '/devenir-partenaire'
     | '/galerie'
+    | '/merci'
     | '/nous-joindre'
     | '/sitemap.xml'
     | '/blog/$slug'
@@ -164,6 +175,7 @@ export interface FileRouteTypes {
     | '/devenir-benevole'
     | '/devenir-partenaire'
     | '/galerie'
+    | '/merci'
     | '/nous-joindre'
     | '/sitemap.xml'
     | '/blog/$slug'
@@ -179,6 +191,7 @@ export interface RootRouteChildren {
   DevenirBenevoleRoute: typeof DevenirBenevoleRoute
   DevenirPartenaireRoute: typeof DevenirPartenaireRoute
   GalerieRoute: typeof GalerieRoute
+  MerciRoute: typeof MerciRoute
   NousJoindreRoute: typeof NousJoindreRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ProjetsJourneesSansPlastiqueRoute: typeof ProjetsJourneesSansPlastiqueRoute
@@ -200,6 +213,13 @@ declare module '@tanstack/react-router' {
       path: '/nous-joindre'
       fullPath: '/nous-joindre'
       preLoaderRoute: typeof NousJoindreRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/merci': {
+      id: '/merci'
+      path: '/merci'
+      fullPath: '/merci'
+      preLoaderRoute: typeof MerciRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/galerie': {
@@ -292,6 +312,7 @@ const rootRouteChildren: RootRouteChildren = {
   DevenirBenevoleRoute: DevenirBenevoleRoute,
   DevenirPartenaireRoute: DevenirPartenaireRoute,
   GalerieRoute: GalerieRoute,
+  MerciRoute: MerciRoute,
   NousJoindreRoute: NousJoindreRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ProjetsJourneesSansPlastiqueRoute: ProjetsJourneesSansPlastiqueRoute,
@@ -301,3 +322,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
