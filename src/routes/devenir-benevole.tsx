@@ -8,7 +8,12 @@ export const Route = createFileRoute("/devenir-benevole")({
     meta: [
       { title: "Devenir bénévole — Green Ivory" },
       { name: "description", content: "Rejoignez la communauté des bénévoles Green Ivory et passez à l’action pour l’environnement en Côte d’Ivoire." },
+      { property: "og:title", content: "Devenir bénévole — Green Ivory" },
+      { property: "og:description", content: "Rejoignez nos équipes et passez à l'action pour la planète." },
+      { property: "og:url", content: "https://greenivory-reborn.lovable.app/devenir-benevole" },
+      { property: "og:type", content: "website" },
     ],
+    links: [{ rel: "canonical", href: "https://greenivory-reborn.lovable.app/devenir-benevole" }],
   }),
   component: Volunteer,
 });
