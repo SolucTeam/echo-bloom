@@ -14,7 +14,11 @@ export const Route = createFileRoute("/galerie")({
       { title: "Galerie — Green Ivory" },
       { name: "description", content: "Photos et moments forts des actions de Green Ivory : dépollution, éco-ambassadeurs, agents de collecte, recyclage, formations." },
       { property: "og:title", content: "Galerie — Green Ivory" },
+      { property: "og:description", content: "Photos et moments forts de nos actions sur le terrain." },
+      { property: "og:url", content: "https://greenivory-reborn.lovable.app/galerie" },
+      { property: "og:type", content: "website" },
     ],
+    links: [{ rel: "canonical", href: "https://greenivory-reborn.lovable.app/galerie" }],
   }),
   component: Gallery,
 });
