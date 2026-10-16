@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, ArrowRight } from "lucide-react";
 
-const SITE_URL = "https://greenivory-reborn.lovable.app";
+const SITE_URL = import.meta.env.VITE_SITE_URL || "https://greenivory-reborn.lovable.app";
 
 export const Route = createFileRoute("/merci")({
   head: () => ({
@@ -11,6 +11,8 @@ export const Route = createFileRoute("/merci")({
       { property: "og:title", content: "Merci pour votre message — Green Ivory" },
       { property: "og:description", content: "Votre message a bien été reçu. Nous vous répondons sous 48h." },
       { property: "og:url", content: `${SITE_URL}/merci` },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex,follow" },
     ],
     links: [{ rel: "canonical", href: `${SITE_URL}/merci` }],

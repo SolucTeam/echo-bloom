@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-export const safeLink = z.string().max(2000).refine(v => !v || (v.startsWith('/') && !v.startsWith('//')) || /^https:\/\//i.test(v) || /^(mailto:|tel:)/i.test(v), 'Lien non autorisé');
+export const safeLink = z.string().max(2000).refine(v => !/[\\\u0000-\u0020]/.test(v) && (!v || (v.startsWith('/') && !v.startsWith('//')) || /^https:\/\//i.test(v) || /^(mailto:|tel:)/i.test(v)), 'Lien non autorisé');
 export const blockSchema = z.object({
   id: z.string().min(1), type: z.enum(['text', 'image', 'callout']), title: z.string().max(500),
   body: z.string().max(50000), image: safeLink, alt: z.string().max(500),

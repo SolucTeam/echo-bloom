@@ -5,7 +5,7 @@ import { fetchPostBySlug } from "@/lib/cms";
 import { getPostBySlug, getRelatedPosts, type BlogPost } from "@/data/blog-posts";
 import { loadPosts } from '@/lib/site.functions';
 
-const SITE_URL = "https://greenivory-reborn.lovable.app";
+const SITE_URL = import.meta.env.VITE_SITE_URL || "https://greenivory-reborn.lovable.app";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
