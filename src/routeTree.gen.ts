@@ -16,11 +16,14 @@ import { Route as GalerieRouteImport } from './routes/galerie'
 import { Route as DevenirPartenaireRouteImport } from './routes/devenir-partenaire'
 import { Route as DevenirBenevoleRouteImport } from './routes/devenir-benevole'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AProposRouteImport } from './routes/a-propos'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ProjetsSentiersVertsRouteImport } from './routes/projets/sentiers-verts'
 import { Route as ProjetsJourneesSansPlastiqueRouteImport } from './routes/projets/journees-sans-plastique'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
 
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
@@ -58,9 +61,18 @@ const BlogRoute = BlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AProposRoute = AProposRouteImport.update({
   id: '/a-propos',
   path: '/a-propos',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -84,6 +96,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => BlogRoute,
 } as any)
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
   id: '/api/public/contact',
   path: '/api/public/contact',
@@ -93,6 +110,7 @@ const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
+  '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
@@ -100,6 +118,7 @@ export interface FileRoutesByFullPath {
   '/merci': typeof MerciRoute
   '/nous-joindre': typeof NousJoindreRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/projets/journees-sans-plastique': typeof ProjetsJourneesSansPlastiqueRoute
   '/projets/sentiers-verts': typeof ProjetsSentiersVertsRoute
@@ -108,6 +127,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/a-propos': typeof AProposRoute
+  '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
@@ -115,6 +135,7 @@ export interface FileRoutesByTo {
   '/merci': typeof MerciRoute
   '/nous-joindre': typeof NousJoindreRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/admin': typeof AuthenticatedAdminRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/projets/journees-sans-plastique': typeof ProjetsJourneesSansPlastiqueRoute
   '/projets/sentiers-verts': typeof ProjetsSentiersVertsRoute
@@ -123,7 +144,9 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/a-propos': typeof AProposRoute
+  '/auth': typeof AuthRoute
   '/blog': typeof BlogRouteWithChildren
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
@@ -131,6 +154,7 @@ export interface FileRoutesById {
   '/merci': typeof MerciRoute
   '/nous-joindre': typeof NousJoindreRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
+  '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/projets/journees-sans-plastique': typeof ProjetsJourneesSansPlastiqueRoute
   '/projets/sentiers-verts': typeof ProjetsSentiersVertsRoute
@@ -141,6 +165,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/a-propos'
+    | '/auth'
     | '/blog'
     | '/devenir-benevole'
     | '/devenir-partenaire'
@@ -148,6 +173,7 @@ export interface FileRouteTypes {
     | '/merci'
     | '/nous-joindre'
     | '/sitemap.xml'
+    | '/admin'
     | '/blog/$slug'
     | '/projets/journees-sans-plastique'
     | '/projets/sentiers-verts'
@@ -156,6 +182,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/a-propos'
+    | '/auth'
     | '/blog'
     | '/devenir-benevole'
     | '/devenir-partenaire'
@@ -163,6 +190,7 @@ export interface FileRouteTypes {
     | '/merci'
     | '/nous-joindre'
     | '/sitemap.xml'
+    | '/admin'
     | '/blog/$slug'
     | '/projets/journees-sans-plastique'
     | '/projets/sentiers-verts'
@@ -170,7 +198,9 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/a-propos'
+    | '/auth'
     | '/blog'
     | '/devenir-benevole'
     | '/devenir-partenaire'
@@ -178,6 +208,7 @@ export interface FileRouteTypes {
     | '/merci'
     | '/nous-joindre'
     | '/sitemap.xml'
+    | '/_authenticated/admin'
     | '/blog/$slug'
     | '/projets/journees-sans-plastique'
     | '/projets/sentiers-verts'
@@ -186,7 +217,9 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AProposRoute: typeof AProposRoute
+  AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRouteWithChildren
   DevenirBenevoleRoute: typeof DevenirBenevoleRoute
   DevenirPartenaireRoute: typeof DevenirPartenaireRoute
@@ -250,11 +283,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/a-propos': {
       id: '/a-propos'
       path: '/a-propos'
       fullPath: '/a-propos'
       preLoaderRoute: typeof AProposRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -285,6 +332,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof BlogRoute
     }
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/api/public/contact': {
       id: '/api/public/contact'
       path: '/api/public/contact'
@@ -294,6 +348,17 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
 interface BlogRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
@@ -307,7 +372,9 @@ const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AProposRoute: AProposRoute,
+  AuthRoute: AuthRoute,
   BlogRoute: BlogRouteWithChildren,
   DevenirBenevoleRoute: DevenirBenevoleRoute,
   DevenirPartenaireRoute: DevenirPartenaireRoute,
