@@ -3,21 +3,23 @@ import { PageHero } from "@/components/PageHero";
 import { Calendar, User, ArrowLeft, ArrowRight, Tag, Clock } from "lucide-react";
 import { fetchPostBySlug } from "@/lib/cms";
 import { getPostBySlug, getRelatedPosts, type BlogPost } from "@/data/blog-posts";
+import { loadPosts } from '@/lib/site.functions';
 
-const SITE_URL = "https://greenivory-reborn.lovable.app";
+const SITE_URL = import.meta.env.VITE_SITE_URL || "https://greenivory-reborn.lovable.app";
 
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
-    const post = (await fetchPostBySlug(params.slug).catch(() => null)) ?? getPostBySlug(params.slug);
+    const {posts,imported}=await loadPosts();
+    const post=posts.find(p=>p.slug===params.slug) ?? (imported?undefined:getPostBySlug(params.slug));
     if (!post) throw notFound();
-    return { post, related: getRelatedPosts(params.slug, 3) };
+    return { post, related: imported?posts.filter(p=>p.slug!==params.slug).slice(0,3):getRelatedPosts(params.slug,3) };
   },
   head: ({ params, loaderData }) => {
     const post = loaderData?.post;
     const url = `${SITE_URL}/blog/${params.slug}`;
     if (!post) {
       return {
-        meta: [{ title: "Article introuvable — Green Ivory" }],
+        meta: [{ title: "Article introuvable — Green Ivory" },{name:'description',content:'Cet article Green Ivory n’est pas disponible.'},{property:'og:title',content:'Article introuvable — Green Ivory'},{property:'og:description',content:'Cet article n’est pas disponible.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary'},{name:'robots',content:'noindex'}],
       };
     }
     return {
@@ -29,13 +31,12 @@ export const Route = createFileRoute("/blog/$slug")({
         { property: "og:description", content: post.excerpt },
         { property: "og:url", content: url },
         { property: "og:type", content: "article" },
-        { property: "og:image", content: post.image },
+        ...(post.image.startsWith('https://')?[{property:'og:image',content:post.image},{name:'twitter:image',content:post.image}]:[]),
         { property: "article:published_time", content: post.date },
         { property: "article:section", content: post.category },
         { name: "twitter:card", content: "summary_large_image" },
         { name: "twitter:title", content: post.title },
         { name: "twitter:description", content: post.excerpt },
-        { name: "twitter:image", content: post.image },
       ],
       links: [{ rel: "canonical", href: url }],
       scripts: [
@@ -113,7 +114,7 @@ function ArticlePage() {
           </div>
 
           <div className="prose prose-lg max-w-none mt-10 space-y-6 text-base lg:text-lg leading-relaxed text-foreground/90">
-            {post.content.map((para: string, i: number) => (
+            {'html' in post && typeof post.html==='string'?<div className="cms-editor" dangerouslySetInnerHTML={{__html:post.html}}/>:post.content.map((para: string, i: number) => (
               <p key={i}>{para}</p>
             ))}
           </div>

@@ -1,0 +1,18 @@
+CREATE OR REPLACE FUNCTION public.assign_first_admin() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public' AS $$ BEGIN RETURN NEW; END; $$;
+COMMENT ON FUNCTION public.assign_first_admin() IS 'Automatic administrator assignment disabled; administrators are provisioned by a private deployment command.';
+CREATE TABLE public.cms_pages (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), path text NOT NULL UNIQUE, title text NOT NULL DEFAULT '', description text NOT NULL DEFAULT '', share_image text NOT NULL DEFAULT '', blocks jsonb NOT NULL DEFAULT '[]'::jsonb, published boolean NOT NULL DEFAULT false, updated_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT ON public.cms_pages TO anon;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.cms_pages TO authenticated;
+GRANT ALL ON public.cms_pages TO service_role;
+ALTER TABLE public.cms_pages ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "public published pages" ON public.cms_pages FOR SELECT TO anon, authenticated USING (published OR public.has_role(auth.uid(), 'admin'));
+CREATE POLICY "admin manage pages" ON public.cms_pages FOR ALL TO authenticated USING (public.has_role(auth.uid(), 'admin')) WITH CHECK (public.has_role(auth.uid(), 'admin'));
+CREATE TABLE public.cms_media (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), url text NOT NULL, name text NOT NULL DEFAULT '', alt text NOT NULL DEFAULT '', created_at timestamptz NOT NULL DEFAULT now());
+GRANT SELECT ON public.cms_media TO anon;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.cms_media TO authenticated;
+GRANT ALL ON public.cms_media TO service_role;
+ALTER TABLE public.cms_media ENABLE ROW LEVEL SECURITY;
+CREATE POLICY "public media metadata" ON public.cms_media FOR SELECT TO anon, authenticated USING (true);
+CREATE POLICY "admin manage media" ON public.cms_media FOR ALL TO authenticated USING (public.has_role(auth.uid(), 'admin')) WITH CHECK (public.has_role(auth.uid(), 'admin'));
+ALTER TABLE public.blog_posts ADD COLUMN content_format text NOT NULL DEFAULT 'text';
+ALTER TABLE public.gallery_photos ADD COLUMN caption text NOT NULL DEFAULT '', ADD COLUMN alt text NOT NULL DEFAULT '';

@@ -1,3 +1,5 @@
+import { pageHead } from '@/components/ManagedSite';
+import { loadPage } from '@/lib/site.functions';
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
 import { useState } from "react";
@@ -5,17 +7,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { CheckCircle2 } from "lucide-react";
 
 export const Route = createFileRoute("/devenir-benevole")({
-  head: () => ({
-    meta: [
-      { title: "Devenir bénévole — Green Ivory" },
-      { name: "description", content: "Rejoignez la communauté des bénévoles Green Ivory et passez à l’action pour l’environnement en Côte d’Ivoire." },
-      { property: "og:title", content: "Devenir bénévole — Green Ivory" },
-      { property: "og:description", content: "Rejoignez nos équipes et passez à l'action pour la planète." },
-      { property: "og:url", content: "https://greenivory-reborn.lovable.app/devenir-benevole" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "https://greenivory-reborn.lovable.app/devenir-benevole" }],
-  }),
+  loader:async()=>({cmsPage:await loadPage({data:'/devenir-benevole'})}),
+  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Devenir bénévole — Green Ivory', 'Rejoignez la communauté des bénévoles Green Ivory et passez à l’action pour l’environnement en Côte d’Ivoire.', '/devenir-benevole'),
   component: Volunteer,
 });
 

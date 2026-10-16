@@ -8,6 +8,13 @@
       "when": 1792160943137,
       "tag": "0000_admin_console",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1792189574063,
+      "tag": "0001_full_site_cms_and_explicit_admin",
+      "breakpoints": true
     }
   ]
 }

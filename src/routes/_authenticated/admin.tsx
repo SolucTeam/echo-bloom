@@ -1,310 +1,84 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useCallback, useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CATEGORIES } from "@/data/blog-posts";
-import { EDITABLE_TEXTS, uploadMedia, type DbPost } from "@/lib/cms";
-import { Check, LogOut, Trash2, Plus, Pencil } from "lucide-react";
+import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router';
+import { useServerFn } from '@tanstack/react-start';
+import { useState } from 'react';
+import { adminSnapshot, adminWrite } from '@/lib/admin.functions';
+import { originalPages } from '@/lib/original-pages';
+import { POSTS, CATEGORIES } from '@/data/blog-posts';
+import { uploadMedia } from '@/lib/cms';
+import { pageSchema, type CmsPageData, type CmsBlock, type AdminEntity } from '@/lib/cms-schema';
+import { Button } from '@/components/ui/button';
+import { RichEditor } from '@/components/RichEditor';
+import { CmsBlocks } from '@/components/ManagedSite';
+import { supabase } from '@/integrations/supabase/client';
+import { FileText, Newspaper, Images, Settings, Mail, Users, LogOut, Plus, Save, Trash2, Pencil, ArrowUp, ArrowDown, Eye, X, Download, ImagePlus } from 'lucide-react';
+import hero from '@/assets/hero.jpg';
+import journees from '@/assets/journees.jpg';
+import plastic from '@/assets/plastic.jpg';
+import sentiers from '@/assets/sentiers.jpg';
+import biodiversity from '@/assets/biodiversity.jpg';
+import climate from '@/assets/climate.jpg';
 
-export const Route = createFileRoute("/_authenticated/admin")({
-  head: () => ({
-    meta: [
-      { title: "Console d'administration — Green Ivory" },
-      { name: "description", content: "Gestion des messages, articles, galerie et textes du site." },
-      { name: "robots", content: "noindex" },
-      { property: "og:title", content: "Administration — Green Ivory" },
-      { property: "og:description", content: "Console d'administration." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
-  component: Admin,
+export const Route = createFileRoute('/_authenticated/admin')({
+  loader:()=>adminSnapshot(),
+  head:()=>({meta:[{title:'Gestion du site — Green Ivory'},{name:'description',content:'Administration des pages, articles, médias, menus et paramètres Green Ivory.'},{name:'robots',content:'noindex'},{property:'og:title',content:'Gestion du site — Green Ivory'},{property:'og:description',content:'Console privée Green Ivory.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary'}]}),
+  component:Admin,
 });
-
-const inputCls = "w-full rounded-xl border border-input bg-background px-3 py-2 text-sm";
-const fmt = (d: string) => new Date(d).toLocaleString("fr-FR", { dateStyle: "short", timeStyle: "short" });
-
-function Admin() {
-  const navigate = useNavigate();
-  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
-  useEffect(() => {
-    supabase.auth.getUser().then(async ({ data }) => {
-      if (!data.user) return setIsAdmin(false);
-      const { data: ok } = await supabase.rpc("has_role", { _user_id: data.user.id, _role: "admin" });
-      setIsAdmin(!!ok);
-    });
-  }, []);
-  const logout = async () => { await supabase.auth.signOut(); navigate({ to: "/auth" }); };
-
-  if (isAdmin === null) return <div className="container-x py-24">Chargement…</div>;
-  if (!isAdmin)
-    return (
-      <div className="container-x py-24 text-center">
-        <h1 className="text-2xl font-bold">Accès refusé</h1>
-        <p className="mt-2 text-muted-foreground">Ce compte n'a pas les droits administrateur.</p>
-        <button onClick={logout} className="btn-primary mt-6 inline-flex">Se déconnecter</button>
-      </div>
-    );
-
-  return (
-    <section className="container-x py-12">
-      <div className="flex items-center justify-between gap-4">
-        <h1 className="text-3xl font-bold">Console d'administration</h1>
-        <button onClick={logout} className="inline-flex items-center gap-2 text-sm font-medium rounded-full border border-border px-4 py-2 hover:bg-accent">
-          <LogOut className="h-4 w-4" /> Déconnexion
-        </button>
-      </div>
-      <Tabs defaultValue="messages" className="mt-8">
-        <TabsList className="flex-wrap h-auto">
-          <TabsTrigger value="messages">Messages</TabsTrigger>
-          <TabsTrigger value="apps">Bénévoles & partenaires</TabsTrigger>
-          <TabsTrigger value="blog">Blog</TabsTrigger>
-          <TabsTrigger value="gallery">Galerie</TabsTrigger>
-          <TabsTrigger value="texts">Textes</TabsTrigger>
-        </TabsList>
-        <TabsContent value="messages"><Messages /></TabsContent>
-        <TabsContent value="apps"><Applications /></TabsContent>
-        <TabsContent value="blog"><BlogAdmin /></TabsContent>
-        <TabsContent value="gallery"><GalleryAdmin /></TabsContent>
-        <TabsContent value="texts"><TextsAdmin /></TabsContent>
-      </Tabs>
-    </section>
-  );
+const field='w-full rounded-md border border-input bg-background px-3 py-2 text-sm';
+type Snapshot=Awaited<ReturnType<typeof adminSnapshot>>;
+type Post=Snapshot['posts'][number];
+type Photo=Snapshot['gallery'][number];
+const sections=[{id:'pages',label:'Pages',icon:FileText},{id:'posts',label:'Articles',icon:Newspaper},{id:'media',label:'Médiathèque',icon:Images},{id:'gallery',label:'Galerie',icon:ImagePlus},{id:'settings',label:'Menus & paramètres',icon:Settings},{id:'messages',label:'Messages',icon:Mail},{id:'applications',label:'Candidatures',icon:Users}] as const;
+type Section=typeof sections[number]['id'];
+const settingsFields=[['site.name','Nom du site'],['site.logo','Logo (adresse de l’image)'],['site.tagline','Présentation du pied de page'],['site.address','Adresse'],['site.phone','Téléphone'],['site.email','E-mail'],['site.recruitment','E-mail recrutement'],['site.donation','Lien pour faire un don'],['social.facebook','Facebook'],['social.instagram','Instagram'],['social.linkedin','LinkedIn'],['social.youtube','YouTube']];
+const defaults:Record<string,string>={'site.name':'Green Ivory','site.tagline':'Le pouvoir citoyen pour l’environnement. ONG ivoirienne engagée contre la pollution plastique, pour la biodiversité et le climat depuis 2017.','site.address':'Côte d’Ivoire — Abidjan, Bingerville','site.phone':'+225 01 03 05 83 63','site.email':'info@greenivory.com','site.recruitment':'recrutement@greenivory.com','site.donation':'/devenir-partenaire'};
+const defaultMenu=[{label:'Accueil',url:'/'},{label:'À propos',url:'/a-propos'},{label:'Journées sans Plastique',url:'/projets/journees-sans-plastique'},{label:'Sentiers verts',url:'/projets/sentiers-verts'},{label:'Galerie',url:'/galerie'},{label:'Blog',url:'/blog'},{label:'Contact',url:'/nous-joindre'}];
+function labelDate(v:string){return new Date(v).toLocaleString('fr-FR');}
+function slug(v:string){return v.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');}
+function newBlock():CmsBlock{return {id:crypto.randomUUID(),type:'text',title:'',body:'',image:'',alt:'',link:'',linkLabel:'',visible:true};}
+function Input({label,...props}:{label:string}&React.InputHTMLAttributes<HTMLInputElement>){return <label className="block space-y-1 text-sm font-medium"><span>{label}</span><input {...props} className={field}/></label>;}
+function TextArea({label,...props}:{label:string}&React.TextareaHTMLAttributes<HTMLTextAreaElement>){return <label className="block space-y-1 text-sm font-medium"><span>{label}</span><textarea {...props} className={field}/></label>;}
+function IconAction({label,onClick,children}:{label:string,onClick:()=>void,children:React.ReactNode}){return <Button variant="ghost" size="icon" title={label} aria-label={label} onClick={onClick}>{children}</Button>;}
+function Admin(){
+ const data=Route.useLoaderData(),router=useRouter(),navigate=useNavigate(),write=useServerFn(adminWrite);
+ const [tab,setTab]=useState<Section>('pages'),[page,setPage]=useState<CmsPageData|null>(null),[post,setPost]=useState<Post|null>(null),[photo,setPhoto]=useState<Photo|null>(null),[preview,setPreview]=useState(false),[busy,setBusy]=useState(false),[notice,setNotice]=useState('');
+ const [values,setValues]=useState<Record<string,string>>(()=>({...defaults,...Object.fromEntries(data.settings.map(s=>[s.key,s.value]))}));
+ const [menu,setMenu]=useState<{label:string,url:string}[]>(()=>{try{return JSON.parse(data.settings.find(s=>s.key==='site.menu')?.value||'null')||defaultMenu;}catch{return defaultMenu;}});
+ const [footerMenu,setFooterMenu]=useState<{label:string,url:string}[]>(()=>{try{return JSON.parse(data.settings.find(s=>s.key==='site.footerMenu')?.value||'null')||defaultMenu;}catch{return defaultMenu;}});
+ async function action(fn:()=>Promise<unknown>){setBusy(true);setNotice('');try{await fn();await router.invalidate();setNotice('Enregistré.');}catch(e){setNotice(e instanceof Error?e.message:'Opération impossible.');}finally{setBusy(false);}}
+ const save=(entity:AdminEntity,payload:unknown,id?:string)=>write({data:{entity,payload,id,remove:false}});
+ const remove=(entity:AdminEntity,id:string)=>{if(confirm('Supprimer définitivement cet élément ?'))action(()=>write({data:{entity,id,remove:true}}));};
+ function openPage(p:CmsPageData){setPage(p);setPreview(false);}
+ const allPages=[...data.pages.map(p=>pageSchema.parse(p)),...originalPages.filter(p=>!data.pages.some(d=>d.path===p.path))];
+ function updateBlock(index:number,patch:Partial<CmsBlock>){if(!page)return;setPage({...page,blocks:page.blocks.map((b,i)=>i===index?{...b,...patch}:b)});}
+ function moveBlock(index:number,dir:number){if(!page)return;const target=index+dir;if(target<0||target>=page.blocks.length)return;const blocks=[...page.blocks];[blocks[index],blocks[target]]=[blocks[target],blocks[index]];setPage({...page,blocks});}
+ async function addFile(file:File){const url=await uploadMedia(file);await save('media',{url,name:file.name,alt:''});return url;}
+ async function importPosts(){for(const p of POSTS)await save('posts',{slug:p.slug,title:p.title,excerpt:p.excerpt,content:p.content.join('\n\n'),category:p.category,image_url:p.image,author:p.author,published:true,published_at:new Date(p.date).toISOString(),content_format:'text'});await save('settings',{key:'cms.posts.imported',value:'true'});}
+ async function importGallery(){const groups=[{collection:'Journées sans plastique',images:[[hero,'Journées de dépollution'],[journees,'Éco-ambassadeurs'],[plastic,'Formation'],[hero,'Recyclage'],[journees,'Agents de collecte'],[plastic,'Journées de dépollution']]},{collection:'Sentiers verts',images:[[sentiers,'Éco-entrepreneurs'],[biodiversity,'Visites de terrain'],[sentiers,'Journées carrières'],[climate,'Visites de terrain'],[sentiers,'Éco-entrepreneurs'],[biodiversity,'Visites de terrain']]}];for(const g of groups)for(const [image_url,tag] of g.images)await save('gallery',{collection:g.collection,image_url,tag,alt:tag,caption:''});await save('settings',{key:'cms.gallery.imported',value:'true'});}
+ function exportContent(){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='green-ivory-contenus.json';a.click();URL.revokeObjectURL(url);}
+ const importedPosts=data.settings.some(s=>s.key==='cms.posts.imported'&&s.value==='true'),importedGallery=data.settings.some(s=>s.key==='cms.gallery.imported'&&s.value==='true');
+ return <div className="container-x py-10">
+  <div className="flex flex-wrap justify-between items-center gap-4 border-b border-border pb-6"><div><span className="eyebrow">Green Ivory</span><h1 className="text-3xl font-bold mt-2">Gestion du site</h1></div><div className="flex gap-2"><Button variant="outline" onClick={exportContent}><Download/>Exporter</Button><Button variant="outline" onClick={()=>navigate({to:'/'})}><Eye/>Voir le site</Button><IconAction label="Déconnexion" onClick={async()=>{await supabase.auth.signOut();navigate({to:'/auth'});}}><LogOut/></IconAction></div></div>
+  <div className="grid lg:grid-cols-[220px_1fr] gap-8 mt-8"><nav aria-label="Administration" className="flex lg:flex-col flex-wrap gap-1 items-start">{sections.map(s=><Button key={s.id} variant={tab===s.id?'secondary':'ghost'} className="justify-start lg:w-full" onClick={()=>{setTab(s.id);setPage(null);setPost(null);setPhoto(null);setNotice('');}}><s.icon/>{s.label}</Button>)}</nav>
+  <div className="min-w-0 space-y-6">{notice&&<p role="status" className="border-l-4 border-primary bg-accent p-3 text-sm">{notice}</p>}
+  {tab==='pages' && (page?<>
+   <div className="flex flex-wrap gap-2 justify-between"><h2 className="text-2xl font-bold">{page.path==='/'?'Accueil':page.title}</h2><div className="flex gap-2"><Button variant="outline" onClick={()=>setPreview(!preview)}><Eye/>{preview?'Éditer':'Aperçu'}</Button><IconAction label="Fermer" onClick={()=>setPage(null)}><X/></IconAction></div></div>
+   {preview?<CmsBlocks blocks={page.blocks}/>:<>
+   <div className="grid sm:grid-cols-2 gap-4"><Input label="Titre et titre de partage" value={page.title} onChange={e=>setPage({...page,title:e.target.value})}/><Input label="Adresse de la page" value={page.path} onChange={e=>setPage({...page,path:e.target.value})}/><TextArea label="Description pour les moteurs de recherche" rows={2} value={page.description} onChange={e=>setPage({...page,description:e.target.value})}/><Input label="Image de partage (https://…)" value={page.share_image} onChange={e=>setPage({...page,share_image:e.target.value})}/></div>
+   <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={page.published} onChange={e=>setPage({...page,published:e.target.checked})}/>Publier cette version</label>
+   <div className="space-y-6">{page.blocks.map((b,i)=><div key={b.id} className="border border-border rounded-lg p-4 space-y-3"><div className="flex items-center justify-between gap-2"><h3 className="font-semibold">Section {i+1}</h3><div className="flex gap-1"><IconAction label="Monter la section" onClick={()=>moveBlock(i,-1)}><ArrowUp/></IconAction><IconAction label="Descendre la section" onClick={()=>moveBlock(i,1)}><ArrowDown/></IconAction><IconAction label="Retirer la section" onClick={()=>setPage({...page,blocks:page.blocks.filter((_,j)=>j!==i)})}><Trash2/></IconAction></div></div>
+    <div className="flex flex-wrap gap-4"><label className="text-sm">Type <select aria-label="Type de section" className={field} value={b.type} onChange={e=>updateBlock(i,{type:e.target.value as CmsBlock['type']})}><option value="text">Texte & image</option><option value="image">Image</option><option value="callout">Mise en avant</option></select></label><label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={b.visible} onChange={e=>updateBlock(i,{visible:e.target.checked})}/>Visible</label></div>
+    <Input label="Titre de section" value={b.title} onChange={e=>updateBlock(i,{title:e.target.value})}/><TextArea label="Texte" rows={5} value={b.body} onChange={e=>updateBlock(i,{body:e.target.value})}/>
+    <div className="grid sm:grid-cols-2 gap-3"><Input label="Image" value={b.image} onChange={e=>updateBlock(i,{image:e.target.value})}/><Input label="Description de l’image" value={b.alt} onChange={e=>updateBlock(i,{alt:e.target.value})}/><Input label="Lien du bouton" value={b.link} onChange={e=>updateBlock(i,{link:e.target.value})}/><Input label="Texte du bouton" value={b.linkLabel} onChange={e=>updateBlock(i,{linkLabel:e.target.value})}/></div>
+    <label className="text-sm">Remplacer l’image<input aria-label="Remplacer l’image" type="file" accept="image/*" disabled={busy} onChange={e=>{const f=e.target.files?.[0];if(f)action(async()=>updateBlock(i,{image:await addFile(f)}));}}/></label>
+   </div>)}</div><Button variant="outline" onClick={()=>setPage({...page,blocks:[...page.blocks,newBlock()]})}><Plus/>Ajouter une section</Button></>}
+   <Button disabled={busy} onClick={()=>action(async()=>{await save('pages',page);setPage(null);})}><Save/>{busy?'Enregistrement…':'Enregistrer la page'}</Button>
+  </>:<><div className="flex flex-wrap items-center justify-between gap-3"><h2 className="text-2xl font-bold">Pages</h2><Button onClick={()=>openPage({path:'/nouvelle-page',title:'Nouvelle page',description:'',share_image:'',published:false,blocks:[newBlock()]})}><Plus/>Nouvelle page</Button></div><div className="divide-y divide-border">{allPages.map(p=><div key={p.path} className="flex items-center justify-between py-4 gap-4"><div><h3 className="font-semibold">{p.title}</h3><p className="text-sm text-muted-foreground">{p.path} · {data.pages.some(d=>d.path===p.path)?(p.published?'Publiée':'Brouillon'):'Version d’origine'}</p></div><IconAction label={`Modifier ${p.path}`} onClick={()=>openPage(p)}><Pencil/></IconAction></div>)}</div></>)}
+  {tab==='posts' && (post?<><div className="flex justify-between"><h2 className="text-2xl font-bold">Article</h2><IconAction label="Fermer" onClick={()=>setPost(null)}><X/></IconAction></div><Input label="Titre" value={post.title} onChange={e=>setPost({...post,title:e.target.value})}/><Input label="Adresse de l’article" value={post.slug} onChange={e=>setPost({...post,slug:slug(e.target.value)})}/><div className="grid sm:grid-cols-2 gap-4"><Input label="Catégorie" list="categories" value={post.category} onChange={e=>setPost({...post,category:e.target.value})}/><datalist id="categories">{[...new Set([...CATEGORIES,...data.posts.map(p=>p.category)])].map(c=><option key={c} value={c}/>)}</datalist><Input label="Auteur" value={post.author} onChange={e=>setPost({...post,author:e.target.value})}/></div><TextArea label="Résumé" rows={3} value={post.excerpt} onChange={e=>setPost({...post,excerpt:e.target.value})}/><RichEditor value={post.content_format==='html'?post.content:post.content.split(/\n\s*\n/).map(p=>'<p>'+p.replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</p>').join('')} onChange={content=>setPost({...post,content,content_format:'html'})}/><Input label="Image de couverture" value={post.image_url||''} onChange={e=>setPost({...post,image_url:e.target.value})}/><label className="text-sm">Importer une couverture<input type="file" accept="image/*" disabled={busy} onChange={e=>{const f=e.target.files?.[0];if(f)action(async()=>setPost({...post,image_url:await addFile(f)}));}}/></label><Input label="Date de publication" type="datetime-local" value={post.published_at.slice(0,16)} onChange={e=>{if(e.target.value)setPost({...post,published_at:new Date(e.target.value).toISOString()});}}/><label className="flex gap-2 text-sm"><input type="checkbox" checked={post.published} onChange={e=>setPost({...post,published:e.target.checked})}/>Publié</label><Button disabled={busy||!post.title} onClick={()=>action(async()=>{await save('posts',{...post,slug:post.slug||slug(post.title)},post.id||undefined);setPost(null);})}><Save/>Enregistrer l’article</Button></>:<><div className="flex flex-wrap justify-between gap-3"><h2 className="text-2xl font-bold">Articles</h2><Button onClick={()=>setPost({id:'',slug:'',title:'',excerpt:'',content:'',category:CATEGORIES[0],image_url:null,author:'Green Ivory',published:false,published_at:new Date().toISOString(),content_format:'html',created_at:'',updated_at:''})}><Plus/>Nouvel article</Button></div>{!importedPosts&&<Button variant="outline" disabled={busy} onClick={()=>action(importPosts)}>Importer les 5 articles d’origine</Button>}<div className="divide-y divide-border">{data.posts.map(p=><div key={p.id} className="py-4 flex justify-between gap-4"><div><h3 className="font-semibold">{p.title}</h3><p className="text-sm text-muted-foreground">{p.category} · {p.published?'Publié':'Brouillon'}</p></div><div className="flex"><IconAction label="Modifier l’article" onClick={()=>setPost(p)}><Pencil/></IconAction><IconAction label="Supprimer l’article" onClick={()=>remove('posts',p.id)}><Trash2/></IconAction></div></div>)}</div></>)}
+  {tab==='media'&&<><h2 className="text-2xl font-bold">Médiathèque</h2><label className="block text-sm font-medium">Ajouter des fichiers<input aria-label="Ajouter des fichiers" type="file" multiple accept="image/*" disabled={busy} className="block mt-2" onChange={e=>{const files=Array.from(e.target.files??[]);action(async()=>{for(const f of files)await addFile(f);});}}/></label><div className="grid grid-cols-2 xl:grid-cols-3 gap-4">{data.media.map(m=><div className="border border-border rounded-lg overflow-hidden" key={m.id}><img src={m.url} alt={m.alt} className="aspect-[4/3] w-full object-cover"/><div className="p-3 space-y-2"><p className="text-sm truncate">{m.name}</p><Input label="Texte alternatif" defaultValue={m.alt} onBlur={e=>{if(e.target.value!==m.alt)action(()=>save('media',{...m,alt:e.target.value},m.id));}}/><div className="flex gap-1"><Button size="sm" variant="outline" onClick={()=>{navigator.clipboard.writeText(m.url);setNotice('Adresse copiée.');}}>Copier l’adresse</Button><IconAction label="Retirer de la bibliothèque" onClick={()=>remove('media',m.id)}><Trash2/></IconAction></div></div></div>)}</div></>}
+  {tab==='gallery'&&(photo?<><h2 className="text-2xl font-bold">Photo</h2><Input label="Collection" value={photo.collection} onChange={e=>setPhoto({...photo,collection:e.target.value})}/><Input label="Catégorie de photo" value={photo.tag} onChange={e=>setPhoto({...photo,tag:e.target.value})}/><Input label="Image" value={photo.image_url} onChange={e=>setPhoto({...photo,image_url:e.target.value})}/><Input label="Légende" value={photo.caption} onChange={e=>setPhoto({...photo,caption:e.target.value})}/><Input label="Description de l’image" value={photo.alt} onChange={e=>setPhoto({...photo,alt:e.target.value})}/><input aria-label="Importer une photo" type="file" accept="image/*" onChange={e=>{const f=e.target.files?.[0];if(f)action(async()=>setPhoto({...photo,image_url:await addFile(f)}));}}/><div className="flex gap-2"><Button disabled={busy||!photo.image_url} onClick={()=>action(async()=>{await save('gallery',photo,photo.id||undefined);setPhoto(null);})}><Save/>Enregistrer</Button><Button variant="outline" onClick={()=>setPhoto(null)}>Annuler</Button></div></>:<><div className="flex flex-wrap justify-between gap-3"><h2 className="text-2xl font-bold">Galerie</h2><Button onClick={()=>setPhoto({id:'',collection:'Journées sans plastique',tag:'',image_url:'',caption:'',alt:'',created_at:''})}><Plus/>Ajouter une photo</Button></div>{!importedGallery&&<Button variant="outline" disabled={busy} onClick={()=>action(importGallery)}>Importer les photos d’origine</Button>}<div className="grid grid-cols-2 xl:grid-cols-3 gap-4">{data.gallery.map(p=><div className="border border-border rounded-lg overflow-hidden" key={p.id}><img src={p.image_url} alt={p.alt||p.tag} className="aspect-square w-full object-cover"/><div className="p-3"><p className="text-sm">{p.collection} · {p.tag}</p><div className="flex"><IconAction label="Modifier la photo" onClick={()=>setPhoto(p)}><Pencil/></IconAction><IconAction label="Retirer la photo" onClick={()=>remove('gallery',p.id)}><Trash2/></IconAction></div></div></div>)}</div></>)}
+  {tab==='settings'&&<><h2 className="text-2xl font-bold">Menus & paramètres</h2><div className="grid sm:grid-cols-2 gap-4">{settingsFields.map(([key,label])=><Input key={key} label={label} value={values[key]||''} onChange={e=>setValues({...values,[key]:e.target.value})}/>)}</div><MenuEditor title="Menu principal" items={menu} setItems={setMenu}/><MenuEditor title="Liens du pied de page" items={footerMenu} setItems={setFooterMenu}/><Button disabled={busy} onClick={()=>action(async()=>{for(const [key,label] of settingsFields)await save('settings',{key,label,value:values[key]||''});for(const items of [menu,footerMenu])for(const item of items)if(!item.url.startsWith('/')&&!/^https:\/\//i.test(item.url))throw new Error('Adresse de menu invalide.');await save('settings',{key:'site.menu',value:JSON.stringify(menu)});await save('settings',{key:'site.footerMenu',value:JSON.stringify(footerMenu)});})}><Save/>Enregistrer les paramètres</Button></>}
+  {(tab==='messages'||tab==='applications')&&<><h2 className="text-2xl font-bold">{tab==='messages'?'Messages':'Bénévoles & partenaires'}</h2>{(tab==='messages'?data.messages:data.applications).length===0&&<p className="text-muted-foreground">Aucune demande reçue.</p>}{(tab==='messages'?data.messages:data.applications).map(r=><div key={r.id} className="border-b border-border py-4 space-y-2"><div className="flex justify-between gap-4"><div><h3 className="font-semibold">{'subject' in r?r.subject:r.name}</h3><p className="text-sm text-muted-foreground">{r.email} · {labelDate(r.created_at)} · {r.handled?'Traité':'À traiter'}{'kind' in r?' · '+r.kind:''}</p></div><div className="flex gap-1"><Button size="sm" variant="outline" disabled={busy} onClick={()=>action(()=>save(tab,{handled:!r.handled},r.id))}>{r.handled?'Non traité':'Marquer traité'}</Button><IconAction label="Supprimer la demande" onClick={()=>remove(tab,r.id)}><Trash2/></IconAction></div></div>{'phone' in r&&<p className="text-sm">{[r.phone,r.city,r.organization].filter(Boolean).join(' · ')}</p>}<p className="text-sm whitespace-pre-wrap">{r.message}</p><a href={'mailto:'+r.email} className="text-sm text-primary underline">Répondre par e-mail</a></div>)}</>}
+  </div></div>
+ </div>;
 }
-
-function Messages() {
-  const [rows, setRows] = useState<{ id: string; name: string | null; email: string; subject: string; message: string; created_at: string; handled: boolean }[]>([]);
-  const load = useCallback(() => {
-    supabase.from("contact_submissions").select("*").order("created_at", { ascending: false }).then(({ data }) => setRows(data ?? []));
-  }, []);
-  useEffect(load, [load]);
-  if (!rows.length) return <Empty text="Aucun message reçu." />;
-  return (
-    <div className="mt-6 space-y-3">
-      {rows.map((r) => (
-        <div key={r.id} className={`bento p-5 ${r.handled ? "opacity-60" : ""}`}>
-          <div className="flex flex-wrap justify-between gap-2">
-            <div>
-              <p className="font-semibold">{r.subject}</p>
-              <p className="text-xs text-muted-foreground">{r.name || "Anonyme"} · <a className="underline" href={`mailto:${r.email}`}>{r.email}</a> · {fmt(r.created_at)}</p>
-            </div>
-            <RowActions handled={r.handled}
-              onToggle={async () => { await supabase.from("contact_submissions").update({ handled: !r.handled }).eq("id", r.id); load(); }}
-              onDelete={async () => { if (confirm("Supprimer ce message ?")) { await supabase.from("contact_submissions").delete().eq("id", r.id); load(); } }} />
-          </div>
-          <p className="mt-3 text-sm whitespace-pre-wrap">{r.message}</p>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function Applications() {
-  const [rows, setRows] = useState<{ id: string; kind: string; name: string; email: string; phone: string | null; city: string | null; organization: string | null; message: string | null; created_at: string; handled: boolean }[]>([]);
-  const [kind, setKind] = useState<"all" | "benevole" | "partenaire">("all");
-  const load = useCallback(() => {
-    supabase.from("applications").select("*").order("created_at", { ascending: false }).then(({ data }) => setRows(data ?? []));
-  }, []);
-  useEffect(load, [load]);
-  const list = rows.filter((r) => kind === "all" || r.kind === kind);
-  return (
-    <div className="mt-6">
-      <div className="flex gap-2">
-        {(["all", "benevole", "partenaire"] as const).map((k) => (
-          <button key={k} onClick={() => setKind(k)} className={`rounded-full px-4 py-1.5 text-xs font-semibold ${kind === k ? "bg-primary text-primary-foreground" : "bg-accent"}`}>
-            {k === "all" ? "Tous" : k === "benevole" ? "Bénévoles" : "Partenaires"}
-          </button>
-        ))}
-      </div>
-      {!list.length ? <Empty text="Aucune inscription." /> : (
-        <div className="mt-4 space-y-3">
-          {list.map((r) => (
-            <div key={r.id} className={`bento p-5 ${r.handled ? "opacity-60" : ""}`}>
-              <div className="flex flex-wrap justify-between gap-2">
-                <div>
-                  <p className="font-semibold">{r.name} <span className="ml-2 rounded-full bg-accent px-2 py-0.5 text-[11px] text-primary">{r.kind === "benevole" ? "Bénévole" : "Partenaire"}</span></p>
-                  <p className="text-xs text-muted-foreground">
-                    <a className="underline" href={`mailto:${r.email}`}>{r.email}</a>{r.phone && ` · ${r.phone}`}{r.city && ` · ${r.city}`}{r.organization && ` · ${r.organization}`} · {fmt(r.created_at)}
-                  </p>
-                </div>
-                <RowActions handled={r.handled}
-                  onToggle={async () => { await supabase.from("applications").update({ handled: !r.handled }).eq("id", r.id); load(); }}
-                  onDelete={async () => { if (confirm("Supprimer ?")) { await supabase.from("applications").delete().eq("id", r.id); load(); } }} />
-              </div>
-              {r.message && <p className="mt-3 text-sm whitespace-pre-wrap">{r.message}</p>}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-const emptyPost = { id: "", slug: "", title: "", excerpt: "", content: "", category: CATEGORIES[0], image_url: null as string | null, author: "Green Ivory", published: false, published_at: new Date().toISOString() };
-const slugify = (s: string) => s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-
-function BlogAdmin() {
-  const [posts, setPosts] = useState<DbPost[]>([]);
-  const [edit, setEdit] = useState<DbPost | null>(null);
-  const [busy, setBusy] = useState(false);
-  const load = useCallback(() => {
-    supabase.from("blog_posts").select("*").order("published_at", { ascending: false }).then(({ data }) => setPosts((data ?? []) as DbPost[]));
-  }, []);
-  useEffect(load, [load]);
-
-  async function save() {
-    if (!edit) return;
-    setBusy(true);
-    const { id, ...rest } = edit;
-    const payload = { ...rest, slug: rest.slug || slugify(rest.title), updated_at: new Date().toISOString() };
-    const { error } = id ? await supabase.from("blog_posts").update(payload).eq("id", id) : await supabase.from("blog_posts").insert(payload);
-    setBusy(false);
-    if (error) return alert(error.message);
-    setEdit(null); load();
-  }
-
-  if (edit)
-    return (
-      <div className="mt-6 bento p-6 space-y-3 max-w-3xl">
-        <h2 className="text-xl font-bold">{edit.id ? "Modifier l'article" : "Nouvel article"}</h2>
-        <input className={inputCls} placeholder="Titre" value={edit.title} onChange={(e) => setEdit({ ...edit, title: e.target.value })} />
-        <input className={inputCls} placeholder="Adresse (slug) — générée automatiquement si vide" value={edit.slug} onChange={(e) => setEdit({ ...edit, slug: slugify(e.target.value) })} />
-        <div className="grid sm:grid-cols-2 gap-3">
-          <select className={inputCls} value={edit.category} onChange={(e) => setEdit({ ...edit, category: e.target.value })}>
-            {CATEGORIES.map((c) => <option key={c}>{c}</option>)}
-          </select>
-          <input className={inputCls} placeholder="Auteur" value={edit.author} onChange={(e) => setEdit({ ...edit, author: e.target.value })} />
-        </div>
-        <textarea className={inputCls} rows={2} placeholder="Résumé" value={edit.excerpt} onChange={(e) => setEdit({ ...edit, excerpt: e.target.value })} />
-        <textarea className={inputCls} rows={12} placeholder="Contenu (séparez les paragraphes par une ligne vide)" value={edit.content} onChange={(e) => setEdit({ ...edit, content: e.target.value })} />
-        <div className="flex items-center gap-4">
-          {edit.image_url && <img src={edit.image_url} alt="" className="h-20 w-32 object-cover rounded-xl" />}
-          <input type="file" accept="image/*" onChange={async (e) => {
-            const f = e.target.files?.[0]; if (!f) return;
-            try { setBusy(true); const url = await uploadMedia(f); setEdit({ ...edit, image_url: url }); } catch { alert("Échec de l'envoi de l'image"); } finally { setBusy(false); }
-          }} />
-        </div>
-        <label className="flex items-center gap-2 text-sm"><input type="checkbox" checked={edit.published} onChange={(e) => setEdit({ ...edit, published: e.target.checked })} /> Publié</label>
-        <div className="flex gap-2">
-          <button disabled={busy || !edit.title} onClick={save} className="btn-primary">Enregistrer</button>
-          <button onClick={() => setEdit(null)} className="rounded-full border border-border px-5 py-2 text-sm">Annuler</button>
-        </div>
-      </div>
-    );
-
-  return (
-    <div className="mt-6">
-      <button onClick={() => setEdit({ ...emptyPost })} className="btn-primary"><Plus className="h-4 w-4" /> Nouvel article</button>
-      <p className="mt-3 text-xs text-muted-foreground">Les 5 articles d'origine restent affichés sur le site ; vos nouveaux articles apparaissent en premier.</p>
-      {!posts.length ? <Empty text="Aucun article créé depuis la console." /> : (
-        <div className="mt-4 space-y-2">
-          {posts.map((p) => (
-            <div key={p.id} className="bento p-4 flex items-center justify-between gap-3">
-              <div>
-                <p className="font-semibold">{p.title}</p>
-                <p className="text-xs text-muted-foreground">{p.category} · {p.published ? "Publié" : "Brouillon"} · /blog/{p.slug}</p>
-              </div>
-              <div className="flex gap-2">
-                <IconBtn onClick={() => setEdit(p)} label="Modifier"><Pencil className="h-4 w-4" /></IconBtn>
-                <IconBtn label="Supprimer" onClick={async () => { if (confirm("Supprimer cet article ?")) { await supabase.from("blog_posts").delete().eq("id", p.id); load(); } }}><Trash2 className="h-4 w-4" /></IconBtn>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-const GALLERY: Record<string, string[]> = {
-  "Journées sans plastique": ["Journées de dépollution", "Éco-ambassadeurs", "Agents de collecte", "Recyclage", "Formation"],
-  "Sentiers verts": ["Journées carrières", "Éco-entrepreneurs", "Visites de terrain"],
-};
-
-function GalleryAdmin() {
-  const [photos, setPhotos] = useState<{ id: string; collection: string; tag: string; image_url: string }[]>([]);
-  const [collection, setCollection] = useState(Object.keys(GALLERY)[0]);
-  const [tag, setTag] = useState(GALLERY[Object.keys(GALLERY)[0]][0]);
-  const [busy, setBusy] = useState(false);
-  const load = useCallback(() => {
-    supabase.from("gallery_photos").select("*").order("created_at", { ascending: false }).then(({ data }) => setPhotos(data ?? []));
-  }, []);
-  useEffect(load, [load]);
-
-  return (
-    <div className="mt-6">
-      <div className="bento p-5 flex flex-wrap items-center gap-3">
-        <select className={inputCls + " max-w-xs"} value={collection} onChange={(e) => { setCollection(e.target.value); setTag(GALLERY[e.target.value][0]); }}>
-          {Object.keys(GALLERY).map((c) => <option key={c}>{c}</option>)}
-        </select>
-        <select className={inputCls + " max-w-xs"} value={tag} onChange={(e) => setTag(e.target.value)}>
-          {GALLERY[collection].map((t) => <option key={t}>{t}</option>)}
-        </select>
-        <label className="btn-primary cursor-pointer">
-          <Plus className="h-4 w-4" /> {busy ? "Envoi…" : "Ajouter des photos"}
-          <input type="file" accept="image/*" multiple className="hidden" disabled={busy} onChange={async (e) => {
-            const files = Array.from(e.target.files ?? []); if (!files.length) return;
-            setBusy(true);
-            try {
-              for (const f of files) {
-                const url = await uploadMedia(f);
-                await supabase.from("gallery_photos").insert({ collection, tag, image_url: url });
-              }
-            } catch { alert("Échec de l'envoi"); }
-            setBusy(false); e.target.value = ""; load();
-          }} />
-        </label>
-      </div>
-      {!photos.length ? <Empty text="Aucune photo ajoutée depuis la console." /> : (
-        <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-3">
-          {photos.map((p) => (
-            <div key={p.id} className="bento overflow-hidden relative group">
-              <img src={p.image_url} alt={p.tag} className="aspect-square w-full object-cover" />
-              <div className="p-2 text-xs">{p.collection} · {p.tag}</div>
-              <button aria-label="Supprimer" onClick={async () => { if (confirm("Retirer cette photo ?")) { await supabase.from("gallery_photos").delete().eq("id", p.id); load(); } }}
-                className="absolute top-2 right-2 rounded-full bg-background/90 p-2"><Trash2 className="h-4 w-4" /></button>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
-function TextsAdmin() {
-  const [values, setValues] = useState<Record<string, string>>({});
-  const [saved, setSaved] = useState<string | null>(null);
-  useEffect(() => {
-    supabase.from("site_content").select("key,value").then(({ data }) => setValues(Object.fromEntries((data ?? []).map((r) => [r.key, r.value]))));
-  }, []);
-  return (
-    <div className="mt-6 space-y-4 max-w-3xl">
-      <p className="text-xs text-muted-foreground">Laissez un champ vide pour revenir au texte d'origine.</p>
-      {EDITABLE_TEXTS.map((t) => (
-        <div key={t.key} className="bento p-5">
-          <label className="text-sm font-semibold">{t.label}</label>
-          <textarea className={inputCls + " mt-2"} rows={3} value={values[t.key] ?? ""} onChange={(e) => setValues({ ...values, [t.key]: e.target.value })} />
-          <button className="btn-primary mt-3 !py-2" onClick={async () => {
-            const { error } = await supabase.from("site_content").upsert({ key: t.key, label: t.label, value: values[t.key] ?? "", updated_at: new Date().toISOString() });
-            if (error) alert(error.message); else { setSaved(t.key); setTimeout(() => setSaved(null), 2000); }
-          }}>{saved === t.key ? <><Check className="h-4 w-4" /> Enregistré</> : "Enregistrer"}</button>
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function RowActions({ handled, onToggle, onDelete }: { handled: boolean; onToggle: () => void; onDelete: () => void }) {
-  return (
-    <div className="flex gap-2">
-      <IconBtn onClick={onToggle} label={handled ? "Marquer non traité" : "Marquer traité"}><Check className="h-4 w-4" /></IconBtn>
-      <IconBtn onClick={onDelete} label="Supprimer"><Trash2 className="h-4 w-4" /></IconBtn>
-    </div>
-  );
-}
-function IconBtn({ children, onClick, label }: { children: React.ReactNode; onClick: () => void; label: string }) {
-  return <button title={label} aria-label={label} onClick={onClick} className="rounded-full border border-border p-2 hover:bg-accent">{children}</button>;
-}
-function Empty({ text }: { text: string }) {
-  return <div className="mt-6 bento p-10 text-center text-muted-foreground">{text}</div>;
-}
+function MenuEditor({title,items,setItems}:{title:string,items:{label:string,url:string}[],setItems:(v:{label:string,url:string}[])=>void}){return <div className="space-y-3 border-t border-border pt-6"><h3 className="text-xl font-bold">{title}</h3>{items.map((m,i)=><div key={i} className="flex flex-wrap sm:flex-nowrap gap-2"><input aria-label={'Libellé '+title+' '+(i+1)} className={field} value={m.label} onChange={e=>setItems(items.map((v,j)=>j===i?{...v,label:e.target.value}:v))}/><input aria-label={'Adresse '+title+' '+(i+1)} className={field} value={m.url} onChange={e=>setItems(items.map((v,j)=>j===i?{...v,url:e.target.value}:v))}/><IconAction label="Monter le lien" onClick={()=>{if(i===0)return;const next=[...items];[next[i-1],next[i]]=[next[i],next[i-1]];setItems(next);}}><ArrowUp/></IconAction><IconAction label="Supprimer le lien" onClick={()=>setItems(items.filter((_,j)=>j!==i))}><Trash2/></IconAction></div>)}<Button variant="outline" onClick={()=>setItems([...items,{label:'',url:'/'}])}><Plus/>Ajouter un lien</Button></div>;}

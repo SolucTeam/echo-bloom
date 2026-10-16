@@ -1,28 +1,23 @@
+import { pageHead } from '@/components/ManagedSite';
+import { loadPage } from '@/lib/site.functions';
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
 import { MapPin, Phone, Mail, ArrowRight, Loader2 } from "lucide-react";
 import { useRef, useState } from "react";
+import { useSetting } from '@/components/ManagedSite';
 
 const SITE_URL = "https://greenivory-reborn.lovable.app";
 
 export const Route = createFileRoute("/nous-joindre")({
-  head: () => ({
-    meta: [
-      { title: "Contact — Green Ivory | Écrivez-nous" },
-      { name: "description", content: "Contactez l'ONG Green Ivory : adresses, téléphone et formulaire pour un partenariat, une question ou une proposition de projet." },
-      { property: "og:title", content: "Contact — Green Ivory" },
-      { property: "og:description", content: "Adresses, téléphone et formulaire pour joindre Green Ivory." },
-      { property: "og:url", content: `${SITE_URL}/nous-joindre` },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/nous-joindre` }],
-  }),
+  loader:async()=>({cmsPage:await loadPage({data:'/nous-joindre'})}),
+  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Contact — Green Ivory | Écrivez-nous', "Contactez l'ONG Green Ivory : adresses, téléphone et formulaire pour un partenariat, une question ou une proposition de projet.", '/nous-joindre'),
   component: Contact,
 });
 
 type FormErrors = Partial<Record<"name" | "email" | "subject" | "message" | "form", string>>;
 
 function Contact() {
+  const address=useSetting('site.address',"Côte d'Ivoire — Abidjan / Bingerville / Bassam"),phone=useSetting('site.phone','+225 01 03 05 83 63'),email=useSetting('site.email','info@greenivory.com'),recruitment=useSetting('site.recruitment','recrutement@greenivory.com');
   const navigate = useNavigate();
   const startedAtRef = useRef<number>(Date.now());
   const [errors, setErrors] = useState<FormErrors>({});
@@ -95,9 +90,9 @@ function Contact() {
       />
 
       <section className="container-x py-16 grid lg:grid-cols-3 gap-6">
-        <InfoCard icon={<MapPin className="h-5 w-5" />} label="Notre adresse" lines={["Côte d'Ivoire", "Abidjan / Bingerville / Bassam"]} />
-        <InfoCard icon={<Phone className="h-5 w-5" />} label="Nos contacts" lines={["+225 01 03 05 83 63"]} />
-        <InfoCard icon={<Mail className="h-5 w-5" />} label="Nos emails" lines={["info@greenivory.com", "recrutement@greenivory.com"]} />
+        <InfoCard icon={<MapPin className="h-5 w-5" />} label="Notre adresse" lines={[address]} />
+        <InfoCard icon={<Phone className="h-5 w-5" />} label="Nos contacts" lines={[phone]} />
+        <InfoCard icon={<Mail className="h-5 w-5" />} label="Nos emails" lines={[email,recruitment]} />
       </section>
 
       <section className="container-x py-10 lg:py-16 grid lg:grid-cols-2 gap-10 items-start">

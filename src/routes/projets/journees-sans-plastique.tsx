@@ -1,19 +1,12 @@
+import { pageHead } from '@/components/ManagedSite';
+import { loadPage } from '@/lib/site.functions';
 import { createFileRoute } from "@tanstack/react-router";
 import { ProjectLayout } from "@/components/ProjectLayout";
 import journees from "@/assets/journees.jpg";
 
 export const Route = createFileRoute("/projets/journees-sans-plastique")({
-  head: () => ({
-    meta: [
-      { title: "Journées Sans Plastique — Green Ivory" },
-      { name: "description", content: "Le projet phare de Green Ivory pour réduire la pollution plastique en Côte d’Ivoire : sensibilisation, collecte, recyclage et emplois verts." },
-      { property: "og:title", content: "Journées Sans Plastique — Green Ivory" },
-      { property: "og:description", content: "Sensibilisation, collecte et recyclage pour faire reculer le plastique à usage unique." },
-      { property: "og:url", content: "https://greenivory-reborn.lovable.app/projets/journees-sans-plastique" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "https://greenivory-reborn.lovable.app/projets/journees-sans-plastique" }],
-  }),
+  loader:async()=>({cmsPage:await loadPage({data:'/projets/journees-sans-plastique'})}),
+  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Journées Sans Plastique — Green Ivory', 'Le projet phare de Green Ivory pour réduire la pollution plastique en Côte d’Ivoire : sensibilisation, collecte, recyclage et emplois verts.', '/projets/journees-sans-plastique'),
   component: () => (
     <ProjectLayout
       info={{

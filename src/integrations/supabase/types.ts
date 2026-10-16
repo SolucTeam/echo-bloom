@@ -58,6 +58,7 @@ export type Database = {
           author: string
           category: string
           content: string
+          content_format: string
           created_at: string
           excerpt: string
           id: string
@@ -72,6 +73,7 @@ export type Database = {
           author?: string
           category?: string
           content?: string
+          content_format?: string
           created_at?: string
           excerpt?: string
           id?: string
@@ -86,6 +88,7 @@ export type Database = {
           author?: string
           category?: string
           content?: string
+          content_format?: string
           created_at?: string
           excerpt?: string
           id?: string
@@ -93,6 +96,63 @@ export type Database = {
           published?: boolean
           published_at?: string
           slug?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      cms_media: {
+        Row: {
+          alt: string
+          created_at: string
+          id: string
+          name: string
+          url: string
+        }
+        Insert: {
+          alt?: string
+          created_at?: string
+          id?: string
+          name?: string
+          url: string
+        }
+        Update: {
+          alt?: string
+          created_at?: string
+          id?: string
+          name?: string
+          url?: string
+        }
+        Relationships: []
+      }
+      cms_pages: {
+        Row: {
+          blocks: Json
+          description: string
+          id: string
+          path: string
+          published: boolean
+          share_image: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          blocks?: Json
+          description?: string
+          id?: string
+          path: string
+          published?: boolean
+          share_image?: string
+          title?: string
+          updated_at?: string
+        }
+        Update: {
+          blocks?: Json
+          description?: string
+          id?: string
+          path?: string
+          published?: boolean
+          share_image?: string
           title?: string
           updated_at?: string
         }
@@ -133,6 +193,8 @@ export type Database = {
       }
       gallery_photos: {
         Row: {
+          alt: string
+          caption: string
           collection: string
           created_at: string
           id: string
@@ -140,6 +202,8 @@ export type Database = {
           tag: string
         }
         Insert: {
+          alt?: string
+          caption?: string
           collection?: string
           created_at?: string
           id?: string
@@ -147,6 +211,8 @@ export type Database = {
           tag?: string
         }
         Update: {
+          alt?: string
+          caption?: string
           collection?: string
           created_at?: string
           id?: string

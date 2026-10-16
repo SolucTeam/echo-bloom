@@ -1,3 +1,5 @@
+import { pageHead } from '@/components/ManagedSite';
+import { loadPage } from '@/lib/site.functions';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
 import { ArrowRight, Target, Eye, Heart } from "lucide-react";
@@ -6,17 +8,8 @@ import plastic from "@/assets/plastic.jpg";
 import biodiv from "@/assets/biodiversity.jpg";
 
 export const Route = createFileRoute("/a-propos")({
-  head: () => ({
-    meta: [
-      { title: "À propos — Green Ivory" },
-      { name: "description", content: "Découvrez l’histoire, la mission et la vision de Green Ivory, ONG ivoirienne fondée en 2017 pour la protection de l’environnement." },
-      { property: "og:title", content: "À propos de Green Ivory" },
-      { property: "og:description", content: "Sept ans d’action environnementale en Côte d’Ivoire." },
-      { property: "og:url", content: "https://greenivory-reborn.lovable.app/a-propos" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "https://greenivory-reborn.lovable.app/a-propos" }],
-  }),
+  loader:async()=>({cmsPage:await loadPage({data:'/a-propos'})}),
+  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'À propos — Green Ivory', 'Découvrez l’histoire, la mission et la vision de Green Ivory, ONG ivoirienne fondée en 2017 pour la protection de l’environnement.', '/a-propos'),
   component: About,
 });
 

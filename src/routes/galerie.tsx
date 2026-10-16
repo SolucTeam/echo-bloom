@@ -1,3 +1,5 @@
+import { pageHead } from '@/components/ManagedSite';
+import { loadPage } from '@/lib/site.functions';
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,19 +10,11 @@ import plastic from "@/assets/plastic.jpg";
 import biodiv from "@/assets/biodiversity.jpg";
 import climate from "@/assets/climate.jpg";
 import hero from "@/assets/hero.jpg";
+import { loadGallery } from '@/lib/site.functions';
 
 export const Route = createFileRoute("/galerie")({
-  head: () => ({
-    meta: [
-      { title: "Galerie — Green Ivory" },
-      { name: "description", content: "Photos et moments forts des actions de Green Ivory : dépollution, éco-ambassadeurs, agents de collecte, recyclage, formations." },
-      { property: "og:title", content: "Galerie — Green Ivory" },
-      { property: "og:description", content: "Photos et moments forts de nos actions sur le terrain." },
-      { property: "og:url", content: "https://greenivory-reborn.lovable.app/galerie" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "https://greenivory-reborn.lovable.app/galerie" }],
-  }),
+  loader:async()=>{const [content,cmsPage]=await Promise.all([loadGallery(),loadPage({data:'/galerie'})]);return {...content,cmsPage};},
+  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Galerie — Green Ivory', 'Photos et moments forts des actions de Green Ivory : dépollution, éco-ambassadeurs, agents de collecte, recyclage, formations.', '/galerie'),
   component: Gallery,
 });
 
@@ -52,11 +46,8 @@ const collections = [
 ];
 
 function Gallery() {
-  const [extra, setExtra] = useState<{ collection: string; tag: string; image_url: string }[]>([]);
-  useEffect(() => {
-    supabase.from("gallery_photos").select("collection,tag,image_url").order("created_at", { ascending: false }).then(({ data }) => setExtra(data ?? []));
-  }, []);
-  const cols = collections.map((c) => ({
+  const {photos:extra,imported}=Route.useLoaderData();
+  const cols = imported?[...new Set(extra.map(p=>p.collection))].map(title=>({title,tags:['Tous',...new Set(extra.filter(p=>p.collection===title).map(p=>p.tag))],images:extra.filter(p=>p.collection===title).map(p=>({src:p.image_url,tag:p.tag,alt:p.alt,caption:p.caption}))})):collections.map((c) => ({
     ...c,
     images: [...extra.filter((e) => e.collection === c.title).map((e) => ({ src: e.image_url, tag: e.tag })), ...c.images],
   }));
@@ -74,7 +65,7 @@ function Gallery() {
   );
 }
 
-function Collection({ title, tags, images }: { title: string; tags: string[]; images: { src: string; tag: string }[] }) {
+function Collection({ title, tags, images }: { title: string; tags: string[]; images: { src: string; tag: string; alt?:string;caption?:string }[] }) {
   const [active, setActive] = useState("Tous");
   const filtered = active === "Tous" ? images : images.filter((i) => i.tag === active);
   return (
@@ -96,7 +87,8 @@ function Collection({ title, tags, images }: { title: string; tags: string[]; im
       <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
         {filtered.map((img, i) => (
           <div key={i} className={`bento overflow-hidden ${i % 5 === 0 ? "md:row-span-2 aspect-square md:aspect-auto" : "aspect-square"}`}>
-            <img src={img.src} alt={img.tag} loading="lazy" className="h-full w-full object-cover hover:scale-105 transition duration-500" />
+            <img src={img.src} alt={img.alt||img.tag} loading="lazy" className="h-full w-full object-cover hover:scale-105 transition duration-500" />
+            {img.caption&&<p className="p-3 text-sm">{img.caption}</p>}
           </div>
         ))}
       </div>

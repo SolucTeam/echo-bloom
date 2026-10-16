@@ -1,3 +1,5 @@
+import { pageHead } from '@/components/ManagedSite';
+import { loadPage } from '@/lib/site.functions';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { fetchPublishedPosts } from "@/lib/cms";
@@ -5,33 +7,25 @@ import type { BlogPost } from "@/data/blog-posts";
 import { PageHero } from "@/components/PageHero";
 import { Calendar, User, ArrowRight, Search, Tag } from "lucide-react";
 import { POSTS, CATEGORIES, type BlogCategory } from "@/data/blog-posts";
+import { loadPosts } from '@/lib/site.functions';
 
 const SITE_URL = "https://greenivory-reborn.lovable.app";
 
 export const Route = createFileRoute("/blog")({
-  head: () => ({
-    meta: [
-      { title: "Blog — Green Ivory | Pollution plastique, biodiversité, climat" },
-      { name: "description", content: "Articles, décryptages et conseils éco-responsables sur la pollution plastique, la biodiversité et le climat en Côte d'Ivoire." },
-      { property: "og:title", content: "Blog Green Ivory" },
-      { property: "og:description", content: "Articles et décryptages sur l'environnement en Côte d'Ivoire." },
-      { property: "og:url", content: `${SITE_URL}/blog` },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/blog` }],
-  }),
+  loader:async()=>{const [content,cmsPage]=await Promise.all([loadPosts(),loadPage({data:'/blog'})]);return {...content,cmsPage};},
+  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Blog — Green Ivory | Pollution plastique, biodiversité, climat', "Articles, décryptages et conseils éco-responsables sur la pollution plastique, la biodiversité et le climat en Côte d'Ivoire.", '/blog'),
   component: Blog,
 });
 
 function Blog() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<BlogCategory | "Tous">("Tous");
-  const [dbPosts, setDbPosts] = useState<BlogPost[]>([]);
-  useEffect(() => { fetchPublishedPosts().then(setDbPosts).catch(() => {}); }, []);
+  const {posts:dbPosts,imported}=Route.useLoaderData();
+  const categories=[...new Set([...CATEGORIES,...dbPosts.map(p=>p.category)])];
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return [...dbPosts, ...POSTS.filter((p) => !dbPosts.some((d) => d.slug === p.slug))].filter((p) => (category === "Tous" ? true : p.category === category))
+    return [...dbPosts, ...(imported?[]:POSTS.filter((p) => !dbPosts.some((d) => d.slug === p.slug)))].filter((p) => (category === "Tous" ? true : p.category === category))
       .filter((p) =>
         !q
           ? true
@@ -40,7 +34,7 @@ function Blog() {
             p.content.join(" ").toLowerCase().includes(q),
       )
       .sort((a, b) => (a.date < b.date ? 1 : -1));
-  }, [query, category, dbPosts]);
+  }, [query, category, dbPosts,imported]);
 
   return (
     <>
@@ -64,7 +58,7 @@ function Blog() {
             />
           </div>
           <div className="flex flex-wrap gap-2">
-            {(["Tous", ...CATEGORIES] as const).map((c) => (
+            {(["Tous", ...categories]).map((c) => (
               <button
                 key={c}
                 onClick={() => setCategory(c as BlogCategory | "Tous")}

@@ -1,0 +1,22 @@
+services:
+  site:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+      args:
+        VITE_SUPABASE_URL: ${PUBLIC_BACKEND_URL:?Set PUBLIC_BACKEND_URL}
+        VITE_SUPABASE_PUBLISHABLE_KEY: ${ANON_KEY:?Set ANON_KEY}
+        VITE_SITE_URL: ${SITE_URL:?Set SITE_URL}
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      SUPABASE_URL: ${INTERNAL_BACKEND_URL:?Set INTERNAL_BACKEND_URL}
+      SUPABASE_PUBLISHABLE_KEY: ${ANON_KEY:?Set ANON_KEY}
+      SUPABASE_SERVICE_ROLE_KEY: ${SERVICE_ROLE_KEY:?Set SERVICE_ROLE_KEY}
+    networks:
+      - backend
+networks:
+  backend:
+    external: true
+    name: ${BACKEND_NETWORK:?Set BACKEND_NETWORK}

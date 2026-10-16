@@ -11,6 +11,10 @@ import {
 import appCss from "../styles.css?url";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
+import { SiteContext, ManagedContent } from '@/components/ManagedSite';
+import { loadSite } from '@/lib/site.functions';
+import { useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
 
 function NotFoundComponent() {
   return (
@@ -49,6 +53,7 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
+  loader: () => loadSite(),
   head: () => ({
     meta: [
       { charSet: "utf-8" },
@@ -94,13 +99,25 @@ function RootShell({ children }: { children: React.ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const site=Route.useLoaderData();
+  const router=useRouter();
+  useEffect(()=>{
+    const {data}=supabase.auth.onAuthStateChange(event=>{
+      if(!['SIGNED_IN','SIGNED_OUT','USER_UPDATED'].includes(event))return;
+      router.invalidate();
+      if(event!=='SIGNED_OUT')queryClient.invalidateQueries();
+    });
+    return ()=>data.subscription.unsubscribe();
+  },[router,queryClient]);
   return (
     <QueryClientProvider client={queryClient}>
+      <SiteContext.Provider value={site}>
       <SiteHeader />
       <main className="min-h-[60vh]">
-        <Outlet />
+        <ManagedContent><Outlet /></ManagedContent>
       </main>
       <SiteFooter />
+      </SiteContext.Provider>
     </QueryClientProvider>
   );
 }

@@ -1,20 +1,13 @@
+import { pageHead } from '@/components/ManagedSite';
+import { loadPage } from '@/lib/site.functions';
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/devenir-partenaire")({
-  head: () => ({
-    meta: [
-      { title: "Devenir partenaire / Faire un don — Green Ivory" },
-      { name: "description", content: "Soutenez Green Ivory en devenant partenaire ou en faisant un don. Ensemble, accélérons la transition écologique." },
-      { property: "og:title", content: "Devenir partenaire — Green Ivory" },
-      { property: "og:description", content: "Soutenez nos projets et accélérez la transition écologique en Côte d'Ivoire." },
-      { property: "og:url", content: "https://greenivory-reborn.lovable.app/devenir-partenaire" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "https://greenivory-reborn.lovable.app/devenir-partenaire" }],
-  }),
+  loader:async()=>({cmsPage:await loadPage({data:'/devenir-partenaire'})}),
+  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Devenir partenaire / Faire un don — Green Ivory', 'Soutenez Green Ivory en devenant partenaire ou en faisant un don. Ensemble, accélérons la transition écologique.', '/devenir-partenaire'),
   component: Partner,
 });
 
