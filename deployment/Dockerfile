@@ -6,7 +6,7 @@ RUN bun install --frozen-lockfile
 FROM dependencies AS admin-provision
 COPY scripts/provision-admin.ts scripts/provision-admin-core.ts ./scripts/
 COPY src/lib/cms-schema.ts ./src/lib/
-USER bun
+USER root
 CMD ["bun", "scripts/provision-admin.ts"]
 
 FROM dependencies AS build

@@ -25,7 +25,7 @@ Après installation du schéma et démarrage des services de données :
 
 1. Copier `deployment/runtime.env.example` dans `/etc/green-ivory/server.env`, **hors du dépôt**.
 2. Créer `/etc/green-ivory/admin-password` avec votre gestionnaire de secrets. Ce fichier contient uniquement le mot de passe choisi, au moins 12 caractères. Ne pas écrire le mot de passe dans une commande, une capture ou le fichier de configuration.
-3. Protéger les deux fichiers et leur dossier : dossier `700`, fichiers `600`, propriétaire = compte de déploiement. Le mot de passe doit être lisible par l'utilisateur `bun` du service d'initialisation via le montage Docker ; adapter le propriétaire au compte du conteneur ou les ACL privées si nécessaire, sans rendre le fichier lisible par tous.
+3. Protéger les deux fichiers et leur dossier : dossier `700`, fichiers `600`, propriétaire = compte de déploiement. Le service temporaire d'initialisation lit le secret monté en tant que `root` dans son conteneur, sans port exposé ; le site fonctionne séparément sous un utilisateur non privilégié. Ne pas rendre le fichier lisible par tous.
 4. Renseigner les variables ci-dessous puis lancer la commande de la section 4.
 
 ### Configuration du serveur
