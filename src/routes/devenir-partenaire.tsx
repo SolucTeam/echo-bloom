@@ -4,6 +4,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { PartnerLogos } from '@/components/PartnerLogos';
 
 export const Route = createFileRoute("/devenir-partenaire")({
   loader:async()=>({cmsPage:await loadPage({data:'/devenir-partenaire'})}),
@@ -20,6 +21,10 @@ function Partner() {
         title="La sauvegarde de notre planète est l’affaire de tous."
         intro="Entreprises, institutions, ONG, collectivités… Rejoignez Green Ivory pour développer des solutions durables face aux défis environnementaux."
       />
+      <section className="container-x pt-10" data-partner-logos>
+        <h2 className="text-2xl font-bold mb-6">Ils soutiennent nos actions</h2>
+        <PartnerLogos />
+      </section>
       <section className="container-x py-16 grid lg:grid-cols-5 gap-10 items-start">
         <div className="lg:col-span-2 space-y-6">
           <div className="bento p-7">

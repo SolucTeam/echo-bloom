@@ -9,6 +9,7 @@ import biodiversity from "@/assets/biodiversity.jpg";
 import climate from "@/assets/climate.jpg";
 import journees from "@/assets/journees.jpg";
 import sentiers from "@/assets/sentiers.jpg";
+import { PartnerLogos } from '@/components/PartnerLogos';
 
 export const Route = createFileRoute("/")({
   loader:async()=>({cmsPage:await loadPage({data:'/'})}),
@@ -225,13 +226,7 @@ function Home() {
             </Link>
           </div>
         </div>
-        <div className="grid grid-cols-3 gap-4">
-          {["Think Human Foundation", "MSC Foundation", "Union Européenne", "Mairie de Grand-Bassam", "UNICEF", "Région Sud-Comoé"].map((p) => (
-            <div key={p} className="bento flex items-center justify-center p-5 text-center text-xs font-semibold text-muted-foreground aspect-square">
-              {p}
-            </div>
-          ))}
-        </div>
+        <PartnerLogos />
       </section>
     </>
   );

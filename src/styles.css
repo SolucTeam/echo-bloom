@@ -153,7 +153,7 @@
 }
 .animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
 
-.cms-preserve-forms section:not(:has(form)) { display: none; }
+.cms-preserve-forms section:not(:has(form)):not([data-partner-logos]) { display: none; }
 .cms-preserve-collection section:first-child { display: none; }
 .cms-editor p { margin: 0.75rem 0; }
 .cms-editor h2 { font-size: 1.5rem; font-weight: 700; margin: 1rem 0; }
