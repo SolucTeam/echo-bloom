@@ -1,3 +1,5 @@
+import { pageHead } from '@/components/ManagedSite';
+import { loadPage } from '@/lib/site.functions';
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
 import { MapPin, Phone, Mail, ArrowRight, Loader2 } from "lucide-react";
@@ -6,17 +8,8 @@ import { useRef, useState } from "react";
 const SITE_URL = "https://greenivory-reborn.lovable.app";
 
 export const Route = createFileRoute("/nous-joindre")({
-  head: () => ({
-    meta: [
-      { title: "Contact — Green Ivory | Écrivez-nous" },
-      { name: "description", content: "Contactez l'ONG Green Ivory : adresses, téléphone et formulaire pour un partenariat, une question ou une proposition de projet." },
-      { property: "og:title", content: "Contact — Green Ivory" },
-      { property: "og:description", content: "Adresses, téléphone et formulaire pour joindre Green Ivory." },
-      { property: "og:url", content: `${SITE_URL}/nous-joindre` },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/nous-joindre` }],
-  }),
+  loader:async()=>({cmsPage:await loadPage({data:'/nous-joindre'})}),
+  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Contact — Green Ivory | Écrivez-nous', "Contactez l'ONG Green Ivory : adresses, téléphone et formulaire pour un partenariat, une question ou une proposition de projet.", '/nous-joindre'),
   component: Contact,
 });
 

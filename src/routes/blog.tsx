@@ -1,3 +1,5 @@
+import { pageHead } from '@/components/ManagedSite';
+import { loadPage } from '@/lib/site.functions';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { fetchPublishedPosts } from "@/lib/cms";
@@ -10,18 +12,8 @@ import { loadPosts } from '@/lib/site.functions';
 const SITE_URL = "https://greenivory-reborn.lovable.app";
 
 export const Route = createFileRoute("/blog")({
-  loader: () => loadPosts(),
-  head: () => ({
-    meta: [
-      { title: "Blog — Green Ivory | Pollution plastique, biodiversité, climat" },
-      { name: "description", content: "Articles, décryptages et conseils éco-responsables sur la pollution plastique, la biodiversité et le climat en Côte d'Ivoire." },
-      { property: "og:title", content: "Blog Green Ivory" },
-      { property: "og:description", content: "Articles et décryptages sur l'environnement en Côte d'Ivoire." },
-      { property: "og:url", content: `${SITE_URL}/blog` },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: `${SITE_URL}/blog` }],
-  }),
+  loader:async()=>{const [content,cmsPage]=await Promise.all([loadPosts(),loadPage({data:'/blog'})]);return {...content,cmsPage};},
+  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Blog — Green Ivory | Pollution plastique, biodiversité, climat', "Articles, décryptages et conseils éco-responsables sur la pollution plastique, la biodiversité et le climat en Côte d'Ivoire.", '/blog'),
   component: Blog,
 });
 

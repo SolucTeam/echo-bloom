@@ -1,3 +1,5 @@
+import { pageHead } from '@/components/ManagedSite';
+import { loadPage } from '@/lib/site.functions';
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -11,18 +13,8 @@ import hero from "@/assets/hero.jpg";
 import { loadGallery } from '@/lib/site.functions';
 
 export const Route = createFileRoute("/galerie")({
-  loader:()=>loadGallery(),
-  head: () => ({
-    meta: [
-      { title: "Galerie — Green Ivory" },
-      { name: "description", content: "Photos et moments forts des actions de Green Ivory : dépollution, éco-ambassadeurs, agents de collecte, recyclage, formations." },
-      { property: "og:title", content: "Galerie — Green Ivory" },
-      { property: "og:description", content: "Photos et moments forts de nos actions sur le terrain." },
-      { property: "og:url", content: "https://greenivory-reborn.lovable.app/galerie" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "https://greenivory-reborn.lovable.app/galerie" }],
-  }),
+  loader:async()=>{const [content,cmsPage]=await Promise.all([loadGallery(),loadPage({data:'/galerie'})]);return {...content,cmsPage};},
+  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Galerie — Green Ivory', 'Photos et moments forts des actions de Green Ivory : dépollution, éco-ambassadeurs, agents de collecte, recyclage, formations.', '/galerie'),
   component: Gallery,
 });
 

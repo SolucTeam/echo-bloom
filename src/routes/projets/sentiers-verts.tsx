@@ -1,19 +1,12 @@
+import { pageHead } from '@/components/ManagedSite';
+import { loadPage } from '@/lib/site.functions';
 import { createFileRoute } from "@tanstack/react-router";
 import { ProjectLayout } from "@/components/ProjectLayout";
 import sentiers from "@/assets/sentiers.jpg";
 
 export const Route = createFileRoute("/projets/sentiers-verts")({
-  head: () => ({
-    meta: [
-      { title: "Sentiers Verts — Green Ivory" },
-      { name: "description", content: "Le programme Sentiers Verts Jobs forme et accompagne 50 jeunes éco-entrepreneurs pour la transition durable en Côte d’Ivoire." },
-      { property: "og:title", content: "Sentiers Verts — Green Ivory" },
-      { property: "og:description", content: "Formation et accompagnement de jeunes éco-entrepreneurs ivoiriens." },
-      { property: "og:url", content: "https://greenivory-reborn.lovable.app/projets/sentiers-verts" },
-      { property: "og:type", content: "website" },
-    ],
-    links: [{ rel: "canonical", href: "https://greenivory-reborn.lovable.app/projets/sentiers-verts" }],
-  }),
+  loader:async()=>({cmsPage:await loadPage({data:'/projets/sentiers-verts'})}),
+  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Sentiers Verts — Green Ivory', 'Le programme Sentiers Verts Jobs forme et accompagne 50 jeunes éco-entrepreneurs pour la transition durable en Côte d’Ivoire.', '/projets/sentiers-verts'),
   component: () => (
     <ProjectLayout
       info={{
