@@ -21,7 +21,7 @@ export const postSchema = z.object({
 export const gallerySchema = z.object({collection: z.string().min(1).max(200), tag: z.string().max(200), image_url: safeLink, caption: z.string().max(1000).default(''), alt: z.string().max(500).default('')});
 export const mediaSchema = z.object({url: safeLink, name: z.string().max(300), alt: z.string().max(500)});
 export const settingSchema = z.object({key: z.string().min(1).max(200), label: z.string().max(200).default(''), value: z.string().max(100000)});
-export const partnerSchema = z.object({ name: z.string().min(1).max(200), image: safeLink.min(1) });
+export const partnerSchema = z.object({ name: z.string().min(1).max(200), image: safeLink.refine(v => v.length > 0, 'Logo requis') });
 export const partnersSchema = z.array(partnerSchema).max(30);
 export type Partner = z.infer<typeof partnerSchema>;
 export const adminEntitySchema = z.enum(['pages', 'posts', 'gallery', 'media', 'settings', 'messages', 'applications']);
