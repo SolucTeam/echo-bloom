@@ -1,7 +1,7 @@
 # Administration complète du site
 
-- [ ] Rendre la lecture des articles accessible depuis le blog.
-- [ ] Afficher les logos officiels des partenaires existants.
+- [x] Rendre la lecture des articles accessible depuis le blog, vérifiée dans le navigateur.
+- [x] Afficher les trois logos retrouvés sur le site d'origine : Think Human Foundation, UNICEF et Union européenne.
 
 - [x] Hébergement autonome confirmé ; aucun serveur disponible actuellement.
 - [x] Ajouter le premier démarrage privé et documenter les variables de configuration du serveur ; 14 tests réussis.
