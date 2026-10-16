@@ -5,10 +5,12 @@ import type { BlogPost } from "@/data/blog-posts";
 import { PageHero } from "@/components/PageHero";
 import { Calendar, User, ArrowRight, Search, Tag } from "lucide-react";
 import { POSTS, CATEGORIES, type BlogCategory } from "@/data/blog-posts";
+import { loadPosts } from '@/lib/site.functions';
 
 const SITE_URL = "https://greenivory-reborn.lovable.app";
 
 export const Route = createFileRoute("/blog")({
+  loader: () => loadPosts(),
   head: () => ({
     meta: [
       { title: "Blog — Green Ivory | Pollution plastique, biodiversité, climat" },
@@ -26,12 +28,12 @@ export const Route = createFileRoute("/blog")({
 function Blog() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<BlogCategory | "Tous">("Tous");
-  const [dbPosts, setDbPosts] = useState<BlogPost[]>([]);
-  useEffect(() => { fetchPublishedPosts().then(setDbPosts).catch(() => {}); }, []);
+  const {posts:dbPosts,imported}=Route.useLoaderData();
+  const categories=[...new Set([...CATEGORIES,...dbPosts.map(p=>p.category)])];
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return [...dbPosts, ...POSTS.filter((p) => !dbPosts.some((d) => d.slug === p.slug))].filter((p) => (category === "Tous" ? true : p.category === category))
+    return [...dbPosts, ...(imported?[]:POSTS.filter((p) => !dbPosts.some((d) => d.slug === p.slug)))].filter((p) => (category === "Tous" ? true : p.category === category))
       .filter((p) =>
         !q
           ? true
@@ -40,7 +42,7 @@ function Blog() {
             p.content.join(" ").toLowerCase().includes(q),
       )
       .sort((a, b) => (a.date < b.date ? 1 : -1));
-  }, [query, category, dbPosts]);
+  }, [query, category, dbPosts,imported]);
 
   return (
     <>
@@ -64,7 +66,7 @@ function Blog() {
             />
           </div>
           <div className="flex flex-wrap gap-2">
-            {(["Tous", ...CATEGORIES] as const).map((c) => (
+            {(["Tous", ...categories]).map((c) => (
               <button
                 key={c}
                 onClick={() => setCategory(c as BlogCategory | "Tous")}

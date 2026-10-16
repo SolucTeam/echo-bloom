@@ -1,7 +1,12 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Linkedin, Instagram, Youtube, Mail, Phone, MapPin, Leaf } from "lucide-react";
+import { useSetting } from './ManagedSite';
 
 export function SiteFooter() {
+  const name=useSetting('site.name','Green Ivory'),tagline=useSetting('site.tagline','Le pouvoir citoyen pour l’environnement. ONG ivoirienne engagée contre la pollution plastique, pour la biodiversité et le climat depuis 2017.'),address=useSetting('site.address','Côte d’Ivoire — Abidjan, Bingerville'),phone=useSetting('site.phone','+225 01 03 05 83 63'),email=useSetting('site.email','info@greenivory.com');
+  const facebook=useSetting('social.facebook'),linkedin=useSetting('social.linkedin'),instagram=useSetting('social.instagram'),youtube=useSetting('social.youtube'),menuValue=useSetting('site.footerMenu');
+  let menu=[{label:'À propos',url:'/a-propos'},{label:'Journées sans Plastique',url:'/projets/journees-sans-plastique'},{label:'Sentiers Verts',url:'/projets/sentiers-verts'},{label:'Galerie',url:'/galerie'},{label:'Blog',url:'/blog'},{label:'Devenir bénévole',url:'/devenir-benevole'}];
+  try{if(menuValue)menu=JSON.parse(menuValue);}catch{}
   return (
     <footer className="mt-24 border-t border-border bg-primary text-primary-foreground">
       <div className="container-x py-16 grid gap-12 lg:grid-cols-4">
@@ -10,14 +15,14 @@ export function SiteFooter() {
             <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-background/15">
               <Leaf className="h-5 w-5" />
             </span>
-            Green Ivory
+            {name}
           </div>
           <p className="mt-4 text-sm opacity-80 max-w-xs">
-            Le pouvoir citoyen pour l’environnement. ONG ivoirienne engagée contre la pollution plastique, pour la biodiversité et le climat depuis 2017.
+            {tagline}
           </p>
           <div className="mt-6 flex gap-3">
-            {[Facebook, Linkedin, Instagram, Youtube].map((Icon, i) => (
-              <a key={i} href="#" aria-label="social" className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-background/10 hover:bg-background/20 transition">
+            {[{Icon:Facebook,url:facebook,label:'Facebook'},{Icon:Linkedin,url:linkedin,label:'LinkedIn'},{Icon:Instagram,url:instagram,label:'Instagram'},{Icon:Youtube,url:youtube,label:'YouTube'}].filter(s=>s.url).map(({Icon,url,label}) => (
+              <a key={label} href={url} aria-label={label} className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-background/10 hover:bg-background/20 transition">
                 <Icon className="h-4 w-4" />
               </a>
             ))}
@@ -27,12 +32,7 @@ export function SiteFooter() {
         <div>
           <h4 className="font-semibold mb-4">Liens utiles</h4>
           <ul className="space-y-2 text-sm opacity-90">
-            <li><Link to="/a-propos">À propos</Link></li>
-            <li><Link to="/projets/journees-sans-plastique">Journées sans Plastique</Link></li>
-            <li><Link to="/projets/sentiers-verts">Sentiers Verts</Link></li>
-            <li><Link to="/galerie">Galerie</Link></li>
-            <li><Link to="/blog">Blog</Link></li>
-            <li><Link to="/devenir-benevole">Devenir bénévole</Link></li>
+            {menu.map((n,i)=><li key={i}><Link to={n.url}>{n.label}</Link></li>)}
           </ul>
         </div>
 
@@ -41,15 +41,15 @@ export function SiteFooter() {
           <ul className="space-y-3 text-sm opacity-90">
             <li className="flex gap-2">
               <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
-              <span>Côte d’Ivoire — Abidjan, Bingerville</span>
+              <span>{address}</span>
             </li>
             <li className="flex gap-2">
               <Phone className="h-4 w-4 mt-0.5 shrink-0" />
-              <a href="tel:+22501030583 63" className="hover:underline">(+225) 01 03 05 83 63</a>
+              <a href={'tel:'+phone.replace(/\s/g,'')} className="hover:underline">{phone}</a>
             </li>
             <li className="flex gap-2">
               <Mail className="h-4 w-4 mt-0.5 shrink-0" />
-              <a href="mailto:info@greenivory.com" className="hover:underline">info@greenivory.com</a>
+              <a href={'mailto:'+email} className="hover:underline">{email}</a>
             </li>
           </ul>
         </div>
@@ -74,7 +74,7 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-background/10">
         <div className="container-x py-5 text-xs opacity-70 flex flex-wrap justify-between gap-2">
-          <span>© {new Date().getFullYear()} Green Ivory — Tous droits réservés.</span>
+          <span>© {new Date().getFullYear()} {name} — Tous droits réservés.</span>
           <span>Conçu avec ❤️ pour la planète.</span>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X, Heart, Leaf } from "lucide-react";
+import { useSetting } from './ManagedSite';
 
 const nav = [
   { to: "/", label: "Accueil" },
@@ -14,18 +15,22 @@ const nav = [
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const siteName=useSetting('site.name','Green Ivory'),logo=useSetting('site.logo'),donation=useSetting('site.donation','/devenir-partenaire');
+  const menuValue=useSetting('site.menu');
+  let menu:{to:string,label:string}[]=[...nav];
+  try { if(menuValue)menu=(JSON.parse(menuValue) as {url:string,label:string}[]).map(n=>({to:n.url,label:n.label})); }catch{}
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="container-x flex h-16 items-center justify-between gap-6">
         <Link to="/" className="flex items-center gap-2 font-display font-bold text-lg">
-          <span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
+          {logo?<img src={logo} alt={siteName} className="h-9 w-9 object-contain"/>:<span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
             <Leaf className="h-5 w-5" />
-          </span>
-          <span className="tracking-tight">Green<span className="text-secondary"> Ivory</span></span>
+          </span>}
+          <span>{siteName}</span>
         </Link>
 
         <nav className="hidden lg:flex items-center gap-1">
-          {nav.map((n) => (
+          {menu.map((n) => (
             <Link
               key={n.to}
               to={n.to}
@@ -39,7 +44,7 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <Link to="/devenir-partenaire" className="btn-primary hidden sm:inline-flex !py-2.5 !px-5">
+          <Link to={donation} className="btn-primary hidden sm:inline-flex !py-2.5 !px-5">
             <Heart className="h-4 w-4" /> Faire un don
           </Link>
           <button
@@ -55,7 +60,7 @@ export function SiteHeader() {
       {open && (
         <div className="lg:hidden border-t border-border bg-background">
           <div className="container-x py-4 flex flex-col gap-1">
-            {nav.map((n) => (
+            {menu.map((n) => (
               <Link
                 key={n.to}
                 to={n.to}
@@ -67,7 +72,7 @@ export function SiteHeader() {
                 {n.label}
               </Link>
             ))}
-            <Link to="/devenir-partenaire" onClick={() => setOpen(false)} className="btn-primary mt-2">
+            <Link to={donation} onClick={() => setOpen(false)} className="btn-primary mt-2">
               <Heart className="h-4 w-4" /> Faire un don
             </Link>
           </div>
