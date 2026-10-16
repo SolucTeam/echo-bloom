@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { PageHero } from "@/components/PageHero";
 import journees from "@/assets/journees.jpg";
 import sentiers from "@/assets/sentiers.jpg";
@@ -51,6 +52,14 @@ const collections = [
 ];
 
 function Gallery() {
+  const [extra, setExtra] = useState<{ collection: string; tag: string; image_url: string }[]>([]);
+  useEffect(() => {
+    supabase.from("gallery_photos").select("collection,tag,image_url").order("created_at", { ascending: false }).then(({ data }) => setExtra(data ?? []));
+  }, []);
+  const cols = collections.map((c) => ({
+    ...c,
+    images: [...extra.filter((e) => e.collection === c.title).map((e) => ({ src: e.image_url, tag: e.tag })), ...c.images],
+  }));
   return (
     <>
       <PageHero
@@ -58,7 +67,7 @@ function Gallery() {
         title="Des images qui racontent nos actions."
         intro="Plongez au cœur des moments forts de Green Ivory : terrain, formations, plaidoyer et rencontres."
       />
-      {collections.map((c) => (
+      {cols.map((c) => (
         <Collection key={c.title} {...c} />
       ))}
     </>
