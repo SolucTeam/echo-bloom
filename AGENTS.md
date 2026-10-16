@@ -1,6 +1,7 @@
 # Architecture rules
 
 - Preserve TanStack Start routing and separate self-hosted Vite/Nitro configuration from the managed preview configuration; the preview and standalone deployment use different runtimes.
+- Article detail routes use the un-nested blog_ filename so the listing does not swallow the reading page; preserve public /blog/<slug> URLs.
 - Validate all CMS writes and administrator roles in authenticated server functions; client-side gating is only navigation UX.
 - Use cms_pages for published page blocks and route-specific metadata, keeping dedicated forms and collection interactions intact when replacing page copy.
 - Keep deployment account provisioning in a private CLI, idempotent unless an explicit reset is requested; never expose account provisioning over HTTP.

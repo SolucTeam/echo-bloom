@@ -1,13 +1,12 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
 import { Calendar, User, ArrowLeft, ArrowRight, Tag, Clock } from "lucide-react";
-import { fetchPostBySlug } from "@/lib/cms";
 import { getPostBySlug, getRelatedPosts, type BlogPost } from "@/data/blog-posts";
 import { loadPosts } from '@/lib/site.functions';
 
 const SITE_URL = import.meta.env.VITE_SITE_URL || "https://greenivory-reborn.lovable.app";
 
-export const Route = createFileRoute("/blog/$slug")({
+export const Route = createFileRoute("/blog_/$slug")({
   loader: async ({ params }) => {
     const {posts,imported}=await loadPosts();
     const post=posts.find(p=>p.slug===params.slug) ?? (imported?undefined:getPostBySlug(params.slug));
