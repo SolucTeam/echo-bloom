@@ -75,7 +75,7 @@ export const Route = createFileRoute("/blog/$slug")({
   errorComponent: ({ error }) => (
     <div className="container-x py-32 text-center">
       <h1 className="text-2xl font-bold">Une erreur est survenue</h1>
-      <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
+      <p className="mt-2 text-sm text-muted-foreground">{String((error as Error)?.message ?? error)}</p>
       <Link to="/blog" className="btn-primary mt-6 inline-flex">
         <ArrowLeft className="h-4 w-4" /> Retour au blog
       </Link>
