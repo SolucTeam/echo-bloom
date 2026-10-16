@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { pageSchema, safeLink, canProvisionAdmin } from './cms-schema';
+import { pageSchema, safeLink, partnersSchema, canProvisionAdmin } from './cms-schema';
 
 describe('deployment administrator rules',()=>{
   it('preserves an existing account on repeated deployment',()=>expect(canProvisionAdmin(true,false)).toBe(false));
@@ -11,4 +11,9 @@ describe('CMS boundaries',()=>{
   it('rejects protocol-relative external links',()=>expect(safeLink.safeParse('//evil.example').success).toBe(false));
   it('rejects backslash links that browsers treat as external URLs',()=>expect(safeLink.safeParse('/\\evil.example').success).toBe(false));
   it('requires an explicit publication decision',()=>expect(pageSchema.safeParse({path:'/test',title:'Test',description:'',share_image:'',blocks:[]}).success).toBe(false));
+});
+describe('partner list',()=>{
+  it('accepts a partner with a hosted logo address',()=>expect(partnersSchema.safeParse([{name:'UNICEF',image:'https://example.org/logo.png'}]).success).toBe(true));
+  it('rejects a partner without a name',()=>expect(partnersSchema.safeParse([{name:'',image:'/logo.png'}]).success).toBe(false));
+  it('rejects an executable logo address',()=>expect(partnersSchema.safeParse([{name:'X',image:'javascript:alert(1)'}]).success).toBe(false));
 });

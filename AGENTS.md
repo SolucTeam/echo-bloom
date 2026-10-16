@@ -4,6 +4,7 @@
 - Article detail routes use the un-nested blog_ filename so the listing does not swallow the reading page; preserve public /blog/<slug> URLs.
 - Validate all CMS writes and administrator roles in authenticated server functions; client-side gating is only navigation UX.
 - Use cms_pages for published page blocks and route-specific metadata, keeping dedicated forms and collection interactions intact when replacing page copy.
+- Keep site-wide lists such as partner logos in editable settings with the shipped originals as fallback, so the console can change them without a code edit.
 - Keep deployment account provisioning in a private CLI, idempotent unless an explicit reset is requested; never expose account provisioning over HTTP.
 - Gate the self-hosted site startup on a one-shot administrator initialization service that verifies public signup is disabled and reads the password from a mounted secret; failed initialization must prevent the first site launch.
 - Use the self-hosted compatible auth/data/storage distribution for standalone deployment; do not alter generated Cloud clients or embed privileged configuration in browser bundles.
