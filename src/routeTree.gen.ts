@@ -22,7 +22,7 @@ import { Route as MerciRouteImport } from './routes/merci'
 import { Route as NousJoindreRouteImport } from './routes/nous-joindre'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
-import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog_.$slug'
 import { Route as ProjetsJourneesSansPlastiqueRouteImport } from './routes/projets/journees-sans-plastique'
 import { Route as ProjetsSentiersVertsRouteImport } from './routes/projets/sentiers-verts'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
@@ -92,9 +92,9 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => BlogRoute,
+  id: '/blog_/$slug',
+  path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const ProjetsJourneesSansPlastiqueRoute =
   ProjetsJourneesSansPlastiqueRouteImport.update({
@@ -118,7 +118,7 @@ export interface FileRoutesByFullPath {
   '/$': typeof SplatRoute
   '/a-propos': typeof AProposRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRouteWithChildren
+  '/blog': typeof BlogRoute
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
   '/galerie': typeof GalerieRoute
@@ -136,7 +136,7 @@ export interface FileRoutesByTo {
   '/$': typeof SplatRoute
   '/a-propos': typeof AProposRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRouteWithChildren
+  '/blog': typeof BlogRoute
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
   '/galerie': typeof GalerieRoute
@@ -156,7 +156,7 @@ export interface FileRoutesById {
   '/$': typeof SplatRoute
   '/a-propos': typeof AProposRoute
   '/auth': typeof AuthRoute
-  '/blog': typeof BlogRouteWithChildren
+  '/blog': typeof BlogRoute
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
   '/galerie': typeof GalerieRoute
@@ -164,7 +164,7 @@ export interface FileRoutesById {
   '/nous-joindre': typeof NousJoindreRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
-  '/blog/$slug': typeof BlogSlugRoute
+  '/blog_/$slug': typeof BlogSlugRoute
   '/projets/journees-sans-plastique': typeof ProjetsJourneesSansPlastiqueRoute
   '/projets/sentiers-verts': typeof ProjetsSentiersVertsRoute
   '/api/public/contact': typeof ApiPublicContactRoute
@@ -221,7 +221,7 @@ export interface FileRouteTypes {
     | '/nous-joindre'
     | '/sitemap.xml'
     | '/_authenticated/admin'
-    | '/blog/$slug'
+    | '/blog_/$slug'
     | '/projets/journees-sans-plastique'
     | '/projets/sentiers-verts'
     | '/api/public/contact'
@@ -233,13 +233,14 @@ export interface RootRouteChildren {
   SplatRoute: typeof SplatRoute
   AProposRoute: typeof AProposRoute
   AuthRoute: typeof AuthRoute
-  BlogRoute: typeof BlogRouteWithChildren
+  BlogRoute: typeof BlogRoute
   DevenirBenevoleRoute: typeof DevenirBenevoleRoute
   DevenirPartenaireRoute: typeof DevenirPartenaireRoute
   GalerieRoute: typeof GalerieRoute
   MerciRoute: typeof MerciRoute
   NousJoindreRoute: typeof NousJoindreRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  BlogSlugRoute: typeof BlogSlugRoute
   ProjetsJourneesSansPlastiqueRoute: typeof ProjetsJourneesSansPlastiqueRoute
   ProjetsSentiersVertsRoute: typeof ProjetsSentiersVertsRoute
   ApiPublicContactRoute: typeof ApiPublicContactRoute
@@ -338,12 +339,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/blog/$slug': {
-      id: '/blog/$slug'
-      path: '/$slug'
+    '/blog_/$slug': {
+      id: '/blog_/$slug'
+      path: '/blog/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
-      parentRoute: typeof BlogRoute
+      parentRoute: typeof rootRouteImport
     }
     '/projets/journees-sans-plastique': {
       id: '/projets/journees-sans-plastique'
@@ -380,29 +381,20 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
-interface BlogRouteChildren {
-  BlogSlugRoute: typeof BlogSlugRoute
-}
-
-const BlogRouteChildren: BlogRouteChildren = {
-  BlogSlugRoute: BlogSlugRoute,
-}
-
-const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   SplatRoute: SplatRoute,
   AProposRoute: AProposRoute,
   AuthRoute: AuthRoute,
-  BlogRoute: BlogRouteWithChildren,
+  BlogRoute: BlogRoute,
   DevenirBenevoleRoute: DevenirBenevoleRoute,
   DevenirPartenaireRoute: DevenirPartenaireRoute,
   GalerieRoute: GalerieRoute,
   MerciRoute: MerciRoute,
   NousJoindreRoute: NousJoindreRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  BlogSlugRoute: BlogSlugRoute,
   ProjetsJourneesSansPlastiqueRoute: ProjetsJourneesSansPlastiqueRoute,
   ProjetsSentiersVertsRoute: ProjetsSentiersVertsRoute,
   ApiPublicContactRoute: ApiPublicContactRoute,

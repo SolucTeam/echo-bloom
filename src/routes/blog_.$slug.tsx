@@ -7,7 +7,7 @@ import { loadPosts } from '@/lib/site.functions';
 
 const SITE_URL = import.meta.env.VITE_SITE_URL || "https://greenivory-reborn.lovable.app";
 
-export const Route = createFileRoute("/blog/$slug")({
+export const Route = createFileRoute("/blog_/$slug")({
   loader: async ({ params }) => {
     const {posts,imported}=await loadPosts();
     const post=posts.find(p=>p.slug===params.slug) ?? (imported?undefined:getPostBySlug(params.slug));
