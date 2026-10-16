@@ -1,8 +1,28 @@
 services:
-  site:
+  admin-init:
     build:
       context: ..
       dockerfile: deployment/Dockerfile
+      target: admin-provision
+    restart: "no"
+    environment:
+      SUPABASE_URL: ${INTERNAL_BACKEND_URL:?Set INTERNAL_BACKEND_URL}
+      SUPABASE_PUBLISHABLE_KEY: ${ANON_KEY:?Set ANON_KEY}
+      SUPABASE_SERVICE_ROLE_KEY: ${SERVICE_ROLE_KEY:?Set SERVICE_ROLE_KEY}
+      ADMIN_EMAIL: ${ADMIN_EMAIL:?Set ADMIN_EMAIL}
+      ADMIN_PASSWORD_FILE: /run/secrets/admin_password
+    secrets:
+      - admin_password
+    networks:
+      - backend
+  site:
+    depends_on:
+      admin-init:
+        condition: service_completed_successfully
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+      target: site
       args:
         VITE_SUPABASE_URL: ${PUBLIC_BACKEND_URL:?Set PUBLIC_BACKEND_URL}
         VITE_SUPABASE_PUBLISHABLE_KEY: ${ANON_KEY:?Set ANON_KEY}
@@ -16,6 +36,9 @@ services:
       SUPABASE_SERVICE_ROLE_KEY: ${SERVICE_ROLE_KEY:?Set SERVICE_ROLE_KEY}
     networks:
       - backend
+secrets:
+  admin_password:
+    file: ${ADMIN_PASSWORD_FILE:?Set ADMIN_PASSWORD_FILE to an absolute private file path}
 networks:
   backend:
     external: true

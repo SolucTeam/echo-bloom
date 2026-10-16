@@ -19,16 +19,40 @@ Sur une **nouvelle base vide**, appliquer le fichier `deployment/install.sql` vi
 Créer ensuite, via l'interface privée du service auto-hébergé, un bucket privé nommé `media`, limité à 10 Mo par fichier, et autoriser les types d'images utilisés. Les règles de lecture et d'écriture figurent dans le schéma.
 
 ## 3. Créer l'administrateur au déploiement
-Depuis une session privée sur le serveur, fournir `SUPABASE_URL` (API locale), `SUPABASE_SERVICE_ROLE_KEY` (clé de votre installation) et `ADMIN_EMAIL` au processus. Ne jamais partager ces valeurs dans une capture, un dépôt ou un terminal enregistré.
+Le premier lancement Docker exécute automatiquement le service privé `admin-init` **avant de démarrer le site**. Ce service vérifie auprès du service d'authentification que l'inscription publique est désactivée, crée le compte confirmé et lui attribue le rôle administrateur. Une erreur de configuration, une API indisponible ou un échec d'attribution des droits bloque le premier lancement du site. Aucun formulaire de création de compte ni point d'accès de provisionnement n'est exposé.
 
-Exécuter `bun scripts/provision-admin.ts` et fournir le mot de passe sur l'entrée standard, depuis votre gestionnaire de secrets. Le mot de passe doit contenir au moins 12 caractères. `ADMIN_PASSWORD` peut aussi être fourni par votre gestionnaire de secrets, mais ne doit pas figurer dans une commande sauvegardée ou un fichier du dépôt.
+Après installation du schéma et démarrage des services de données :
+
+1. Copier `deployment/runtime.env.example` dans `/etc/green-ivory/server.env`, **hors du dépôt**.
+2. Créer `/etc/green-ivory/admin-password` avec votre gestionnaire de secrets. Ce fichier contient uniquement le mot de passe choisi, au moins 12 caractères. Ne pas écrire le mot de passe dans une commande, une capture ou le fichier de configuration.
+3. Protéger les deux fichiers et leur dossier : dossier `700`, fichiers `600`, propriétaire = compte de déploiement. Le service temporaire d'initialisation lit le secret monté en tant que `root` dans son conteneur, sans port exposé ; le site fonctionne séparément sous un utilisateur non privilégié. Ne pas rendre le fichier lisible par tous.
+4. Renseigner les variables ci-dessous puis lancer la commande de la section 4.
+
+### Configuration du serveur
+
+| Variable dans `server.env` | Valeur à renseigner | Confidentialité |
+| --- | --- | --- |
+| `SITE_URL` | Adresse publique du site, en HTTPS, sans slash final | Publique |
+| `PUBLIC_BACKEND_URL` | Adresse HTTPS de votre service de données accessible aux navigateurs, sans slash final | Publique |
+| `INTERNAL_BACKEND_URL` | Adresse du même service accessible depuis les conteneurs, par exemple `http://kong:8000` si ce nom existe dans votre réseau | Interne |
+| `BACKEND_NETWORK` | Nom réel du réseau Docker de votre service de données | Interne |
+| `ANON_KEY` | Clé publique provenant de **votre propre installation** | Publique |
+| `SERVICE_ROLE_KEY` | Clé privilégiée provenant de **votre propre installation**, jamais une clé du projet Lovable | Secrète, serveur uniquement |
+| `ADMIN_EMAIL` | Adresse e-mail du compte administrateur à créer | Privée |
+| `ADMIN_PASSWORD_FILE` | Chemin absolu du fichier privé sur l'hôte, par exemple `/etc/green-ivory/admin-password` | Chemin privé ; ne pas y mettre le mot de passe |
+
+Dans la configuration **du service d'authentification**, pas dans `server.env`, renseigner `DISABLE_SIGNUP=true` et `ENABLE_ANONYMOUS_USERS=false`, puis redémarrer ce service. Ces variables doivent être transmises effectivement à sa configuration d'exécution ; les placer uniquement dans celle du site ne désactive pas l'inscription. Le contrôle au démarrage refuse une configuration non vérifiable ou qui permet l'inscription.
+
+Docker traduit automatiquement les variables du tableau en variables internes du programme (`SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SERVICE_ROLE_KEY`). Ne pas ajouter de clé privée avec un préfixe `VITE_` : ce préfixe rend une valeur accessible au navigateur. Seul `admin-init` reçoit le fichier du mot de passe ; le site ne le reçoit pas.
 
 - Nouveau compte : création et attribution du rôle administrateur.
 - Compte existant : conservé, sans changement du mot de passe.
-- Réinitialisation volontaire : même commande avec `--reset-password`.
-- Un autre administrateur : même commande avec une autre adresse `ADMIN_EMAIL`.
+- Réinitialisation volontaire : remplacer le fichier privé, puis `docker compose --env-file /etc/green-ivory/server.env -f deployment/compose.yaml run --rm admin-init bun scripts/provision-admin.ts --reset-password`.
+- Un autre administrateur : même service avec une autre adresse `ADMIN_EMAIL`, choisie explicitement par le propriétaire du serveur.
 
 Cette commande est privée et n'est pas un point d'accès du site. L'inscription publique est désactivée et le premier inscrit ne devient plus administrateur automatiquement.
+
+Après un échec, corriger la configuration et relancer la commande de démarrage. Le service est réexécuté sans changer le mot de passe d'un compte existant. Après réussite, ouvrir `/auth` sur votre site, saisir l'adresse `ADMIN_EMAIL` et le mot de passe choisi, puis vérifier l'accès à `/admin`. Aucun envoi d'e-mail n'est requis pour ce compte provisionné et confirmé côté serveur. À chaque démarrage, aucune nouvelle attribution n'est faite à un visiteur.
 
 ## 4. Démarrer le site
 Copier `deployment/runtime.env.example` dans un fichier privé **hors du dépôt**, compléter avec les valeurs de votre installation et relever le nom réel du réseau Docker du service. Les clés publiques sont incorporées dans le site ; la clé privilégiée est uniquement fournie au serveur à l'exécution.
@@ -36,10 +60,12 @@ Copier `deployment/runtime.env.example` dans un fichier privé **hors du dépôt
 Depuis le dossier du projet :
 
 ```sh
-docker compose --env-file /chemin/prive/green-ivory.env -f deployment/compose.yaml up -d --build
+docker compose --env-file /etc/green-ivory/server.env -f deployment/compose.yaml up -d --build
 ```
 
 La construction utilise une configuration autonome, sans l'enveloppe Vite de Lovable. Pour un essai local, utiliser une URL d'API accessible au navigateur local ; une adresse Docker interne ne fonctionne pas dans le navigateur.
+
+Consulter l'état avec `docker compose --env-file /etc/green-ivory/server.env -f deployment/compose.yaml ps -a` : `admin-init` doit être terminé avec le code `0` et `site` en cours d'exécution. Les messages de création ne contiennent pas le mot de passe. Ne pas partager une sortie `docker compose config`, qui peut afficher les clés.
 
 Installer Caddy sur l'hôte et adapter `deployment/Caddyfile`, en fournissant `SITE_HOST` et `BACKEND_HOST`. Caddy termine HTTPS. Ne rendre publics que les ports 80 et 443 ; les ports 3000 et 8000 doivent rester locaux. Vérifier aussi les en-têtes et redirections configurés dans la distribution de l'API.
 
