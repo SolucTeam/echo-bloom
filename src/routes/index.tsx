@@ -1,3 +1,4 @@
+import { useSiteText } from "@/lib/cms";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Leaf, Recycle, Trees, ThermometerSun, Users, Sprout, Award, Globe2 } from "lucide-react";
 import hero from "@/assets/hero.jpg";
@@ -23,6 +24,8 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const heroTitle = useSiteText("home.hero.title", "");
+  const heroIntro = useSiteText("home.hero.intro", "Green Ivory est une ONG ivoirienne fondée en 2017. Nous formons les jeunes, dépolluons les plages et plaidons pour des politiques climatiques ambitieuses en Côte d’Ivoire.");
   return (
     <>
       {/* HERO */}
@@ -32,13 +35,9 @@ function Home() {
           <div className="lg:col-span-6">
             <span className="eyebrow">La promotion de l’emploi vert</span>
             <h1 className="mt-5 text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.02] tracking-tight">
-              Engageons-nous pour <span className="text-secondary">un avenir</span> <span className="italic font-semibold" style={{ fontFamily: "Outfit" }}>durable.</span>
+              {heroTitle || (<>Engageons-nous pour <span className="text-secondary">un avenir</span> <span className="italic font-semibold" style={{ fontFamily: "Outfit" }}>durable.</span></>)}
             </h1>
-            <p className="mt-6 text-lg text-muted-foreground max-w-xl">
-              Green Ivory est une ONG ivoirienne fondée en 2017. Nous formons les jeunes,
-              dépolluons les plages et plaidons pour des politiques climatiques ambitieuses
-              en Côte d’Ivoire.
-            </p>
+            <p className="mt-6 text-lg text-muted-foreground max-w-xl">{heroIntro}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/devenir-partenaire" className="btn-primary">
                 Soutenir nos projets <ArrowRight className="h-4 w-4" />

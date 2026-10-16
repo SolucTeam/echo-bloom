@@ -38,7 +38,6 @@ export async function fetchPostBySlug(slug: string): Promise<BlogPost | null> {
 export const EDITABLE_TEXTS: { key: string; label: string; fallback: string }[] = [
   { key: "home.hero.title", label: "Accueil — grand titre", fallback: "" },
   { key: "home.hero.intro", label: "Accueil — texte d'introduction", fallback: "" },
-  { key: "footer.tagline", label: "Pied de page — phrase de présentation", fallback: "" },
 ];
 
 let cache: Record<string, string> | null = null;
