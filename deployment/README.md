@@ -45,7 +45,7 @@ Installer Caddy sur l'hôte et adapter `deployment/Caddyfile`, en fournissant `S
 
 ## 5. Transférer le contenu
 - Dans la console source, **Exporter** produit un JSON privé contenant aussi les messages et candidatures : ne pas le publier.
-- Dans la console cible, **Importer une sauvegarde** permet de restaurer les contenus dans votre installation après création du schéma.
+- Restaurer le JSON avec la commande privée de transfert ci-dessous après création du schéma et de l'administrateur cible.
 - Les images intégrées au code restent disponibles dans le site exporté. Les fichiers ajoutés à Lovable Cloud doivent être téléchargés puis transférés au stockage de votre serveur ; remplacer leurs adresses via la commande de transfert ci-dessous. Un ancien lien signé Cloud ne constitue pas une copie autonome.
 - Utiliser `bun scripts/transfer-content.ts` avec `BACKUP_FILE`, `TARGET_SUPABASE_URL`, `TARGET_SERVICE_ROLE_KEY`. Le script copie les images distantes vers le bucket cible et remplace les liens avant de restaurer les contenus. Il conserve les identifiants des contenus, pas les anciens comptes.
 - Vérifier les pages, couvertures d'articles, images de galerie, coordonnées et menus sur la cible. Les liens absolus vers le site d'origine sont à mettre à jour dans la console.
