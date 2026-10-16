@@ -1,5 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { fetchPublishedPosts } from "@/lib/cms";
+import type { BlogPost } from "@/data/blog-posts";
 import { PageHero } from "@/components/PageHero";
 import { Calendar, User, ArrowRight, Search, Tag } from "lucide-react";
 import { POSTS, CATEGORIES, type BlogCategory } from "@/data/blog-posts";
@@ -24,10 +26,12 @@ export const Route = createFileRoute("/blog")({
 function Blog() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<BlogCategory | "Tous">("Tous");
+  const [dbPosts, setDbPosts] = useState<BlogPost[]>([]);
+  useEffect(() => { fetchPublishedPosts().then(setDbPosts).catch(() => {}); }, []);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();
-    return POSTS.filter((p) => (category === "Tous" ? true : p.category === category))
+    return [...dbPosts, ...POSTS.filter((p) => !dbPosts.some((d) => d.slug === p.slug))].filter((p) => (category === "Tous" ? true : p.category === category))
       .filter((p) =>
         !q
           ? true
@@ -36,7 +40,7 @@ function Blog() {
             p.content.join(" ").toLowerCase().includes(q),
       )
       .sort((a, b) => (a.date < b.date ? 1 : -1));
-  }, [query, category]);
+  }, [query, category, dbPosts]);
 
   return (
     <>

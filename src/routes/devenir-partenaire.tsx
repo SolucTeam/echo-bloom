@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/devenir-partenaire")({
   head: () => ({
@@ -51,7 +52,16 @@ function Partner() {
 
         <form
           className="lg:col-span-3 bento p-8 grid sm:grid-cols-2 gap-4"
-          onSubmit={(e) => { e.preventDefault(); setSent(true); }}
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const form = e.currentTarget;
+            const f = new FormData(form);
+            const g = (k: string) => String(f.get(k) ?? "").trim().slice(0, 5000) || null;
+            const name = [g("firstname"), g("lastname")].filter(Boolean).join(" ");
+            const msg = [g("country") && `Pays : ${g("country")}`, g("message")].filter(Boolean).join("\n\n");
+            const { error } = await supabase.from("applications").insert({ kind: "partenaire", name, email: g("email") ?? "", phone: g("phone"), organization: g("org"), message: msg || null });
+            if (!error) { setSent(true); form.reset(); } else alert("Envoi impossible, réessayez.");
+          }}
         >
           <h3 className="sm:col-span-2 text-2xl font-bold">Formulaire de partenariat</h3>
           <Field label="Nom" name="lastname" required />
@@ -62,7 +72,7 @@ function Partner() {
           <Field label="Organisation" name="org" />
           <div className="sm:col-span-2">
             <label className="text-sm font-medium">Votre message</label>
-            <textarea required rows={5} className="mt-2 w-full rounded-2xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
+            <textarea name="message" maxLength={5000} required rows={5} className="mt-2 w-full rounded-2xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
           </div>
           <button className="sm:col-span-2 btn-primary justify-center">Envoyer ma demande</button>
           {sent && <p className="sm:col-span-2 text-sm text-secondary font-medium">Merci, nous vous recontactons rapidement.</p>}
