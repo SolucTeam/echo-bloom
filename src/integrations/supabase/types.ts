@@ -221,6 +221,66 @@ export type Database = {
         }
         Relationships: []
       }
+      mail_jobs: {
+        Row: {
+          attempts: number
+          available_at: string
+          config: Json
+          created_at: string
+          error_code: string | null
+          id: string
+          sent_at: string | null
+          source_id: string | null
+          source_kind: string
+          status: string
+        }
+        Insert: {
+          attempts?: number
+          available_at?: string
+          config: Json
+          created_at?: string
+          error_code?: string | null
+          id?: string
+          sent_at?: string | null
+          source_id?: string | null
+          source_kind: string
+          status?: string
+        }
+        Update: {
+          attempts?: number
+          available_at?: string
+          config?: Json
+          created_at?: string
+          error_code?: string | null
+          id?: string
+          sent_at?: string | null
+          source_id?: string | null
+          source_kind?: string
+          status?: string
+        }
+        Relationships: []
+      }
+      mail_settings: {
+        Row: {
+          config: Json
+          id: string
+          last_heartbeat: string | null
+          updated_at: string
+        }
+        Insert: {
+          config?: Json
+          id?: string
+          last_heartbeat?: string | null
+          updated_at?: string
+        }
+        Update: {
+          config?: Json
+          id?: string
+          last_heartbeat?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       site_content: {
         Row: {
           key: string
@@ -265,6 +325,27 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      claim_mail_job: {
+        Args: never
+        Returns: {
+          attempts: number
+          available_at: string
+          config: Json
+          created_at: string
+          error_code: string | null
+          id: string
+          sent_at: string | null
+          source_id: string | null
+          source_kind: string
+          status: string
+        }[]
+        SetofOptions: {
+          from: "*"
+          to: "mail_jobs"
+          isOneToOne: false
+          isSetofReturn: true
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

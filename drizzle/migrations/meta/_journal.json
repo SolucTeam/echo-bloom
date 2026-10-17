@@ -29,6 +29,13 @@
       "when": 1792252560416,
       "tag": "0003_enforce_form_configuration",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1792256994918,
+      "tag": "0004_private_server_email_notifications",
+      "breakpoints": true
     }
   ]
 }
