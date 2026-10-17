@@ -26,7 +26,28 @@ function Partner() {
         title="La sauvegarde de notre planète est l’affaire de tous."
         intro="Entreprises, institutions, ONG, collectivités… Rejoignez Green Ivory pour développer des solutions durables face aux défis environnementaux."
       />
-      <section className="container-x pt-10" data-partner-logos>
+      <section className="container-x pt-12">
+        <div className="bento p-10 bg-primary text-primary-foreground border-0 text-center relative overflow-hidden">
+          <p className="eyebrow">Faire un don</p>
+          <h2 className="text-3xl md:text-4xl font-bold">Votre don finance directement nos actions de terrain.</h2>
+          <p className="mt-3 text-base opacity-85 max-w-2xl mx-auto">Dépollution des plages, reboisement, éducation environnementale : chaque contribution a un impact mesurable.</p>
+          <div className="mt-7 flex flex-col sm:flex-row justify-center gap-3">
+            {donations.map((d,i) => (
+              <a
+                key={i}
+                href={d.url}
+                target={d.url.startsWith('/') ? undefined : '_blank'}
+                rel="noopener noreferrer"
+                className="rounded-full bg-leaf text-primary px-8 py-4 text-base font-semibold hover:opacity-90 transition"
+              >
+                {d.label}
+              </a>
+            ))}
+          </div>
+          {donations.length===0 && <p className="mt-3 text-sm opacity-75">Les boutons de don sont configurés dans la console d’administration.</p>}
+        </div>
+      </section>
+      <section className="container-x pt-12" data-partner-logos>
         <h2 className="text-2xl font-bold mb-6">Ils soutiennent nos actions</h2>
         <PartnerLogos />
       </section>
@@ -40,27 +61,6 @@ function Partner() {
               <li>Co-construire des projets terrain (dépollution, reboisement, formation).</li>
               <li>Bénéficier d’une visibilité auprès d’une communauté engagée.</li>
             </ul>
-          </div>
-          <div className="bento p-7 bg-primary text-primary-foreground border-0">
-            <h3 className="text-xl font-bold">Faire un don</h3>
-            <p className="mt-2 text-sm opacity-85">Chaque contribution finance directement nos actions de terrain.</p>
-            {donations.length>0 ? (
-              <div className="mt-4 flex flex-col gap-2">
-                {donations.map((d,i) => (
-                  <a
-                    key={i}
-                    href={d.url}
-                    target={d.url.startsWith('/') ? undefined : '_blank'}
-                    rel="noopener noreferrer"
-                    className="rounded-full bg-leaf text-primary px-5 py-3 text-sm font-semibold text-center hover:opacity-90 transition"
-                  >
-                    {d.label}
-                  </a>
-                ))}
-              </div>
-            ) : (
-              <p className="mt-3 text-sm opacity-75">Les boutons de don sont configurés dans la console d’administration.</p>
-            )}
           </div>
         </div>
 
