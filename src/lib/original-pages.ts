@@ -334,6 +334,26 @@ export const originalPages: CmsPageData[] = [
     "published": false
   },
   {
+    "path": "/faire-un-don",
+    "title": "Faire un don — Green Ivory",
+    "description": "Soutenez les collectes de Green Ivory : dépollution des plages, reboisement, éducation environnementale. Chaque don finance une action de terrain.",
+    "blocks": [
+      {
+        "id": "section-0",
+        "type": "text",
+        "title": "Un geste, un impact.",
+        "body": "Dépollution des plages, reboisement, éducation environnementale : chaque don finance directement une action de terrain en Côte d’Ivoire.",
+        "image": "",
+        "alt": "",
+        "link": "",
+        "linkLabel": "",
+        "visible": true
+      }
+    ],
+    "share_image": "",
+    "published": false
+  },
+  {
     "path": "/devenir-benevole",
     "title": "Devenir bénévole — Green Ivory",
     "description": "Rejoignez la communauté des bénévoles Green Ivory et passez à l’action pour l’environnement en Côte d’Ivoire.",

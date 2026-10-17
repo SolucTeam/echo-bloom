@@ -11,11 +11,12 @@ const nav = [
   { to: "/galerie", label: "Galerie" },
   { to: "/blog", label: "Blog" },
   { to: "/nous-joindre", label: "Contact" },
+  { to: "/devenir-partenaire", label: "Devenir partenaire" },
 ] as const;
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
-  const siteName=useSetting('site.name','Green Ivory'),logo=useSetting('site.logo'),donation=useSetting('site.donation','/devenir-partenaire');
+  const siteName=useSetting('site.name','Green Ivory'),logo=useSetting('site.logo'),donation=useSetting('site.donation','/faire-un-don');
   const menuValue=useSetting('site.menu');
   let menu:{to:string,label:string}[]=[...nav];
   try { if(menuValue)menu=(JSON.parse(menuValue) as {url:string,label:string}[]).map(n=>({to:n.url,label:n.label})); }catch{}

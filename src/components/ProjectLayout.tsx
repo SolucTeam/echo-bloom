@@ -27,7 +27,7 @@ export function ProjectLayout({ info }: { info: ProjectInfo }) {
             <h1 className="mt-4 text-4xl lg:text-6xl font-bold tracking-tight">{info.title}</h1>
             <p className="mt-5 text-lg text-muted-foreground max-w-2xl">{info.tagline}</p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link to="/devenir-partenaire" className="btn-primary"><Heart className="h-4 w-4" /> Faire un don</Link>
+              <Link to="/faire-un-don" className="btn-primary"><Heart className="h-4 w-4" /> Faire un don</Link>
               <Link to="/devenir-partenaire" className="btn-ghost"><Handshake className="h-4 w-4" /> Devenir un sponsor</Link>
             </div>
           </div>
@@ -75,7 +75,7 @@ export function ProjectLayout({ info }: { info: ProjectInfo }) {
               </div>
             ))}
           </div>
-          <Link to="/devenir-partenaire" className="mt-7 inline-flex w-full justify-center items-center gap-2 rounded-full bg-leaf text-primary px-5 py-3 text-sm font-semibold hover:opacity-90">
+          <Link to="/faire-un-don" className="mt-7 inline-flex w-full justify-center items-center gap-2 rounded-full bg-leaf text-primary px-5 py-3 text-sm font-semibold hover:opacity-90">
             Soutenir ce projet
           </Link>
         </aside>

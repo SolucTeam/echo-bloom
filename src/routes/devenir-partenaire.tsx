@@ -1,58 +1,45 @@
-import { pageHead, useSetting } from '@/components/ManagedSite';
+import { pageHead } from '@/components/ManagedSite';
 import { loadPage } from '@/lib/site.functions';
 import { createFileRoute } from "@tanstack/react-router";
+import { Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PartnerLogos } from '@/components/PartnerLogos';
-import { DEFAULT_DONATIONS } from '@/data/donations';
-import { Button } from '@/components/ui/button';
-import { ArrowUpRight, Heart, Sprout } from 'lucide-react';
+import { Heart } from 'lucide-react';
 
 export const Route = createFileRoute("/devenir-partenaire")({
-  loader:async()=>({cmsPage:await loadPage({data:'/devenir-partenaire'})}),
-  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Devenir partenaire / Faire un don — Green Ivory', 'Soutenez Green Ivory en devenant partenaire ou en faisant un don. Ensemble, accélérons la transition écologique.', '/devenir-partenaire'),
+  loader: async () => ({ cmsPage: await loadPage({ data: '/devenir-partenaire' }) }),
+  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Devenir partenaire — Green Ivory', 'Entreprises, institutions, ONG, collectivités : rejoignez Green Ivory et développons ensemble des solutions durables.', '/devenir-partenaire'),
   component: Partner,
 });
 
 function Partner() {
   const [sent, setSent] = useState(false);
-  const donationsValue=useSetting('site.donations');
-  let donations:{label:string,url:string}[]=[];
-  try{const parsed=JSON.parse(donationsValue||'null');if(Array.isArray(parsed))donations=parsed.filter((d):d is {label:string,url:string}=>!!d&&!!d.label&&!!d.url);}catch{}
-  if(donations.length===0)donations=DEFAULT_DONATIONS;
   return (
     <>
       <PageHero
         eyebrow="Agir avec Green Ivory"
-        title="Faire un don"
-        intro="Soutenez les actions de Green Ivory en contribuant à une collecte. Ensemble, protégeons notre environnement."
+        title="Devenir partenaire"
+        intro="Entreprises, institutions, ONG, collectivités : rejoignez Green Ivory pour développer des solutions durables face aux défis environnementaux."
       />
-      <section className="bg-primary text-primary-foreground py-12 sm:py-16" data-donation-collections>
-        <div className="container-x">
-          <div className="flex items-center gap-2 text-leaf text-sm font-semibold"><Sprout className="size-5" aria-hidden="true" />Un geste, un impact</div>
-          <div className="mt-4 max-w-3xl">
-            <h2 className="text-3xl md:text-4xl font-bold tracking-normal">Soutenez une collecte qui vous tient à cœur.</h2>
-            <p className="mt-4 text-primary-foreground/80 max-w-2xl">Dépollution des plages, reboisement, éducation environnementale : contribuons à un avenir plus durable.</p>
-          </div>
-          <div className="mt-8 grid md:grid-cols-2 gap-4">
-            {donations.map((d,i) => (
-              <article key={`${d.url}-${i}`} className="rounded-lg bg-card text-card-foreground p-6 sm:p-7 flex flex-col min-w-0">
-                <div className="flex items-center justify-between gap-4 mb-5"><Heart className="size-6 text-secondary" aria-hidden="true" /><span className="text-xs text-muted-foreground">Collecte {String(i+1).padStart(2,'0')}</span></div>
-                <h3 className="text-xl sm:text-2xl font-bold tracking-normal break-words">{d.label}</h3>
-                <p className="mt-2 text-sm text-muted-foreground break-all">{(() => { try { return new URL(d.url).hostname.replace(/^www\./,''); } catch { return ''; } })()}</p>
-                <Button asChild className="mt-6 h-auto min-h-11 w-full justify-between whitespace-normal text-left py-3">
-                  <a href={d.url} target="_blank" rel="noopener noreferrer" aria-label={`Contribuer à ${d.label} (nouvel onglet)`}><span>Contribuer à cette collecte</span><ArrowUpRight aria-hidden="true" /></a>
-                </Button>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
       <section className="container-x pt-12" data-partner-logos>
         <h2 className="text-2xl font-bold mb-6">Ils soutiennent nos actions</h2>
         <PartnerLogos />
       </section>
+      <section className="container-x pt-10">
+        <div className="bg-primary text-primary-foreground rounded-lg p-8 sm:p-10 flex flex-col sm:flex-row sm:items-center gap-6 justify-between" data-donation-collections>
+          <div className="flex items-start gap-4">
+            <span className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-card text-card-foreground"><Heart className="h-5 w-5" aria-hidden="true" /></span>
+            <div>
+              <h2 className="text-xl font-bold">Vous souhaitez soutenir une collecte ?</h2>
+              <p className="mt-2 text-sm text-primary-foreground/80 max-w-xl">Faire un don est simple : choisissez la collecte qui vous tient à cœur et contribuez en quelques clics.</p>
+            </div>
+          </div>
+          <Link to="/faire-un-don" className="shrink-0 rounded-full bg-background text-primary px-6 py-3 text-sm font-semibold transition-all hover:opacity-90">Faire un don</Link>
+        </div>
+      </section>
+
       <section className="container-x py-16 grid lg:grid-cols-5 gap-10 items-start">
         <div className="lg:col-span-2 space-y-6">
           <div className="bento p-7">
