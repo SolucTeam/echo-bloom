@@ -26,8 +26,6 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as BlogSlugRouteImport } from './routes/blog_.$slug'
 import { Route as ProjetsIndexRouteImport } from './routes/projets/index'
 import { Route as ProjetsSlugRouteImport } from './routes/projets/$slug'
-import { Route as ProjetsJourneesSansPlastiqueRouteImport } from './routes/projets/journees-sans-plastique'
-import { Route as ProjetsSentiersVertsRouteImport } from './routes/projets/sentiers-verts'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
 import { Route as ApiPublicVolunteerRouteImport } from './routes/api/public/volunteer'
 
@@ -115,17 +113,6 @@ const ProjetsSlugRoute = ProjetsSlugRouteImport.update({
   path: '/projets/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ProjetsJourneesSansPlastiqueRoute =
-  ProjetsJourneesSansPlastiqueRouteImport.update({
-    id: '/projets/journees-sans-plastique',
-    path: '/projets/journees-sans-plastique',
-    getParentRoute: () => rootRouteImport,
-  } as any)
-const ProjetsSentiersVertsRoute = ProjetsSentiersVertsRouteImport.update({
-  id: '/projets/sentiers-verts',
-  path: '/projets/sentiers-verts',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
   id: '/api/public/contact',
   path: '/api/public/contact',
@@ -153,8 +140,6 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/projets/$slug': typeof ProjetsSlugRoute
-  '/projets/journees-sans-plastique': typeof ProjetsJourneesSansPlastiqueRoute
-  '/projets/sentiers-verts': typeof ProjetsSentiersVertsRoute
   '/projets/': typeof ProjetsIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/volunteer': typeof ApiPublicVolunteerRoute
@@ -175,8 +160,6 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/projets/$slug': typeof ProjetsSlugRoute
-  '/projets/journees-sans-plastique': typeof ProjetsJourneesSansPlastiqueRoute
-  '/projets/sentiers-verts': typeof ProjetsSentiersVertsRoute
   '/projets': typeof ProjetsIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/volunteer': typeof ApiPublicVolunteerRoute
@@ -199,8 +182,6 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/blog_/$slug': typeof BlogSlugRoute
   '/projets/$slug': typeof ProjetsSlugRoute
-  '/projets/journees-sans-plastique': typeof ProjetsJourneesSansPlastiqueRoute
-  '/projets/sentiers-verts': typeof ProjetsSentiersVertsRoute
   '/projets/': typeof ProjetsIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/volunteer': typeof ApiPublicVolunteerRoute
@@ -223,8 +204,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/blog/$slug'
     | '/projets/$slug'
-    | '/projets/journees-sans-plastique'
-    | '/projets/sentiers-verts'
     | '/projets/'
     | '/api/public/contact'
     | '/api/public/volunteer'
@@ -245,8 +224,6 @@ export interface FileRouteTypes {
     | '/admin'
     | '/blog/$slug'
     | '/projets/$slug'
-    | '/projets/journees-sans-plastique'
-    | '/projets/sentiers-verts'
     | '/projets'
     | '/api/public/contact'
     | '/api/public/volunteer'
@@ -268,8 +245,6 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/blog_/$slug'
     | '/projets/$slug'
-    | '/projets/journees-sans-plastique'
-    | '/projets/sentiers-verts'
     | '/projets/'
     | '/api/public/contact'
     | '/api/public/volunteer'
@@ -291,8 +266,6 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   BlogSlugRoute: typeof BlogSlugRoute
   ProjetsSlugRoute: typeof ProjetsSlugRoute
-  ProjetsJourneesSansPlastiqueRoute: typeof ProjetsJourneesSansPlastiqueRoute
-  ProjetsSentiersVertsRoute: typeof ProjetsSentiersVertsRoute
   ProjetsIndexRoute: typeof ProjetsIndexRoute
   ApiPublicContactRoute: typeof ApiPublicContactRoute
   ApiPublicVolunteerRoute: typeof ApiPublicVolunteerRoute
@@ -419,20 +392,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProjetsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/projets/journees-sans-plastique': {
-      id: '/projets/journees-sans-plastique'
-      path: '/projets/journees-sans-plastique'
-      fullPath: '/projets/journees-sans-plastique'
-      preLoaderRoute: typeof ProjetsJourneesSansPlastiqueRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/projets/sentiers-verts': {
-      id: '/projets/sentiers-verts'
-      path: '/projets/sentiers-verts'
-      fullPath: '/projets/sentiers-verts'
-      preLoaderRoute: typeof ProjetsSentiersVertsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/api/public/contact': {
       id: '/api/public/contact'
       path: '/api/public/contact'
@@ -477,8 +436,6 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   BlogSlugRoute: BlogSlugRoute,
   ProjetsSlugRoute: ProjetsSlugRoute,
-  ProjetsJourneesSansPlastiqueRoute: ProjetsJourneesSansPlastiqueRoute,
-  ProjetsSentiersVertsRoute: ProjetsSentiersVertsRoute,
   ProjetsIndexRoute: ProjetsIndexRoute,
   ApiPublicContactRoute: ApiPublicContactRoute,
   ApiPublicVolunteerRoute: ApiPublicVolunteerRoute,
