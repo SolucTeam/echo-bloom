@@ -9,3 +9,4 @@
 - Gate the self-hosted site startup on a one-shot administrator initialization service that verifies public signup is disabled and reads the password from a mounted secret; failed initialization must prevent the first site launch.
 - Use the self-hosted compatible auth/data/storage distribution for standalone deployment; do not alter generated Cloud clients or embed privileged configuration in browser bundles.
 - Keep backup transfer scripts outside runtime routes and never emit account credentials or private content in logs.
+- Keep media storage and media-library metadata administrator-only; public pages use explicitly saved signed image URLs so unpublished library files cannot be enumerated or downloaded anonymously.
