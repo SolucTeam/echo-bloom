@@ -1,4 +1,5 @@
 import { createFileRoute, useNavigate, useRouter } from '@tanstack/react-router';
+import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { useServerFn } from '@tanstack/react-start';
 import { useState } from 'react';
 import { adminSnapshot, adminWrite } from '@/lib/admin.functions';
@@ -32,6 +33,8 @@ export const Route = createFileRoute('/_authenticated/admin')({
   loader:()=>adminSnapshot(),
   head:()=>({meta:[{title:'Gestion du site — Green Ivory'},{name:'description',content:'Administration des pages, articles, médias, menus et paramètres Green Ivory.'},{name:'robots',content:'noindex'},{property:'og:title',content:'Gestion du site — Green Ivory'},{property:'og:description',content:'Console privée Green Ivory.'},{property:'og:type',content:'website'},{name:'twitter:card',content:'summary'}]}),
   component:Admin,
+  errorComponent:RouteError,
+  notFoundComponent:RouteNotFound,
 });
 const field='w-full rounded-md border border-input bg-background px-3 py-2 text-sm';
 type Snapshot=Awaited<ReturnType<typeof adminSnapshot>>;

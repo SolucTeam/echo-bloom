@@ -1,4 +1,5 @@
 import { pageHead } from '@/components/ManagedSite';
+import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { loadPage } from '@/lib/site.functions';
 import { useSiteText } from "@/lib/cms";
 import { createFileRoute, Link } from "@tanstack/react-router";
@@ -17,6 +18,8 @@ export const Route = createFileRoute("/")({
   loader:async()=>({cmsPage:await loadPage({data:'/'})}),
   head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Green Ivory — Engageons-nous pour un avenir durable', 'ONG ivoirienne pour la promotion de l’emploi vert. Découvrez nos projets contre la pollution plastique, pour la biodiversité et le climat.', '/'),
   component: Home,
+  errorComponent: RouteError,
+  notFoundComponent: RouteNotFound,
 });
 
 function Home() {

@@ -1,8 +1,10 @@
 import { pageHead } from '@/components/ManagedSite';
+import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { loadPage } from '@/lib/site.functions';
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
+import { useState } from "react";
+import { galleryCollections } from '@/lib/gallery';
+import { Button } from '@/components/ui/button';
 import { PageHero } from "@/components/PageHero";
 import journees from "@/assets/journees.jpg";
 import sentiers from "@/assets/sentiers.jpg";
@@ -16,6 +18,8 @@ export const Route = createFileRoute("/galerie")({
   loader:async()=>{const [content,cmsPage]=await Promise.all([loadGallery(),loadPage({data:'/galerie'})]);return {...content,cmsPage};},
   head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Galerie — Green Ivory', 'Photos et moments forts des actions de Green Ivory : dépollution, éco-ambassadeurs, agents de collecte, recyclage, formations.', '/galerie'),
   component: Gallery,
+  errorComponent: RouteError,
+  notFoundComponent: RouteNotFound,
 });
 
 const collections = [
@@ -47,10 +51,7 @@ const collections = [
 
 function Gallery() {
   const {photos:extra,imported}=Route.useLoaderData();
-  const cols = imported?[...new Set(extra.map(p=>p.collection))].map(title=>({title,tags:['Tous',...new Set(extra.filter(p=>p.collection===title).map(p=>p.tag))],images:extra.filter(p=>p.collection===title).map(p=>({src:p.image_url,tag:p.tag,alt:p.alt,caption:p.caption}))})):collections.map((c) => ({
-    ...c,
-    images: [...extra.filter((e) => e.collection === c.title).map((e) => ({ src: e.image_url, tag: e.tag })), ...c.images],
-  }));
+  const cols = galleryCollections(collections, extra, imported);
   return (
     <>
       <PageHero
@@ -73,7 +74,9 @@ function Collection({ title, tags, images }: { title: string; tags: string[]; im
       <h2 className="text-3xl lg:text-4xl font-bold">{title}</h2>
       <div className="mt-6 flex flex-wrap gap-2">
         {tags.map((t) => (
-          <button
+          <Button
+            variant="outline"
+            aria-pressed={active === t}
             key={t}
             onClick={() => setActive(t)}
             className={`rounded-full px-4 py-2 text-xs font-semibold border transition ${
@@ -81,7 +84,7 @@ function Collection({ title, tags, images }: { title: string; tags: string[]; im
             }`}
           >
             {t}
-          </button>
+          </Button>
         ))}
       </div>
       <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">

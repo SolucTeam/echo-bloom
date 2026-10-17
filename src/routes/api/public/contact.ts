@@ -1,5 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { contactSubmissionSchema as ContactSchema, readContact } from '@/lib/form-settings';
+import { formSpamResponse } from '@/lib/form-antispam';
 
 export const Route = createFileRoute("/api/public/contact")({
   server: {
@@ -20,17 +21,8 @@ export const Route = createFileRoute("/api/public/contact")({
         }
         const data = parsed.data;
 
-        // Honeypot triggered → pretend success
-        if (data.website && data.website.length > 0) {
-          return Response.json({ ok: true });
-        }
-        // Submitted too fast (<2s) → likely a bot
-        if (typeof data.startedAt === "number") {
-          const elapsed = Date.now() - data.startedAt;
-          if (elapsed >= 0 && elapsed < 2000) {
-            return Response.json({ ok: true });
-          }
-        }
+        const spamResponse = formSpamResponse(data);
+        if (spamResponse) return spamResponse;
 
         const ip =
           request.headers.get("cf-connecting-ip") ||

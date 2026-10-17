@@ -1,4 +1,5 @@
 import { createFileRoute, notFound } from '@tanstack/react-router';
+import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { loadProject, loadPage } from '@/lib/site.functions';
 import { pageHead } from '@/components/ManagedSite';
 import { ProjectLayout } from '@/components/ProjectLayout';
@@ -10,4 +11,6 @@ export const Route=createFileRoute('/projets/$slug')({
   return {...head,meta:[...head.meta.filter(m=>!('property' in m && m.property==='og:image')&&!('name' in m && m.name==='twitter:image')),...(image?.startsWith('https://')?[{property:'og:image',content:image},{name:'twitter:image',content:image}]:[]),...(!loaderData?[{name:'robots',content:'noindex,follow'}]:[])]};
  },
  component:()=>{const {project}=Route.useLoaderData();return <ProjectLayout info={project}/>;},
+  errorComponent:RouteError,
+  notFoundComponent:RouteNotFound,
 });

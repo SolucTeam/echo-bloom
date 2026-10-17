@@ -1,4 +1,5 @@
 import { pageHead, useSetting } from '@/components/ManagedSite';
+import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { loadPage } from '@/lib/site.functions';
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
@@ -11,6 +12,8 @@ export const Route = createFileRoute("/faire-un-don")({
   loader: async () => ({ cmsPage: await loadPage({ data: '/faire-un-don' }) }),
   head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Faire un don — Green Ivory', 'Soutenez les collectes de Green Ivory : dépollution des plages, reboisement, éducation environnementale. Chaque don finance une action de terrain.', '/faire-un-don'),
   component: Donations,
+  errorComponent: RouteError,
+  notFoundComponent: RouteNotFound,
 });
 
 function hostnameOf(url: string) {
