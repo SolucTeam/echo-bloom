@@ -108,6 +108,7 @@ CREATE POLICY "admin upload media" ON storage.objects FOR INSERT TO authenticate
 CREATE POLICY "admin delete media" ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'media' AND public.has_role(auth.uid(),'admin'));
 CREATE OR REPLACE FUNCTION public.assign_first_admin() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public' AS $$ BEGIN RETURN NEW; END; $$;
 COMMENT ON FUNCTION public.assign_first_admin() IS 'Automatic administrator assignment disabled; administrators are provisioned by a private deployment command.';
+REVOKE ALL ON FUNCTION public.assign_first_admin() FROM PUBLIC, anon, authenticated;
 CREATE TABLE public.cms_pages (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), path text NOT NULL UNIQUE, title text NOT NULL DEFAULT '', description text NOT NULL DEFAULT '', share_image text NOT NULL DEFAULT '', blocks jsonb NOT NULL DEFAULT '[]'::jsonb, published boolean NOT NULL DEFAULT false, updated_at timestamptz NOT NULL DEFAULT now());
 GRANT SELECT ON public.cms_pages TO anon;
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.cms_pages TO authenticated;
