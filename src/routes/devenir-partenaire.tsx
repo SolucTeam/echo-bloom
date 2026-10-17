@@ -5,6 +5,7 @@ import { PageHero } from "@/components/PageHero";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PartnerLogos } from '@/components/PartnerLogos';
+import { DEFAULT_DONATIONS } from '@/data/donations';
 
 export const Route = createFileRoute("/devenir-partenaire")({
   loader:async()=>({cmsPage:await loadPage({data:'/devenir-partenaire'})}),
@@ -17,6 +18,7 @@ function Partner() {
   const donationsValue=useSetting('site.donations');
   let donations:{label:string,url:string}[]=[];
   try{const parsed=JSON.parse(donationsValue||'null');if(Array.isArray(parsed))donations=parsed.filter((d):d is {label:string,url:string}=>!!d&&!!d.label&&!!d.url);}catch{}
+  if(donations.length===0)donations=DEFAULT_DONATIONS;
   return (
     <>
       <PageHero
