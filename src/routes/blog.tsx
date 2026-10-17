@@ -1,4 +1,5 @@
 import { pageHead } from '@/components/ManagedSite';
+import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { loadPage } from '@/lib/site.functions';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
@@ -15,6 +16,8 @@ export const Route = createFileRoute("/blog")({
   loader:async()=>{const [content,cmsPage]=await Promise.all([loadPosts(),loadPage({data:'/blog'})]);return {...content,cmsPage};},
   head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Blog — Green Ivory | Pollution plastique, biodiversité, climat', "Articles, décryptages et conseils éco-responsables sur la pollution plastique, la biodiversité et le climat en Côte d'Ivoire.", '/blog'),
   component: Blog,
+  errorComponent: RouteError,
+  notFoundComponent: RouteNotFound,
 });
 
 function Blog() {

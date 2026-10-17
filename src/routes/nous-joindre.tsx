@@ -1,4 +1,5 @@
 import { pageHead } from '@/components/ManagedSite';
+import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { loadPage } from '@/lib/site.functions';
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
@@ -13,6 +14,8 @@ export const Route = createFileRoute("/nous-joindre")({
   loader:async()=>({cmsPage:await loadPage({data:'/nous-joindre'})}),
   head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Contact — Green Ivory | Écrivez-nous', "Contactez l'ONG Green Ivory : adresses, téléphone et formulaire pour un partenariat, une question ou une proposition de projet.", '/nous-joindre'),
   component: Contact,
+  errorComponent: RouteError,
+  notFoundComponent: RouteNotFound,
 });
 
 type FormErrors = Partial<Record<"name" | "email" | "subject" | "message" | "form", string>>;

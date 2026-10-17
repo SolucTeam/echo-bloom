@@ -15,6 +15,7 @@ import { SiteContext, ManagedContent } from '@/components/ManagedSite';
 import { loadSite } from '@/lib/site.functions';
 import { useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { RouteError } from '@/components/RouteFeedback';
 
 function NotFoundComponent() {
   return (
@@ -80,7 +81,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
-  errorComponent: ErrorComponent as never,
+   errorComponent: RouteError,
 });
 
 function RootShell({ children }: { children: React.ReactNode }) {

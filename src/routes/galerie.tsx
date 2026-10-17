@@ -1,4 +1,5 @@
 import { pageHead } from '@/components/ManagedSite';
+import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { loadPage } from '@/lib/site.functions';
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
@@ -17,6 +18,8 @@ export const Route = createFileRoute("/galerie")({
   loader:async()=>{const [content,cmsPage]=await Promise.all([loadGallery(),loadPage({data:'/galerie'})]);return {...content,cmsPage};},
   head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Galerie — Green Ivory', 'Photos et moments forts des actions de Green Ivory : dépollution, éco-ambassadeurs, agents de collecte, recyclage, formations.', '/galerie'),
   component: Gallery,
+  errorComponent: RouteError,
+  notFoundComponent: RouteNotFound,
 });
 
 const collections = [

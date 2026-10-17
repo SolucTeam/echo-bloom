@@ -1,4 +1,5 @@
 import { pageHead, useSetting } from '@/components/ManagedSite';
+import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { loadPage } from '@/lib/site.functions';
 import { createFileRoute } from '@tanstack/react-router';
 import { PageHero } from '@/components/PageHero';
@@ -11,6 +12,8 @@ export const Route = createFileRoute('/devenir-benevole')({
   loader: async () => ({ cmsPage: await loadPage({ data: '/devenir-benevole' }) }),
   head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Devenir bénévole — Green Ivory', 'Rejoignez la communauté des bénévoles Green Ivory et passez à l’action pour l’environnement en Côte d’Ivoire.', '/devenir-benevole'),
   component: Volunteer,
+  errorComponent: RouteError,
+  notFoundComponent: RouteNotFound,
 });
 function Volunteer() {
   const config = readVolunteer(useSetting('site.volunteer'));

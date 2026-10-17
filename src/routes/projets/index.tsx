@@ -1,4 +1,5 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { PageHero } from '@/components/PageHero';
 import { pageHead, useSetting } from '@/components/ManagedSite';
 import { loadPage } from '@/lib/site.functions';
@@ -9,6 +10,8 @@ export const Route=createFileRoute('/projets/')({
  loader:async()=>({cmsPage:await loadPage({data:'/projets'})}),
  head:({loaderData})=>pageHead(loaderData?.cmsPage??null,'Nos projets — Green Ivory','Découvrez tous les projets de Green Ivory : Journées Sans Plastique, Sentiers Verts et nos actions pour l’environnement en Côte d’Ivoire.','/projets'),
  component:Projects,
+ errorComponent:RouteError,
+ notFoundComponent:RouteNotFound,
 });
 function Projects(){
  const projects=visibleProjects(readProjects(useSetting('site.projects')));

@@ -1,4 +1,5 @@
 import { pageHead } from '@/components/ManagedSite';
+import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { loadPage } from '@/lib/site.functions';
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
@@ -13,6 +14,8 @@ export const Route = createFileRoute("/devenir-partenaire")({
   loader: async () => ({ cmsPage: await loadPage({ data: '/devenir-partenaire' }) }),
   head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Devenir partenaire — Green Ivory', 'Entreprises, institutions, ONG, collectivités : rejoignez Green Ivory et développons ensemble des solutions durables.', '/devenir-partenaire'),
   component: Partner,
+  errorComponent: RouteError,
+  notFoundComponent: RouteNotFound,
 });
 
 function Partner() {

@@ -1,4 +1,5 @@
 import { pageHead } from '@/components/ManagedSite';
+import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { loadPage } from '@/lib/site.functions';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
@@ -11,6 +12,8 @@ export const Route = createFileRoute("/a-propos")({
   loader:async()=>({cmsPage:await loadPage({data:'/a-propos'})}),
   head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'À propos — Green Ivory', 'Découvrez l’histoire, la mission et la vision de Green Ivory, ONG ivoirienne fondée en 2017 pour la protection de l’environnement.', '/a-propos'),
   component: About,
+  errorComponent: RouteError,
+  notFoundComponent: RouteNotFound,
 });
 
 function About() {

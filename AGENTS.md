@@ -6,6 +6,7 @@
 - Use cms_pages for published page blocks and route-specific metadata, keeping dedicated forms and collection interactions intact when replacing page copy.
 - Preserve donation controls alongside published CMS copy; derive gallery collections and filters from saved photos plus unimported originals so every administrator addition stays discoverable.
 - Share contact and volunteer anti-spam response handling; rejected fast submissions must report a retry instead of confirming persistence.
+- Use shared retry and not-found feedback on loader routes and router defaults so failed loads always retain working recovery controls.
 - Keep site-wide lists such as partner logos in editable settings with the shipped originals as fallback, so the console can change them without a code edit.
 - Keep deployment account provisioning in a private CLI, idempotent unless an explicit reset is requested; never expose account provisioning over HTTP.
 - Gate the self-hosted site startup on a one-shot administrator initialization service that verifies public signup is disabled and reads the password from a mounted secret; failed initialization must prevent the first site launch.
