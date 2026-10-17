@@ -18,6 +18,6 @@ export function notificationMessage(config: MailSettings, kind: 'contact' | 'ben
       source.city && `Ville : ${source.city}`,
       source.organization && `Organisation : ${source.organization}`,
       '', source.message || '',
-    ].filter(v => v !== undefined && v !== null && v !== false).join('\n'),
+    ].filter(v => v !== undefined && v !== null).join('\n'),
   };
 }
