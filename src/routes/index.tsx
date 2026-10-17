@@ -221,8 +221,8 @@ function Home() {
             solutions durables face aux défis environnementaux.
           </p>
           <div className="mt-7">
-            <Link to="/faire-un-don" className="btn-primary">
-              Faire un don <ArrowRight className="h-4 w-4" />
+            <Link to="/devenir-partenaire" className="btn-primary">
+              Devenir partenaire <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
