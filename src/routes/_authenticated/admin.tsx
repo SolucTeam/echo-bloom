@@ -45,7 +45,8 @@ function Admin(){
  const [values,setValues]=useState<Record<string,string>>(()=>({...defaults,...Object.fromEntries(data.settings.map(s=>[s.key,s.value]))}));
  const [menu,setMenu]=useState<{label:string,url:string}[]>(()=>{try{return JSON.parse(data.settings.find(s=>s.key==='site.menu')?.value||'null')||defaultMenu;}catch{return defaultMenu;}});
  const [footerMenu,setFooterMenu]=useState<{label:string,url:string}[]>(()=>{try{return JSON.parse(data.settings.find(s=>s.key==='site.footerMenu')?.value||'null')||defaultMenu;}catch{return defaultMenu;}});
- const [partners,setPartners]=useState<Partner[]>(()=>{try{return partnersSchema.parse(JSON.parse(data.settings.find(s=>s.key==='site.partners')?.value||'null'));}catch{return DEFAULT_PARTNERS;}});
+  const [partners,setPartners]=useState<Partner[]>(()=>{try{return partnersSchema.parse(JSON.parse(data.settings.find(s=>s.key==='site.partners')?.value||'null'));}catch{return DEFAULT_PARTNERS;}});
+  const [donations,setDonations]=useState<{label:string,url:string}[]>(()=>{try{const v=JSON.parse(data.settings.find(s=>s.key==='site.donations')?.value||'null');return Array.isArray(v)?v:[];}catch{return [];}});
  async function action(fn:()=>Promise<unknown>){setBusy(true);setNotice('');try{await fn();await router.invalidate();setNotice('Enregistré.');}catch(e){setNotice(e instanceof Error?e.message:'Opération impossible.');}finally{setBusy(false);}}
  const save=(entity:AdminEntity,payload:unknown,id?:string)=>write({data:{entity,payload,id,remove:false}});
  const remove=(entity:AdminEntity,id:string)=>{if(confirm('Supprimer définitivement cet élément ?'))action(()=>write({data:{entity,id,remove:true}}));};
