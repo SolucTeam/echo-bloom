@@ -36,7 +36,7 @@ function Partner() {
               <p className="mt-2 text-sm text-primary-foreground/80 max-w-xl">Faire un don est simple : choisissez la collecte qui vous tient à cœur et contribuez en quelques clics.</p>
             </div>
           </div>
-          <Link to="/faire-un-don" className="btn-primary shrink-0">Faire un don</Link>
+          <Link to="/faire-un-don" className="shrink-0 rounded-full bg-background text-primary px-6 py-3 text-sm font-semibold transition-all hover:opacity-90">Faire un don</Link>
         </div>
       </section>
 
