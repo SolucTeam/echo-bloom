@@ -1,5 +1,7 @@
 # Administration complète du site
 
+- [ ] Préparer les notifications e-mail contact, bénévoles et partenaires : réglages privés dans la console, messagerie SMTP sur le serveur autonome, suivi des envois et tests ; activation réelle en attente du serveur et de sa messagerie.
+
 - [x] Vérifier les 18 pages accessibles, liens internes et liens de dons externes, filtres/recherche, trois formulaires et leur réception, principales commandes de la console, export, publication CMS, édition et suppression, menu mobile et déconnexion ; quatre problèmes corrigés, retours 404 sécurisés, 47 tests réussis et données temporaires retirées. Envoi automatique d’e-mails et installation autonome restent non activés.
 
 - [x] Vérifier la page Projets et sa gestion dans la console : création, lecture complète, ordre, masquage, suppression et téléphone testés avec un administrateur ; doublons de routes supprimés, adresses invalides en 404, projets masqués exclus du sitemap et 13 tests réussis.
