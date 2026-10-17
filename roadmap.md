@@ -1,5 +1,7 @@
 # Administration complète du site
 
+- [x] Ajouter les réglages de newsletter dans la console et remplacer le faux formulaire par un lien d’inscription externe configurable ; enregistrement et affichage public vérifiés.
+
 - [x] Corriger l’accès public aux fichiers privés ; téléchargements anonymes refusés, accès administrateur et images signées vérifiés, nouvelle analyse sans faille bloquante.
 
 - [x] Rendre la lecture des articles accessible depuis le blog, vérifiée dans le navigateur.
