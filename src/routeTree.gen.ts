@@ -17,6 +17,7 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as DevenirBenevoleRouteImport } from './routes/devenir-benevole'
 import { Route as DevenirPartenaireRouteImport } from './routes/devenir-partenaire'
+import { Route as FaireUnDonRouteImport } from './routes/faire-un-don'
 import { Route as GalerieRouteImport } from './routes/galerie'
 import { Route as MerciRouteImport } from './routes/merci'
 import { Route as NousJoindreRouteImport } from './routes/nous-joindre'
@@ -64,6 +65,11 @@ const DevenirBenevoleRoute = DevenirBenevoleRouteImport.update({
 const DevenirPartenaireRoute = DevenirPartenaireRouteImport.update({
   id: '/devenir-partenaire',
   path: '/devenir-partenaire',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaireUnDonRoute = FaireUnDonRouteImport.update({
+  id: '/faire-un-don',
+  path: '/faire-un-don',
   getParentRoute: () => rootRouteImport,
 } as any)
 const GalerieRoute = GalerieRouteImport.update({
@@ -121,6 +127,7 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRoute
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
+  '/faire-un-don': typeof FaireUnDonRoute
   '/galerie': typeof GalerieRoute
   '/merci': typeof MerciRoute
   '/nous-joindre': typeof NousJoindreRoute
@@ -139,6 +146,7 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogRoute
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
+  '/faire-un-don': typeof FaireUnDonRoute
   '/galerie': typeof GalerieRoute
   '/merci': typeof MerciRoute
   '/nous-joindre': typeof NousJoindreRoute
@@ -159,6 +167,7 @@ export interface FileRoutesById {
   '/blog': typeof BlogRoute
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
+  '/faire-un-don': typeof FaireUnDonRoute
   '/galerie': typeof GalerieRoute
   '/merci': typeof MerciRoute
   '/nous-joindre': typeof NousJoindreRoute
@@ -179,6 +188,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/devenir-benevole'
     | '/devenir-partenaire'
+    | '/faire-un-don'
     | '/galerie'
     | '/merci'
     | '/nous-joindre'
@@ -197,6 +207,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/devenir-benevole'
     | '/devenir-partenaire'
+    | '/faire-un-don'
     | '/galerie'
     | '/merci'
     | '/nous-joindre'
@@ -216,6 +227,7 @@ export interface FileRouteTypes {
     | '/blog'
     | '/devenir-benevole'
     | '/devenir-partenaire'
+    | '/faire-un-don'
     | '/galerie'
     | '/merci'
     | '/nous-joindre'
@@ -236,6 +248,7 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRoute
   DevenirBenevoleRoute: typeof DevenirBenevoleRoute
   DevenirPartenaireRoute: typeof DevenirPartenaireRoute
+  FaireUnDonRoute: typeof FaireUnDonRoute
   GalerieRoute: typeof GalerieRoute
   MerciRoute: typeof MerciRoute
   NousJoindreRoute: typeof NousJoindreRoute
@@ -302,6 +315,13 @@ declare module '@tanstack/react-router' {
       path: '/devenir-partenaire'
       fullPath: '/devenir-partenaire'
       preLoaderRoute: typeof DevenirPartenaireRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faire-un-don': {
+      id: '/faire-un-don'
+      path: '/faire-un-don'
+      fullPath: '/faire-un-don'
+      preLoaderRoute: typeof FaireUnDonRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/galerie': {
@@ -390,6 +410,7 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRoute,
   DevenirBenevoleRoute: DevenirBenevoleRoute,
   DevenirPartenaireRoute: DevenirPartenaireRoute,
+  FaireUnDonRoute: FaireUnDonRoute,
   GalerieRoute: GalerieRoute,
   MerciRoute: MerciRoute,
   NousJoindreRoute: NousJoindreRoute,
