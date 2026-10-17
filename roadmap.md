@@ -1,6 +1,6 @@
 # Administration complète du site
 
-- [ ] Ajouter les réglages contact et formulaire bénévoles dans la console, avec validation et vérification de l’affichage public et des envois.
+- [x] Ajouter les réglages contact et formulaire bénévoles dans la console : textes, coordonnées, champs facultatifs, missions, ouverture/fermeture ; enregistrement et envois vérifiés avec lecture des candidatures.
 
 - [x] Ajouter les réglages de newsletter dans la console et remplacer le faux formulaire par un lien d’inscription externe configurable ; enregistrement et affichage public vérifiés.
 - [x] Séparer « Faire un don » (page dédiée /faire-un-don avec les collectes) et « Devenir partenaire » (formulaire et logos), liens du site mis à jour.

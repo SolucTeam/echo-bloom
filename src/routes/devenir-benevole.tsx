@@ -46,7 +46,7 @@ function Volunteer() {
         <Button type="submit" disabled={busy} className="sm:col-span-2">{busy ? <><Loader2 className="animate-spin"/>Envoi en cours…</> : config.buttonLabel}</Button>
         {error && <p role="alert" className="sm:col-span-2 text-sm text-destructive">{error}</p>}
         {sent && <p role="status" className="sm:col-span-2 text-sm text-secondary font-medium">{config.successMessage}</p>}
-      </form> : <p role="status" className="border-l-4 border-primary p-6 bg-accent">{config.closedMessage}</p>}
+      </form> : <p data-form-closed role="status" className="border-l-4 border-primary p-6 bg-accent">{config.closedMessage}</p>}
     </section>
   </>;
 }

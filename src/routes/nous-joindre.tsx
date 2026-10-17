@@ -140,7 +140,7 @@ function Contact() {
             En soumettant ce formulaire, vous acceptez que vos informations soient utilisées
             pour traiter votre demande. Aucune donnée n'est transmise à des tiers.
           </p>
-        </form> : <p role="status" className="border-l-4 border-primary p-6 bg-accent">{config.closedMessage}</p>}
+        </form> : <p data-form-closed role="status" className="border-l-4 border-primary p-6 bg-accent">{config.closedMessage}</p>}
       </section>
     </>
   );
