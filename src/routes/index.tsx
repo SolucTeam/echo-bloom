@@ -33,7 +33,7 @@ function Home() {
             </h1>
             <p className="mt-6 text-lg text-muted-foreground max-w-xl">{heroIntro}</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/devenir-partenaire" className="btn-primary">
+              <Link to="/faire-un-don" className="btn-primary">
                 Soutenir nos projets <ArrowRight className="h-4 w-4" />
               </Link>
               <Link to="/projets/journees-sans-plastique" className="btn-ghost">
@@ -221,7 +221,7 @@ function Home() {
             solutions durables face aux défis environnementaux.
           </p>
           <div className="mt-7">
-            <Link to="/devenir-partenaire" className="btn-primary">
+            <Link to="/faire-un-don" className="btn-primary">
               Faire un don <ArrowRight className="h-4 w-4" />
             </Link>
           </div>

@@ -21,6 +21,7 @@ export const Route = createFileRoute("/sitemap.xml")({
           { path: "/blog", priority: "0.7", changefreq: "weekly" as const },
           { path: "/nous-joindre", priority: "0.6", changefreq: "yearly" as const },
           { path: "/devenir-partenaire", priority: "0.7", changefreq: "monthly" as const },
+          { path: "/faire-un-don", priority: "0.7", changefreq: "monthly" as const },
           { path: "/devenir-benevole", priority: "0.7", changefreq: "monthly" as const },
           ...[...(posts.data??[]),...(setting.data?.value==='true'?[]:POSTS.filter(p=>!posts.data?.some(d=>d.slug===p.slug)))].map((p) => ({
             path: `/blog/${p.slug}`,
