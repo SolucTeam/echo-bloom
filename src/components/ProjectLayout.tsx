@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Calendar, Building2, Rocket, Heart, Handshake, CheckCircle2 } from "lucide-react";
+import { Calendar, Building2, Rocket, Heart, Handshake, CheckCircle2, ArrowLeft } from "lucide-react";
 
 export interface ProjectInfo {
   eyebrow: string;
@@ -23,6 +23,7 @@ export function ProjectLayout({ info }: { info: ProjectInfo }) {
       <section className="border-b border-border bg-accent/40">
         <div className="container-x py-14 lg:py-20 grid lg:grid-cols-12 gap-10 items-end">
           <div className="lg:col-span-7">
+            <Link to="/projets" className="mb-6 flex items-center gap-2 text-sm font-medium text-primary"><ArrowLeft className="h-4 w-4"/>Tous les projets</Link>
             <span className="eyebrow">{info.eyebrow}</span>
             <h1 className="mt-4 text-4xl lg:text-6xl font-bold tracking-tight">{info.title}</h1>
             <p className="mt-5 text-lg text-muted-foreground max-w-2xl">{info.tagline}</p>

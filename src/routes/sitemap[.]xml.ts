@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { POSTS } from "@/data/blog-posts";
+import { readProjects } from '@/lib/projects';
 import { publicClient } from '@/lib/public-client.server';
 
 const BASE_URL = import.meta.env.VITE_SITE_URL || "https://greenivory-reborn.lovable.app";
@@ -10,13 +11,13 @@ export const Route = createFileRoute("/sitemap.xml")({
     handlers: {
       GET: async () => {
         const db=publicClient();
-        const [pages,posts,setting]=await Promise.all([db.from('cms_pages').select('path').eq('published',true),db.from('blog_posts').select('slug').eq('published',true),db.from('site_content').select('value').eq('key','cms.posts.imported').maybeSingle()]);
-        if(pages.error||posts.error||setting.error)return new Response('Sitemap indisponible',{status:503});
+        const [pages,posts,setting,projectsSetting]=await Promise.all([db.from('cms_pages').select('path').eq('published',true),db.from('blog_posts').select('slug').eq('published',true),db.from('site_content').select('value').eq('key','cms.posts.imported').maybeSingle(),db.from('site_content').select('value').eq('key','site.projects').maybeSingle()]);
+        if(pages.error||posts.error||setting.error||projectsSetting.error)return new Response('Sitemap indisponible',{status:503});
         const entries = [
           { path: "/", priority: "1.0", changefreq: "weekly" as const },
           { path: "/a-propos", priority: "0.8", changefreq: "monthly" as const },
-          { path: "/projets/journees-sans-plastique", priority: "0.8", changefreq: "monthly" as const },
-          { path: "/projets/sentiers-verts", priority: "0.8", changefreq: "monthly" as const },
+          { path: "/projets", priority: "0.8", changefreq: "monthly" as const },
+          ...readProjects(projectsSetting.data?.value||'').filter(p=>p.visible).map(p=>({path:'/projets/'+p.slug,priority:'0.8',changefreq:'monthly' as const})),
           { path: "/galerie", priority: "0.6", changefreq: "monthly" as const },
           { path: "/blog", priority: "0.7", changefreq: "weekly" as const },
           { path: "/nous-joindre", priority: "0.6", changefreq: "yearly" as const },

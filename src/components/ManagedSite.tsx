@@ -18,9 +18,10 @@ export function ManagedContent({children}:{children:React.ReactNode}) {
   const path=useLocation({select:l=>l.pathname});
   const {pages}=useContext(SiteContext);
   const page=pages.find(p=>p.path===path);
+  if(path.startsWith('/projets/'))return <>{children}</>;
   if(!page) return <>{children}</>;
   const formPage=['/nous-joindre','/devenir-benevole','/devenir-partenaire'].includes(path);
-  const collectionPage=['/blog','/galerie'].includes(path);
+  const collectionPage=['/blog','/galerie','/projets'].includes(path);
   return <><CmsBlocks blocks={page.blocks}/>{(formPage||collectionPage)&&<div className={formPage?'cms-preserve-forms':'cms-preserve-collection'}>{children}</div>}</>;
 }
 export function pageHead(page:CmsPageData|null, fallbackTitle:string, fallbackDescription:string, path:string){

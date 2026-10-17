@@ -1,13 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { Menu, X, Heart, Leaf } from "lucide-react";
+import { groupProjectMenu } from '@/lib/projects';
 import { useSetting } from './ManagedSite';
 
 const nav = [
   { to: "/", label: "Accueil" },
   { to: "/a-propos", label: "À propos" },
-  { to: "/projets/journees-sans-plastique", label: "Journées sans Plastique" },
-  { to: "/projets/sentiers-verts", label: "Sentiers verts" },
+  { to: "/projets", label: "Projets" },
   { to: "/galerie", label: "Galerie" },
   { to: "/blog", label: "Blog" },
   { to: "/nous-joindre", label: "Contact" },
@@ -19,7 +19,7 @@ export function SiteHeader() {
   const siteName=useSetting('site.name','Green Ivory'),logo=useSetting('site.logo'),donation=useSetting('site.donation','/faire-un-don');
   const menuValue=useSetting('site.menu');
   let menu:{to:string,label:string}[]=[...nav];
-  try { if(menuValue)menu=(JSON.parse(menuValue) as {url:string,label:string}[]).map(n=>({to:n.url,label:n.label})); }catch{}
+  try { if(menuValue)menu=groupProjectMenu(JSON.parse(menuValue) as {url:string,label:string}[]).map(n=>({to:n.url,label:n.label})); }catch{}
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="container-x flex h-16 items-center justify-between gap-6">

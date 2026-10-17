@@ -8,6 +8,7 @@ import asset_logo from "@/assets/logo.png";
 import asset_plastic from "@/assets/plastic.jpg";
 import asset_sentiers from "@/assets/sentiers.jpg";
 export const originalPages: CmsPageData[] = [
+  {path:'/projets',title:'Nos projets — Green Ivory',description:'Découvrez les projets Green Ivory pour l’environnement et l’emploi vert en Côte d’Ivoire.',share_image:'',published:false,blocks:[{id:'section-0',type:'text',title:'Nos projets',body:'Des initiatives concrètes pour protéger l’environnement et accompagner la jeunesse en Côte d’Ivoire.',image:'',alt:'',link:'',linkLabel:'',visible:true}]},
   {
     "path": "/",
     "title": "Green Ivory — Engageons-nous pour un avenir durable",
