@@ -20,7 +20,7 @@ export function ManagedContent({children}:{children:React.ReactNode}) {
   const page=pages.find(p=>p.path===path);
   if(path.startsWith('/projets/'))return <>{children}</>;
   if(!page) return <>{children}</>;
-  const formPage=['/nous-joindre','/devenir-benevole','/devenir-partenaire'].includes(path);
+  const formPage=['/nous-joindre','/devenir-benevole','/devenir-partenaire','/faire-un-don'].includes(path);
   const collectionPage=['/blog','/galerie','/projets'].includes(path);
   return <><CmsBlocks blocks={page.blocks}/>{(formPage||collectionPage)&&<div className={formPage?'cms-preserve-forms':'cms-preserve-collection'}>{children}</div>}</>;
 }

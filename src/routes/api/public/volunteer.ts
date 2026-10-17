@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router';
 import { readVolunteer, volunteerSubmissionSchema, volunteerApplication } from '@/lib/form-settings';
+import { formSpamResponse } from '@/lib/form-antispam';
 
 export const Route = createFileRoute('/api/public/volunteer')({
   server: { handlers: { POST: async ({ request }) => {
@@ -8,7 +9,8 @@ export const Route = createFileRoute('/api/public/volunteer')({
     const result = volunteerSubmissionSchema.safeParse(body);
     if (!result.success) return Response.json({ ok: false, error: result.error.issues[0]?.message || 'Données invalides.' }, { status: 400 });
     const data = result.data;
-    if (data.website || Date.now() - data.startedAt < 2000) return Response.json({ ok: true });
+    const spamResponse = formSpamResponse(data);
+    if (spamResponse) return spamResponse;
     const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
     const { data: setting, error: settingsError } = await supabaseAdmin.from('site_content').select('value').eq('key', 'site.volunteer').maybeSingle();
     if (settingsError) return Response.json({ ok: false, error: 'Service indisponible.' }, { status: 503 });

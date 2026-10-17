@@ -3,7 +3,8 @@ import { loadPage } from '@/lib/site.functions';
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { Button } from '@/components/ui/button';
 import { supabase } from "@/integrations/supabase/client";
 import { PartnerLogos } from '@/components/PartnerLogos';
 import { Heart } from 'lucide-react';
@@ -16,6 +17,9 @@ export const Route = createFileRoute("/devenir-partenaire")({
 
 function Partner() {
   const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const submitting = useRef(false);
   return (
     <>
       <PageHero
@@ -57,13 +61,20 @@ function Partner() {
           className="lg:col-span-3 bento p-8 grid sm:grid-cols-2 gap-4"
           onSubmit={async (e) => {
             e.preventDefault();
+            if (submitting.current) return;
+            submitting.current = true;
+            setBusy(true); setSent(false); setErrorMessage('');
             const form = e.currentTarget;
             const f = new FormData(form);
             const g = (k: string) => String(f.get(k) ?? "").trim().slice(0, 5000) || null;
             const name = [g("firstname"), g("lastname")].filter(Boolean).join(" ");
             const msg = [g("country") && `Pays : ${g("country")}`, g("message")].filter(Boolean).join("\n\n");
-            const { error } = await supabase.from("applications").insert({ kind: "partenaire", name, email: g("email") ?? "", phone: g("phone"), organization: g("org"), message: msg || null });
-            if (!error) { setSent(true); form.reset(); } else alert("Envoi impossible, réessayez.");
+            try {
+              const { error } = await supabase.from("applications").insert({ kind: "partenaire", name, email: g("email") ?? "", phone: g("phone"), organization: g("org"), message: msg || null });
+              if (error) throw new Error('Envoi impossible, réessayez.');
+              setSent(true); form.reset();
+            } catch { setErrorMessage('Envoi impossible, réessayez.'); }
+            finally { submitting.current = false; setBusy(false); }
           }}
         >
           <h3 className="sm:col-span-2 text-2xl font-bold">Formulaire de partenariat</h3>
@@ -74,11 +85,12 @@ function Partner() {
           <Field label="Pays de résidence" name="country" />
           <Field label="Organisation" name="org" />
           <div className="sm:col-span-2">
-            <label className="text-sm font-medium">Votre message</label>
-            <textarea name="message" maxLength={5000} required rows={5} className="mt-2 w-full rounded-2xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
+            <label htmlFor="partner-message" className="text-sm font-medium">Votre message</label>
+            <textarea id="partner-message" name="message" maxLength={5000} required rows={5} className="mt-2 w-full rounded-2xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
           </div>
-          <button className="sm:col-span-2 btn-primary justify-center">Envoyer ma demande</button>
-          {sent && <p className="sm:col-span-2 text-sm text-secondary font-medium">Merci, nous vous recontactons rapidement.</p>}
+          <Button type="submit" disabled={busy} className="sm:col-span-2 btn-primary justify-center">{busy ? 'Envoi en cours…' : 'Envoyer ma demande'}</Button>
+          {errorMessage && <p role="alert" className="sm:col-span-2 text-sm text-destructive">{errorMessage}</p>}
+          {sent && <p role="status" className="sm:col-span-2 text-sm text-secondary font-medium">Merci, nous vous recontactons rapidement.</p>}
         </form>
       </section>
     </>
@@ -88,8 +100,8 @@ function Partner() {
 function Field({ label, ...props }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div>
-      <label className="text-sm font-medium">{label}</label>
-      <input {...props} className="mt-2 w-full rounded-full border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
+      <label htmlFor={'partner-'+props.name} className="text-sm font-medium">{label}</label>
+      <input id={'partner-'+props.name} {...props} className="mt-2 w-full rounded-full border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
     </div>
   );
 }
