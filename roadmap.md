@@ -1,6 +1,7 @@
 # Administration complète du site
 
-- [ ] Préparer les notifications e-mail contact, bénévoles et partenaires : réglages privés dans la console, messagerie SMTP sur le serveur autonome, suivi des envois et tests ; activation réelle en attente du serveur et de sa messagerie.
+- [x] Préparer les notifications e-mail contact, bénévoles et partenaires : réglages privés enregistrés et relus dans la console avec un administrateur, SMTP isolé sur le serveur autonome, suivi des envois et 16 tests réussis ; aucun envoi activé.
+- [ ] Activer et vérifier la réception réelle des notifications : bloqué par l’absence de serveur et de connexion de messagerie SMTP.
 
 - [x] Vérifier les 18 pages accessibles, liens internes et liens de dons externes, filtres/recherche, trois formulaires et leur réception, principales commandes de la console, export, publication CMS, édition et suppression, menu mobile et déconnexion ; quatre problèmes corrigés, retours 404 sécurisés, 47 tests réussis et données temporaires retirées. Envoi automatique d’e-mails et installation autonome restent non activés.
 
