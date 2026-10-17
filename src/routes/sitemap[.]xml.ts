@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { POSTS } from "@/data/blog-posts";
 import { readProjects } from '@/lib/projects';
+import { isPublicProjectPath } from '@/lib/project-schema';
 import { publicClient } from '@/lib/public-client.server';
 
 const BASE_URL = import.meta.env.VITE_SITE_URL || "https://greenivory-reborn.lovable.app";
@@ -30,7 +31,7 @@ export const Route = createFileRoute("/sitemap.xml")({
             changefreq: "monthly" as const,
           })),
         ];
-        for(const page of pages.data??[])if(!entries.some(e=>e.path===page.path))entries.push({path:page.path,priority:'0.6',changefreq:'monthly'});
+        for(const page of pages.data??[])if(isPublicProjectPath(page.path,readProjects(projectsSetting.data?.value||''))&&!entries.some(e=>e.path===page.path))entries.push({path:page.path,priority:'0.6',changefreq:'monthly'});
         const escapeXml=(s:string)=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
         const xml = [
           `<?xml version="1.0" encoding="UTF-8"?>`,
