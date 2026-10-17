@@ -1,6 +1,6 @@
 # Administration complète du site
 
-- [ ] Vérifier la page Projets et sa gestion dans la console avec un administrateur, corriger les problèmes et vérifier les régressions.
+- [x] Vérifier la page Projets et sa gestion dans la console : création, lecture complète, ordre, masquage, suppression et téléphone testés avec un administrateur ; doublons de routes supprimés, adresses invalides en 404, projets masqués exclus du sitemap et 13 tests réussis.
 
 - [x] Regrouper les projets sur /projets, corriger le menu et les liens de découverte, et ajouter leur gestion dans la console : création, textes, photos, objectifs, résultats, ordre, visibilité et suppression vérifiés.
 
