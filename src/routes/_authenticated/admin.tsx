@@ -9,6 +9,8 @@ import { pageSchema, partnersSchema, type CmsPageData, type CmsBlock, type Admin
 import { DEFAULT_PARTNERS } from '@/data/partners';
 import { DEFAULT_DONATIONS } from '@/data/donations';
 import { DonationEditor } from '@/components/DonationEditor';
+import { NewsletterEditor } from '@/components/NewsletterEditor';
+import { newsletterSchema, readNewsletter } from '@/lib/newsletter';
 import { Button } from '@/components/ui/button';
 import { RichEditor } from '@/components/RichEditor';
 import { CmsBlocks } from '@/components/ManagedSite';
@@ -30,7 +32,7 @@ const field='w-full rounded-md border border-input bg-background px-3 py-2 text-
 type Snapshot=Awaited<ReturnType<typeof adminSnapshot>>;
 type Post=Snapshot['posts'][number];
 type Photo=Snapshot['gallery'][number];
-const sections=[{id:'pages',label:'Pages',icon:FileText},{id:'posts',label:'Articles',icon:Newspaper},{id:'media',label:'Médiathèque',icon:Images},{id:'gallery',label:'Galerie',icon:ImagePlus},{id:'settings',label:'Menus & paramètres',icon:Settings},{id:'messages',label:'Messages',icon:Mail},{id:'applications',label:'Candidatures',icon:Users}] as const;
+const sections=[{id:'pages',label:'Pages',icon:FileText},{id:'posts',label:'Articles',icon:Newspaper},{id:'media',label:'Médiathèque',icon:Images},{id:'gallery',label:'Galerie',icon:ImagePlus},{id:'settings',label:'Menus & paramètres',icon:Settings},{id:'newsletter',label:'Newsletter',icon:Mail},{id:'messages',label:'Messages',icon:Mail},{id:'applications',label:'Candidatures',icon:Users}] as const;
 type Section=typeof sections[number]['id'];
 const settingsFields=[['site.name','Nom du site'],['site.logo','Logo (adresse de l’image)'],['site.tagline','Présentation du pied de page'],['site.address','Adresse'],['site.phone','Téléphone'],['site.email','E-mail'],['site.recruitment','E-mail recrutement'],['site.donation','Lien pour faire un don'],['social.facebook','Facebook'],['social.instagram','Instagram'],['social.linkedin','LinkedIn'],['social.youtube','YouTube']];
 const defaults:Record<string,string>={'site.name':'Green Ivory','site.tagline':'Le pouvoir citoyen pour l’environnement. ONG ivoirienne engagée contre la pollution plastique, pour la biodiversité et le climat depuis 2017.','site.address':'Côte d’Ivoire — Abidjan, Bingerville','site.phone':'+225 01 03 05 83 63','site.email':'info@greenivory.com','site.recruitment':'recrutement@greenivory.com','site.donation':'/devenir-partenaire'};
@@ -48,6 +50,7 @@ function Admin(){
  const [menu,setMenu]=useState<{label:string,url:string}[]>(()=>{try{return JSON.parse(data.settings.find(s=>s.key==='site.menu')?.value||'null')||defaultMenu;}catch{return defaultMenu;}});
  const [footerMenu,setFooterMenu]=useState<{label:string,url:string}[]>(()=>{try{return JSON.parse(data.settings.find(s=>s.key==='site.footerMenu')?.value||'null')||defaultMenu;}catch{return defaultMenu;}});
   const [partners,setPartners]=useState<Partner[]>(()=>{try{return partnersSchema.parse(JSON.parse(data.settings.find(s=>s.key==='site.partners')?.value||'null'));}catch{return DEFAULT_PARTNERS;}});
+  const [newsletter,setNewsletter]=useState(()=>readNewsletter(data.settings.find(s=>s.key==='site.newsletter')?.value||''));
   const [donations,setDonations]=useState<{label:string,url:string}[]>(()=>{try{const v=JSON.parse(data.settings.find(s=>s.key==='site.donations')?.value||'null');return Array.isArray(v)?v:DEFAULT_DONATIONS;}catch{return DEFAULT_DONATIONS;}});
  async function action(fn:()=>Promise<unknown>){setBusy(true);setNotice('');try{await fn();await router.invalidate();setNotice('Enregistré.');}catch(e){setNotice(e instanceof Error?e.message:'Opération impossible.');}finally{setBusy(false);}}
  const save=(entity:AdminEntity,payload:unknown,id?:string)=>write({data:{entity,payload,id,remove:false}});
@@ -65,6 +68,7 @@ function Admin(){
   <div className="flex flex-wrap justify-between items-center gap-4 border-b border-border pb-6"><div><span className="eyebrow">Green Ivory</span><h1 className="text-3xl font-bold mt-2">Gestion du site</h1></div><div className="flex gap-2"><Button variant="outline" onClick={exportContent}><Download/>Exporter</Button><Button variant="outline" onClick={()=>navigate({to:'/'})}><Eye/>Voir le site</Button><IconAction label="Déconnexion" onClick={async()=>{await supabase.auth.signOut();navigate({to:'/auth'});}}><LogOut/></IconAction></div></div>
   <div className="grid lg:grid-cols-[220px_1fr] gap-8 mt-8"><nav aria-label="Administration" className="flex lg:flex-col flex-wrap gap-1 items-start">{sections.map(s=><Button key={s.id} variant={tab===s.id?'secondary':'ghost'} className="justify-start lg:w-full" onClick={()=>{setTab(s.id);setPage(null);setPost(null);setPhoto(null);setNotice('');}}><s.icon/>{s.label}</Button>)}</nav>
   <div className="min-w-0 space-y-6">{notice&&<p role="status" className="border-l-4 border-primary bg-accent p-3 text-sm">{notice}</p>}
+  {tab==='newsletter'&&<NewsletterEditor value={newsletter} onChange={setNewsletter} busy={busy} onSave={()=>action(async()=>{const result=newsletterSchema.safeParse(newsletter);if(!result.success)throw new Error(result.error.issues[0]?.message||'Vérifiez les champs.');await save('settings',{key:'site.newsletter',label:'Newsletter',value:JSON.stringify(result.data)});})}/>}
   {tab==='pages' && (page?<>
    <div className="flex flex-wrap gap-2 justify-between"><h2 className="text-2xl font-bold">{page.path==='/'?'Accueil':page.title}</h2><div className="flex gap-2"><Button variant="outline" onClick={()=>setPreview(!preview)}><Eye/>{preview?'Éditer':'Aperçu'}</Button><IconAction label="Fermer" onClick={()=>setPage(null)}><X/></IconAction></div></div>
    {preview?<CmsBlocks blocks={page.blocks}/>:<>
