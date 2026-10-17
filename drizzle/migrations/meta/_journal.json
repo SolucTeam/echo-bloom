@@ -15,6 +15,13 @@
       "when": 1792189574063,
       "tag": "0001_full_site_cms_and_explicit_admin",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1792251622957,
+      "tag": "0002_restrict_private_media_access",
+      "breakpoints": true
     }
   ]
 }

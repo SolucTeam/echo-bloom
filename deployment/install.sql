@@ -103,7 +103,7 @@ CREATE POLICY "public read content" ON public.site_content FOR SELECT TO anon, a
 CREATE POLICY "admin write content" ON public.site_content FOR ALL TO authenticated USING (public.has_role(auth.uid(),'admin')) WITH CHECK (public.has_role(auth.uid(),'admin'));
 
 -- Media storage policies (bucket created separately)
-CREATE POLICY "public read media" ON storage.objects FOR SELECT USING (bucket_id = 'media');
+CREATE POLICY "admin read media" ON storage.objects FOR SELECT TO authenticated USING (bucket_id = 'media' AND public.has_role(auth.uid(),'admin'));
 CREATE POLICY "admin upload media" ON storage.objects FOR INSERT TO authenticated WITH CHECK (bucket_id = 'media' AND public.has_role(auth.uid(),'admin'));
 CREATE POLICY "admin delete media" ON storage.objects FOR DELETE TO authenticated USING (bucket_id = 'media' AND public.has_role(auth.uid(),'admin'));
 CREATE OR REPLACE FUNCTION public.assign_first_admin() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path TO 'public' AS $$ BEGIN RETURN NEW; END; $$;
@@ -116,11 +116,9 @@ ALTER TABLE public.cms_pages ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "public published pages" ON public.cms_pages FOR SELECT TO anon, authenticated USING (published OR public.has_role(auth.uid(), 'admin'));
 CREATE POLICY "admin manage pages" ON public.cms_pages FOR ALL TO authenticated USING (public.has_role(auth.uid(), 'admin')) WITH CHECK (public.has_role(auth.uid(), 'admin'));
 CREATE TABLE public.cms_media (id uuid PRIMARY KEY DEFAULT gen_random_uuid(), url text NOT NULL, name text NOT NULL DEFAULT '', alt text NOT NULL DEFAULT '', created_at timestamptz NOT NULL DEFAULT now());
-GRANT SELECT ON public.cms_media TO anon;
 GRANT SELECT, INSERT, UPDATE, DELETE ON public.cms_media TO authenticated;
 GRANT ALL ON public.cms_media TO service_role;
 ALTER TABLE public.cms_media ENABLE ROW LEVEL SECURITY;
-CREATE POLICY "public media metadata" ON public.cms_media FOR SELECT TO anon, authenticated USING (true);
 CREATE POLICY "admin manage media" ON public.cms_media FOR ALL TO authenticated USING (public.has_role(auth.uid(), 'admin')) WITH CHECK (public.has_role(auth.uid(), 'admin'));
 ALTER TABLE public.blog_posts ADD COLUMN content_format text NOT NULL DEFAULT 'text';
 ALTER TABLE public.gallery_photos ADD COLUMN caption text NOT NULL DEFAULT '', ADD COLUMN alt text NOT NULL DEFAULT '';

@@ -1,5 +1,7 @@
 # Administration complète du site
 
+- [ ] Corriger l’accès public aux fichiers privés et vérifier les accès visiteurs et administrateurs avant publication.
+
 - [x] Rendre la lecture des articles accessible depuis le blog, vérifiée dans le navigateur.
 - [x] Afficher les trois logos retrouvés sur le site d'origine : Think Human Foundation, UNICEF et Union européenne.
 - [x] Rendre les logos partenaires modifiables depuis la console : liste nom + logo, les trois logos d’origine restant par défaut.
