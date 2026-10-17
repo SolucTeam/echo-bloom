@@ -27,6 +27,7 @@ async function main() {
     try {
       await transport.verify();
       await db.from('mail_settings').update({ last_heartbeat: new Date().toISOString() }).eq('id', 'notifications');
+      await db.from('mail_jobs').update({status:'failed',error_code:'retry_exhausted'}).eq('status','sending').gte('attempts',5).lte('available_at',new Date().toISOString());
       const {data, error} = await db.rpc('claim_mail_job');
       if (error) throw new Error('queue_unavailable');
       const job = data?.[0];

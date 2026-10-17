@@ -77,7 +77,6 @@ Installer Caddy sur l'hôte et adapter `deployment/Caddyfile`, en fournissant `S
 - Vérifier les pages, couvertures d'articles, images de galerie, coordonnées et menus sur la cible. Les liens absolus vers le site d'origine sont à mettre à jour dans la console.
 - Ne changer le domaine public qu'après cette vérification. Les anciens mots de passe ne sont pas exportés.
 
-## Sauvegarde et restauration
 ## E-mails automatiques sur votre serveur
 
 La console → **E-mails automatiques** règle le nom et l’adresse d’expédition, un destinataire et un objet par formulaire (contact, bénévoles, partenaires), et leur activation séparée. Ces réglages et le suivi des envois sont privés ; les visiteurs n’y ont pas accès. Les notifications sont destinées à votre équipe, pas aux visiteurs ni à une liste de diffusion. Aucun mot de passe de messagerie n’est enregistré dans la console.
