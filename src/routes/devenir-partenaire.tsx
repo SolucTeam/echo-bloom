@@ -6,6 +6,8 @@ import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PartnerLogos } from '@/components/PartnerLogos';
 import { DEFAULT_DONATIONS } from '@/data/donations';
+import { Button } from '@/components/ui/button';
+import { ArrowUpRight, Heart, Sprout } from 'lucide-react';
 
 export const Route = createFileRoute("/devenir-partenaire")({
   loader:async()=>({cmsPage:await loadPage({data:'/devenir-partenaire'})}),
@@ -22,29 +24,29 @@ function Partner() {
   return (
     <>
       <PageHero
-        eyebrow="Devenez partenaire"
-        title="La sauvegarde de notre planète est l’affaire de tous."
-        intro="Entreprises, institutions, ONG, collectivités… Rejoignez Green Ivory pour développer des solutions durables face aux défis environnementaux."
+        eyebrow="Agir avec Green Ivory"
+        title="Faire un don"
+        intro="Soutenez les actions de Green Ivory en contribuant à une collecte. Ensemble, protégeons notre environnement."
       />
-      <section className="container-x pt-12">
-        <div className="bento p-10 bg-primary text-primary-foreground border-0 text-center relative overflow-hidden">
-          <p className="eyebrow">Faire un don</p>
-          <h2 className="text-3xl md:text-4xl font-bold">Votre don finance directement nos actions de terrain.</h2>
-          <p className="mt-3 text-base opacity-85 max-w-2xl mx-auto">Dépollution des plages, reboisement, éducation environnementale : chaque contribution a un impact mesurable.</p>
-          <div className="mt-7 flex flex-col sm:flex-row justify-center gap-3">
+      <section className="bg-primary text-primary-foreground py-12 sm:py-16" data-donation-collections>
+        <div className="container-x">
+          <div className="flex items-center gap-2 text-leaf text-sm font-semibold"><Sprout className="size-5" aria-hidden="true" />Un geste, un impact</div>
+          <div className="mt-4 max-w-3xl">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-normal">Soutenez une collecte qui vous tient à cœur.</h2>
+            <p className="mt-4 text-primary-foreground/80 max-w-2xl">Dépollution des plages, reboisement, éducation environnementale : contribuons à un avenir plus durable.</p>
+          </div>
+          <div className="mt-8 grid md:grid-cols-2 gap-4">
             {donations.map((d,i) => (
-              <a
-                key={i}
-                href={d.url}
-                target={d.url.startsWith('/') ? undefined : '_blank'}
-                rel="noopener noreferrer"
-                className="rounded-full bg-leaf text-primary px-8 py-4 text-base font-semibold hover:opacity-90 transition"
-              >
-                {d.label}
-              </a>
+              <article key={`${d.url}-${i}`} className="rounded-lg bg-card text-card-foreground p-6 sm:p-7 flex flex-col min-w-0">
+                <div className="flex items-center justify-between gap-4 mb-5"><Heart className="size-6 text-secondary" aria-hidden="true" /><span className="text-xs text-muted-foreground">Collecte {String(i+1).padStart(2,'0')}</span></div>
+                <h3 className="text-xl sm:text-2xl font-bold tracking-normal break-words">{d.label}</h3>
+                <p className="mt-2 text-sm text-muted-foreground break-all">{(() => { try { return new URL(d.url).hostname.replace(/^www\./,''); } catch { return ''; } })()}</p>
+                <Button asChild className="mt-6 h-auto min-h-11 w-full justify-between whitespace-normal text-left py-3">
+                  <a href={d.url} target="_blank" rel="noopener noreferrer" aria-label={`Contribuer à ${d.label} (nouvel onglet)`}><span>Contribuer à cette collecte</span><ArrowUpRight aria-hidden="true" /></a>
+                </Button>
+              </article>
             ))}
           </div>
-          {donations.length===0 && <p className="mt-3 text-sm opacity-75">Les boutons de don sont configurés dans la console d’administration.</p>}
         </div>
       </section>
       <section className="container-x pt-12" data-partner-logos>
