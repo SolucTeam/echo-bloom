@@ -1,6 +1,6 @@
 # Administration complète du site
 
-- [ ] Regrouper les projets sur /projets, corriger le menu et les liens de découverte, et ajouter leur gestion complète dans la console.
+- [x] Regrouper les projets sur /projets, corriger le menu et les liens de découverte, et ajouter leur gestion dans la console : création, textes, photos, objectifs, résultats, ordre, visibilité et suppression vérifiés.
 
 - [x] Ajouter les réglages contact et formulaire bénévoles dans la console : textes, coordonnées, champs facultatifs, missions, ouverture/fermeture ; enregistrement et envois vérifiés avec lecture des candidatures.
 

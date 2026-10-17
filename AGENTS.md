@@ -13,4 +13,4 @@
 - Store newsletter display settings and the external subscription-page link as a validated site setting; campaign sending stays with a dedicated external email service, avoiding a nonfunctional local signup form.
 - Store contact and volunteer form configuration in validated site settings shared by public pages and submission handlers; enforce closure and optional-field visibility server-side.
 
-- Keep the project catalogue and structured detail content in validated site settings, with original project fallbacks; use /projets for discovery and dynamic /projets/$slug detail routes while preserving existing URLs.
+- Keep the project catalogue and structured detail content in validated site settings, with original project fallbacks; use /projets for discovery and dynamic /projets/$slug detail routes while preserving existing URLs. Structured project details take precedence over legacy CMS blocks; CMS pages retain route metadata and the collection introduction.
