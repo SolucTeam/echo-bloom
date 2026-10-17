@@ -22,6 +22,13 @@
       "when": 1792251622957,
       "tag": "0002_restrict_private_media_access",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1792252560416,
+      "tag": "0003_enforce_form_configuration",
+      "breakpoints": true
     }
   ]
 }
