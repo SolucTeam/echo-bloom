@@ -5,6 +5,7 @@ import { PageHero } from "@/components/PageHero";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { PartnerLogos } from '@/components/PartnerLogos';
+import { DEFAULT_DONATIONS } from '@/data/donations';
 
 export const Route = createFileRoute("/devenir-partenaire")({
   loader:async()=>({cmsPage:await loadPage({data:'/devenir-partenaire'})}),
