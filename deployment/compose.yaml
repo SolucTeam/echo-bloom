@@ -36,9 +36,33 @@ services:
       SUPABASE_SERVICE_ROLE_KEY: ${SERVICE_ROLE_KEY:?Set SERVICE_ROLE_KEY}
     networks:
       - backend
+  mail-worker:
+    profiles: ["mail"]
+    depends_on:
+      admin-init:
+        condition: service_completed_successfully
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+      target: mail-worker
+    restart: unless-stopped
+    environment:
+      SUPABASE_URL: ${INTERNAL_BACKEND_URL:?Set INTERNAL_BACKEND_URL}
+      SUPABASE_SERVICE_ROLE_KEY: ${SERVICE_ROLE_KEY:?Set SERVICE_ROLE_KEY}
+      MAIL_WORKER_ENABLED: ${MAIL_WORKER_ENABLED:-false}
+      SMTP_HOST: ${SMTP_HOST:-}
+      SMTP_PORT: ${SMTP_PORT:-587}
+      SMTP_USER: ${SMTP_USER:-}
+      SMTP_PASSWORD_FILE: /run/secrets/smtp_password
+    secrets:
+      - smtp_password
+    networks:
+      - backend
 secrets:
   admin_password:
     file: ${ADMIN_PASSWORD_FILE:?Set ADMIN_PASSWORD_FILE to an absolute private file path}
+  smtp_password:
+    file: ${SMTP_PASSWORD_FILE:-/etc/green-ivory/smtp-password}
 networks:
   backend:
     external: true

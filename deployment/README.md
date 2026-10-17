@@ -78,6 +78,25 @@ Installer Caddy sur l'hôte et adapter `deployment/Caddyfile`, en fournissant `S
 - Ne changer le domaine public qu'après cette vérification. Les anciens mots de passe ne sont pas exportés.
 
 ## Sauvegarde et restauration
+## E-mails automatiques sur votre serveur
+
+La console → **E-mails automatiques** règle le nom et l’adresse d’expédition, un destinataire et un objet par formulaire (contact, bénévoles, partenaires), et leur activation séparée. Ces réglages et le suivi des envois sont privés ; les visiteurs n’y ont pas accès. Les notifications sont destinées à votre équipe, pas aux visiteurs ni à une liste de diffusion. Aucun mot de passe de messagerie n’est enregistré dans la console.
+
+Sur une installation existante, appliquer `drizzle/migrations/0004_private_server_email_notifications.sql` une seule fois. Sur une installation neuve, le schéma complet `deployment/install.sql` inclut cette préparation.
+
+Renseigner `SMTP_HOST`, `SMTP_PORT` (587 avec STARTTLS, ou 465 avec TLS), `SMTP_USER` et `MAIL_WORKER_ENABLED=true` dans votre fichier privé `server.env`. Utiliser une adresse d’expédition autorisée par votre messagerie, sur un domaine que vous possédez ; configurer SPF/DKIM selon ses instructions. Le serveur vérifie les certificats TLS et ne permet pas d’envoi non chiffré.
+
+Créer un fichier privé contenant seulement le mot de passe SMTP et renseigner son chemin dans `SMTP_PASSWORD_FILE`. Ce secret doit être lisible par UID 1000 dans le conteneur, sans lecture publique ; ne jamais le committer, l’ajouter aux variables `VITE_` ou le coller dans la console. Le service de mail n’expose aucun port HTTP ou SMTP.
+
+```sh
+docker compose --env-file /etc/green-ivory/server.env -f deployment/compose.yaml --profile mail up -d --build
+```
+
+Enregistrer les réglages dans la console, puis actualiser la page : « Messagerie du serveur connectée » apparaît après une connexion SMTP vérifiée. **Envoyer un test au destinataire Contact** utilise les réglages enregistrés ; vérifier « Envoyé » dans les derniers envois **et la réception dans la boîte e-mail**, puis activer les notifications souhaitées. Les tests sont limités à un par minute. Tant que votre serveur et sa messagerie ne sont pas installés, le site Lovable conserve ces réglages sans envoyer d’e-mail.
+
+Chaque demande enregistrée crée au plus un travail de notification, traité par un processus privé séparé. Un échec SMTP ne supprime pas la demande et ne demande pas au visiteur de la renvoyer : elle reste dans Messages/Candidatures. Les tentatives échouées sont reprises jusqu’à cinq fois ; le suivi affiche l’échec après cela. Désactiver une rubrique dans la console arrête aussi ses travaux encore en attente. Comme tout envoi SMTP, une interruption après acceptation par la messagerie peut exceptionnellement produire un doublon lors d’une reprise. La newsletter conserve son service externe ; les e-mails de connexion restent distincts. La réception SMTP réelle nécessite une vérification sur votre serveur.
+
+## Sauvegarde et restauration
 Conserver une sauvegarde PostgreSQL via `pg_dump`, les volumes de fichiers du service de stockage et la configuration privée chiffrée. Le JSON de la console ne remplace pas une sauvegarde des fichiers et des comptes. Sauvegarder également les versions des images Docker et du code.
 
 Pour restaurer : arrêter les écritures, restaurer PostgreSQL et les volumes de stockage dans une installation de même version, restaurer sa configuration privée, démarrer puis vérifier un téléchargement de fichier et une connexion. Tester cette procédure sur une seconde installation avant de l'utiliser en production.

@@ -18,3 +18,4 @@
 
 - Keep the project catalogue and structured detail content in validated site settings, with original project fallbacks; use /projets for discovery and dynamic /projets/$slug detail routes while preserving existing URLs. Structured project details take precedence over legacy CMS blocks; CMS pages retain route metadata and the collection introduction.
 - Resolve every project detail URL through the single dynamic route; invalid, hidden and deleted projects return not found and stay out of the sitemap, preventing static-route collisions and stale CMS discovery links.
+- Keep form notification settings and jobs in administrator-only tables; enqueue atomically after persistence and process SMTP only in the private standalone mail-worker, never import its Node packages into src or expose SMTP credentials to the console.

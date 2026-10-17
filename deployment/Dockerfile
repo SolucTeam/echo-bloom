@@ -17,6 +17,12 @@ ARG VITE_SITE_URL
 ENV VITE_SUPABASE_URL=$VITE_SUPABASE_URL VITE_SUPABASE_PUBLISHABLE_KEY=$VITE_SUPABASE_PUBLISHABLE_KEY VITE_SITE_URL=$VITE_SITE_URL
 RUN bunx vite build --config vite.selfhost.config.ts
 
+FROM dependencies AS mail-worker
+COPY scripts/mail-worker.ts scripts/mail-message.ts ./scripts/
+COPY src/lib/mail-settings.ts ./src/lib/
+USER bun
+CMD ["bun", "scripts/mail-worker.ts"]
+
 FROM node:22-alpine AS site
 WORKDIR /app
 ENV NODE_ENV=production HOST=0.0.0.0 PORT=3000
