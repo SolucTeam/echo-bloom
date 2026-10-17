@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, ArrowRight } from "lucide-react";
 
+import { useSetting } from '@/components/ManagedSite';
+import { readContact } from '@/lib/form-settings';
+
 const SITE_URL = import.meta.env.VITE_SITE_URL || "https://greenivory-reborn.lovable.app";
 
 export const Route = createFileRoute("/merci")({
@@ -21,6 +24,7 @@ export const Route = createFileRoute("/merci")({
 });
 
 function ThankYou() {
+  const config=readContact(useSetting('site.contact'));
   return (
     <section className="container-x py-24 lg:py-32">
       <div className="bento p-10 lg:p-14 max-w-2xl mx-auto text-center">
@@ -29,8 +33,7 @@ function ThankYou() {
         </span>
         <h1 className="mt-6 text-3xl lg:text-4xl font-bold">Merci pour votre message !</h1>
         <p className="mt-4 text-muted-foreground">
-          Nous avons bien reçu votre demande. Notre équipe revient vers vous
-          dans les 48 heures à l'adresse e-mail que vous avez indiquée.
+          {config.successMessage}
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
           <Link to="/" className="btn-ghost">Retour à l'accueil</Link>

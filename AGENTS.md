@@ -11,3 +11,4 @@
 - Keep backup transfer scripts outside runtime routes and never emit account credentials or private content in logs.
 - Keep media storage and media-library metadata administrator-only; public pages use explicitly saved signed image URLs so unpublished library files cannot be enumerated or downloaded anonymously.
 - Store newsletter display settings and the external subscription-page link as a validated site setting; campaign sending stays with a dedicated external email service, avoiding a nonfunctional local signup form.
+- Store contact and volunteer form configuration in validated site settings shared by public pages and submission handlers; enforce closure and optional-field visibility server-side.

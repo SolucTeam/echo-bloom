@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 import { adminEntitySchema, pageSchema, postSchema, gallerySchema, mediaSchema, settingSchema, partnersSchema, safeLink } from './cms-schema';
 import sanitizeHtml from 'sanitize-html';
+import { contactSettingsSchema, volunteerSettingsSchema, contactDetailsSchema } from './form-settings';
 import { newsletterSchema } from './newsletter';
 
 const adminMiddleware = requireSupabaseAuth;
@@ -52,6 +53,9 @@ export const adminWrite = createServerFn({method:'POST'}).middleware([adminMiddl
       if(['site.menu','site.footerMenu'].includes(p.key))z.array(z.object({label:z.string().max(200),url:safeLink})).max(50).parse(JSON.parse(p.value));
       if(p.key==='site.donations')z.array(z.object({label:z.string().min(1).max(200),url:safeLink})).max(10).parse(JSON.parse(p.value));
       if(p.key==='site.partners')partnersSchema.parse(JSON.parse(p.value));
+      if(p.key==='site.contact')contactSettingsSchema.parse(JSON.parse(p.value));
+      if(p.key==='site.volunteer')volunteerSettingsSchema.parse(JSON.parse(p.value));
+      if(p.key in contactDetailsSchema.shape)contactDetailsSchema.shape[p.key as keyof typeof contactDetailsSchema.shape].parse(p.value);
       if(p.key==='site.newsletter')newsletterSchema.parse(JSON.parse(p.value));
       const result=await db.from('site_content').upsert({...p,updated_at:new Date().toISOString()});error=result.error;
     }else{
