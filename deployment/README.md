@@ -93,6 +93,8 @@ Consulter l'état avec `docker compose --env-file /etc/green-ivory/server.env -f
 
 Installer Caddy sur l'hôte et adapter `deployment/Caddyfile`, en fournissant `SITE_HOST` et `BACKEND_HOST`. Caddy termine HTTPS. Ne rendre publics que les ports 80 et 443 ; les ports 3000 et 8000 doivent rester locaux. Vérifier aussi les en-têtes et redirections configurés dans la distribution de l'API.
 
+Le fichier Caddy fourni suppose que Caddy fonctionne directement sur le même hôte que les ports locaux du site et de l’API. Dans un conteneur Caddy séparé, `127.0.0.1` désignerait ce conteneur : adapter les destinations et le réseau au lieu de reprendre ce fichier tel quel.
+
 ## 5. Transférer le contenu
 - Dans la console source, **Exporter** produit un JSON privé contenant aussi les messages et candidatures : ne pas le publier.
 - Restaurer le JSON avec la commande privée de transfert ci-dessous après création du schéma et de l'administrateur cible.
@@ -101,6 +103,8 @@ Installer Caddy sur l'hôte et adapter `deployment/Caddyfile`, en fournissant `S
 - Vérifier les pages, couvertures d'articles, images de galerie, coordonnées et menus sur la cible. Les liens absolus vers le site d'origine sont à mettre à jour dans la console.
 - Ne changer le domaine public qu'après cette vérification. Les anciens mots de passe ne sont pas exportés.
 
+Le transfert automatique copie les images distantes en HTTPS, dans les limites des formats autorisés et de 10 Mo par fichier, puis enregistre des liens signés vers le stockage privé cible. Les références non HTTPS ne sont pas automatiquement copiées : les contrôler séparément. Vérifier aussi la validité et l’expiration des liens signés ; ce transfert n’est ni une migration des comptes ni une sauvegarde complète.
+
 ## E-mails automatiques sur votre serveur
 
 La console → **E-mails automatiques** règle le nom et l’adresse d’expédition, un destinataire et un objet par formulaire (contact, bénévoles, partenaires), et leur activation séparée. Ces réglages et le suivi des envois sont privés ; les visiteurs n’y ont pas accès. Les notifications sont destinées à votre équipe, pas aux visiteurs ni à une liste de diffusion. Aucun mot de passe de messagerie n’est enregistré dans la console.
@@ -108,6 +112,8 @@ La console → **E-mails automatiques** règle le nom et l’adresse d’expédi
 Sur une installation existante, appliquer `drizzle/migrations/0004_private_server_email_notifications.sql` une seule fois. Sur une installation neuve, le schéma complet `deployment/install.sql` inclut cette préparation.
 
 Renseigner `SMTP_HOST`, `SMTP_PORT` (587 avec STARTTLS, ou 465 avec TLS), `SMTP_USER` et `MAIL_WORKER_ENABLED=true` dans votre fichier privé `server.env`. Utiliser une adresse d’expédition autorisée par votre messagerie, sur un domaine que vous possédez ; configurer SPF/DKIM selon ses instructions. Le serveur vérifie les certificats TLS et ne permet pas d’envoi non chiffré.
+
+`SMTP_HOST` doit être accessible depuis le conteneur de mail, pas seulement depuis votre navigateur ou l’hôte. `localhost` y désigne le conteneur lui-même. Vérifier la résolution du nom et l’accès réseau à votre messagerie depuis cette installation.
 
 Créer un fichier privé contenant seulement le mot de passe SMTP et renseigner son chemin dans `SMTP_PASSWORD_FILE`. Ce secret doit être lisible par UID 1000 dans le conteneur, sans lecture publique ; ne jamais le committer, l’ajouter aux variables `VITE_` ou le coller dans la console. Le service de mail n’expose aucun port HTTP ou SMTP.
 
@@ -135,5 +141,6 @@ Les pages administrées utilisent des blocs prédéfinis ; les formulaires de co
 - Contact, bénévoles et partenariat enregistrent chacun une demande visible dans la console.
 - Si SMTP est installé : un test est marqué « Envoyé » **et reçu dans la boîte du destinataire**, puis chaque notification activée est vérifiée avec son formulaire.
 - Les pages publiques, les collectes externes, la newsletter, HTTPS et la restauration d’une sauvegarde sont vérifiés sur la cible.
+- Les adresses canoniques, les liens de partage et le sitemap utilisent votre domaine cible : certains contenus ou métadonnées peuvent encore mentionner le domaine Lovable d’origine ; les contrôler avant la bascule, même si `SITE_URL` est renseigné.
 
 Ces contrôles sont à effectuer sur votre machine ; ils ne sont pas confirmés par les vérifications de l’aperçu Lovable.

@@ -1,6 +1,6 @@
 # Administration complète du site
 
-- [ ] Mettre à jour le README et le guide de déploiement local : préciser que Supabase auto-hébergé reste nécessaire, distinguer Lovable Cloud et installation autonome, documenter les essais locaux et les e-mails.
+- [x] Mettre à jour le README et le guide de déploiement local : Supabase auto-hébergé toujours nécessaire, distinction Lovable Cloud/autonome, exemples locaux, SMTP et contrôles avant bascule ; exécution Docker sur le serveur toujours non vérifiée.
 
 - [x] Préparer les notifications e-mail contact, bénévoles et partenaires : réglages privés enregistrés et relus dans la console avec un administrateur, SMTP isolé sur le serveur autonome, suivi des envois et 16 tests réussis ; aucun envoi activé.
 - [ ] Activer et vérifier la réception réelle des notifications : bloqué par l’absence de serveur et de connexion de messagerie SMTP.
