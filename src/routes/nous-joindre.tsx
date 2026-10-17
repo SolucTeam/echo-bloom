@@ -6,7 +6,8 @@ import { MapPin, Phone, Mail, ArrowRight, Loader2 } from "lucide-react";
 import { useRef, useState } from "react";
 import { useSetting } from '@/components/ManagedSite';
 
-const SITE_URL = "https://greenivory-reborn.lovable.app";
+import { Button } from '@/components/ui/button';
+import { readContact, contactSubmissionSchema } from '@/lib/form-settings';
 
 export const Route = createFileRoute("/nous-joindre")({
   loader:async()=>({cmsPage:await loadPage({data:'/nous-joindre'})}),
@@ -18,6 +19,7 @@ type FormErrors = Partial<Record<"name" | "email" | "subject" | "message" | "for
 
 function Contact() {
   const address=useSetting('site.address',"Côte d'Ivoire — Abidjan / Bingerville / Bassam"),phone=useSetting('site.phone','+225 01 03 05 83 63'),email=useSetting('site.email','info@greenivory.com'),recruitment=useSetting('site.recruitment','recrutement@greenivory.com');
+  const config=readContact(useSetting('site.contact'));
   const navigate = useNavigate();
   const startedAtRef = useRef<number>(Date.now());
   const [errors, setErrors] = useState<FormErrors>({});
@@ -25,21 +27,9 @@ function Contact() {
 
   function validate(form: HTMLFormElement): FormErrors {
     const fd = new FormData(form);
-    const name = String(fd.get("name") ?? "").trim();
-    const email = String(fd.get("email") ?? "").trim();
-    const subject = String(fd.get("subject") ?? "").trim();
-    const message = String(fd.get("message") ?? "").trim();
+    const parsed=contactSubmissionSchema.safeParse({...Object.fromEntries(fd),startedAt:startedAtRef.current});
     const e: FormErrors = {};
-    if (name.length > 100) e.name = "Nom trop long (100 max).";
-    if (!email) e.email = "L'email est requis.";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) e.email = "Email invalide.";
-    else if (email.length > 255) e.email = "Email trop long.";
-    if (!subject) e.subject = "L'objet est requis.";
-    else if (subject.length < 2) e.subject = "Objet trop court.";
-    else if (subject.length > 200) e.subject = "Objet trop long (200 max).";
-    if (!message) e.message = "Le message est requis.";
-    else if (message.length < 10) e.message = "Message trop court (10 caractères min).";
-    else if (message.length > 5000) e.message = "Message trop long (5000 max).";
+    if(!parsed.success)for(const issue of parsed.error.issues){const key=issue.path[0];if(key==='name'||key==='email'||key==='subject'||key==='message')e[key]=issue.message;}
     return e;
   }
 
@@ -85,8 +75,8 @@ function Contact() {
     <>
       <PageHero
         eyebrow="Contact"
-        title="Nos infos et contacts."
-        intro="Par courriel ou par téléphone, vous pouvez nous joindre en tout temps. N'hésitez pas !"
+        title={config.title}
+        intro={config.intro}
       />
 
       <section className="container-x py-16 grid lg:grid-cols-3 gap-6">
@@ -97,10 +87,9 @@ function Contact() {
 
       <section className="container-x py-10 lg:py-16 grid lg:grid-cols-2 gap-10 items-start">
         <div>
-          <h2 className="text-3xl lg:text-4xl font-bold">Restons en contact</h2>
+          <h2 className="text-3xl lg:text-4xl font-bold">{config.formTitle}</h2>
           <p className="mt-4 text-muted-foreground max-w-md">
-            Une question, un partenariat, une idée de projet ? Écrivez-nous —
-            nous revenons vers vous sous 48h.
+            {config.description}
           </p>
           <div className="mt-8 bento p-6 bg-accent border-0">
             <h3 className="font-semibold text-lg">Devenir bénévole</h3>
@@ -114,7 +103,7 @@ function Contact() {
           </div>
         </div>
 
-        <form className="bento p-7 space-y-4" onSubmit={onSubmit} noValidate>
+        {config.enabled ? <form className="bento p-7 space-y-4" onSubmit={onSubmit} noValidate>
           {/* Honeypot — must remain empty. Hidden from humans. */}
           <div aria-hidden="true" className="absolute -left-[9999px] top-auto h-0 w-0 overflow-hidden">
             <label>
@@ -123,9 +112,9 @@ function Contact() {
             </label>
           </div>
 
-          <Field label="Votre nom (facultatif)" name="name" autoComplete="name" error={errors.name} />
-          <Field label="Email" name="email" type="email" required autoComplete="email" error={errors.email} />
-          <Field label="Objet" name="subject" required error={errors.subject} />
+          <Field label="Votre nom (facultatif)" name="name" maxLength={100} autoComplete="name" error={errors.name} />
+          <Field label="Email" name="email" type="email" maxLength={255} required autoComplete="email" error={errors.email} />
+          <Field label="Objet" name="subject" maxLength={200} required error={errors.subject} />
           <div>
             <label className="text-sm font-medium" htmlFor="message">Message</label>
             <textarea
@@ -133,6 +122,7 @@ function Contact() {
               name="message"
               required
               rows={6}
+              maxLength={5000}
               className="mt-2 w-full rounded-2xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"
               aria-invalid={errors.message ? true : undefined}
             />
@@ -143,14 +133,14 @@ function Contact() {
             <p className="rounded-xl bg-destructive/10 text-destructive px-4 py-3 text-sm">{errors.form}</p>
           )}
 
-          <button type="submit" disabled={loading} className="btn-primary w-full justify-center disabled:opacity-60">
-            {loading ? <><Loader2 className="h-4 w-4 animate-spin" /> Envoi en cours…</> : "Envoyer le message"}
-          </button>
+          <Button type="submit" disabled={loading} className="btn-primary w-full justify-center disabled:opacity-60">
+            {loading ? <><Loader2 className="h-4 w-4 animate-spin" /> Envoi en cours…</> : config.buttonLabel}
+          </Button>
           <p className="text-xs text-muted-foreground">
             En soumettant ce formulaire, vous acceptez que vos informations soient utilisées
             pour traiter votre demande. Aucune donnée n'est transmise à des tiers.
           </p>
-        </form>
+        </form> : <p role="status" className="border-l-4 border-primary p-6 bg-accent">{config.closedMessage}</p>}
       </section>
     </>
   );

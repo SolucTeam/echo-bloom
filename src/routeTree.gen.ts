@@ -27,6 +27,7 @@ import { Route as BlogSlugRouteImport } from './routes/blog_.$slug'
 import { Route as ProjetsJourneesSansPlastiqueRouteImport } from './routes/projets/journees-sans-plastique'
 import { Route as ProjetsSentiersVertsRouteImport } from './routes/projets/sentiers-verts'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
+import { Route as ApiPublicVolunteerRouteImport } from './routes/api/public/volunteer'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -118,6 +119,11 @@ const ApiPublicContactRoute = ApiPublicContactRouteImport.update({
   path: '/api/public/contact',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiPublicVolunteerRoute = ApiPublicVolunteerRouteImport.update({
+  id: '/api/public/volunteer',
+  path: '/api/public/volunteer',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -137,6 +143,7 @@ export interface FileRoutesByFullPath {
   '/projets/journees-sans-plastique': typeof ProjetsJourneesSansPlastiqueRoute
   '/projets/sentiers-verts': typeof ProjetsSentiersVertsRoute
   '/api/public/contact': typeof ApiPublicContactRoute
+  '/api/public/volunteer': typeof ApiPublicVolunteerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -156,6 +163,7 @@ export interface FileRoutesByTo {
   '/projets/journees-sans-plastique': typeof ProjetsJourneesSansPlastiqueRoute
   '/projets/sentiers-verts': typeof ProjetsSentiersVertsRoute
   '/api/public/contact': typeof ApiPublicContactRoute
+  '/api/public/volunteer': typeof ApiPublicVolunteerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -177,6 +185,7 @@ export interface FileRoutesById {
   '/projets/journees-sans-plastique': typeof ProjetsJourneesSansPlastiqueRoute
   '/projets/sentiers-verts': typeof ProjetsSentiersVertsRoute
   '/api/public/contact': typeof ApiPublicContactRoute
+  '/api/public/volunteer': typeof ApiPublicVolunteerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -198,6 +207,7 @@ export interface FileRouteTypes {
     | '/projets/journees-sans-plastique'
     | '/projets/sentiers-verts'
     | '/api/public/contact'
+    | '/api/public/volunteer'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -217,6 +227,7 @@ export interface FileRouteTypes {
     | '/projets/journees-sans-plastique'
     | '/projets/sentiers-verts'
     | '/api/public/contact'
+    | '/api/public/volunteer'
   id:
     | '__root__'
     | '/'
@@ -237,6 +248,7 @@ export interface FileRouteTypes {
     | '/projets/journees-sans-plastique'
     | '/projets/sentiers-verts'
     | '/api/public/contact'
+    | '/api/public/volunteer'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -257,6 +269,7 @@ export interface RootRouteChildren {
   ProjetsJourneesSansPlastiqueRoute: typeof ProjetsJourneesSansPlastiqueRoute
   ProjetsSentiersVertsRoute: typeof ProjetsSentiersVertsRoute
   ApiPublicContactRoute: typeof ApiPublicContactRoute
+  ApiPublicVolunteerRoute: typeof ApiPublicVolunteerRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -387,6 +400,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiPublicContactRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/public/volunteer': {
+      id: '/api/public/volunteer'
+      path: '/api/public/volunteer'
+      fullPath: '/api/public/volunteer'
+      preLoaderRoute: typeof ApiPublicVolunteerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -419,6 +439,7 @@ const rootRouteChildren: RootRouteChildren = {
   ProjetsJourneesSansPlastiqueRoute: ProjetsJourneesSansPlastiqueRoute,
   ProjetsSentiersVertsRoute: ProjetsSentiersVertsRoute,
   ApiPublicContactRoute: ApiPublicContactRoute,
+  ApiPublicVolunteerRoute: ApiPublicVolunteerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

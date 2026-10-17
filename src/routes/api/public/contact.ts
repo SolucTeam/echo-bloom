@@ -1,16 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { z } from "zod";
-
-const ContactSchema = z.object({
-  name: z.string().trim().max(100).optional().or(z.literal("")),
-  email: z.string().trim().email("Email invalide").max(255),
-  subject: z.string().trim().min(2, "Objet trop court").max(200),
-  message: z.string().trim().min(10, "Message trop court").max(5000),
-  // Honeypot (must stay empty)
-  website: z.string().max(0).optional().or(z.literal("")),
-  // Time-trap: ms since form rendered
-  startedAt: z.number().int().nonnegative().optional(),
-});
+import { contactSubmissionSchema as ContactSchema, readContact } from '@/lib/form-settings';
 
 export const Route = createFileRoute("/api/public/contact")({
   server: {
@@ -49,6 +38,10 @@ export const Route = createFileRoute("/api/public/contact")({
           null;
 
         const { supabaseAdmin } = await import('@/integrations/supabase/client.server');
+        const {data:setting,error:settingsError}=await supabaseAdmin.from('site_content').select('value').eq('key','site.contact').maybeSingle();
+        if(settingsError)return Response.json({ok:false,error:'Service indisponible.'},{status:503});
+        const config=readContact(setting?.value||'');
+        if(!config.enabled)return Response.json({ok:false,error:config.closedMessage},{status:403});
         const { error } = await supabaseAdmin.from("contact_submissions").insert({
           name: data.name || null,
           email: data.email,
@@ -58,7 +51,7 @@ export const Route = createFileRoute("/api/public/contact")({
         });
 
         if (error) {
-          console.error("contact insert error", error);
+          console.error("Contact submission could not be saved.");
           return Response.json(
             { ok: false, error: "Impossible d'enregistrer votre message" },
             { status: 500 },
