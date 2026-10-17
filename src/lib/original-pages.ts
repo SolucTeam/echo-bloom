@@ -350,6 +350,7 @@ export const originalPages: CmsPageData[] = [
         "visible": true
       }
     ],
+    "share_image": "",
     "published": false
   },
   {
