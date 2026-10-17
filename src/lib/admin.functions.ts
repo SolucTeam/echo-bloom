@@ -4,6 +4,7 @@ import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 import { adminEntitySchema, pageSchema, postSchema, gallerySchema, mediaSchema, settingSchema, partnersSchema, safeLink } from './cms-schema';
 import sanitizeHtml from 'sanitize-html';
 import { contactSettingsSchema, volunteerSettingsSchema, contactDetailsSchema } from './form-settings';
+import { projectsSchema } from './project-schema';
 import { newsletterSchema } from './newsletter';
 
 const adminMiddleware = requireSupabaseAuth;
@@ -52,6 +53,7 @@ export const adminWrite = createServerFn({method:'POST'}).middleware([adminMiddl
       if(p.key.startsWith('social.')||['site.logo','site.donation'].includes(p.key))safeLink.parse(p.value);
       if(['site.menu','site.footerMenu'].includes(p.key))z.array(z.object({label:z.string().max(200),url:safeLink})).max(50).parse(JSON.parse(p.value));
       if(p.key==='site.donations')z.array(z.object({label:z.string().min(1).max(200),url:safeLink})).max(10).parse(JSON.parse(p.value));
+      if(p.key==='site.projects')projectsSchema.parse(JSON.parse(p.value));
       if(p.key==='site.partners')partnersSchema.parse(JSON.parse(p.value));
       if(p.key==='site.contact')contactSettingsSchema.parse(JSON.parse(p.value));
       if(p.key==='site.volunteer')volunteerSettingsSchema.parse(JSON.parse(p.value));

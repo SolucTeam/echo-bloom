@@ -7,8 +7,10 @@ import hero from "@/assets/hero.jpg";
 import plastic from "@/assets/plastic.jpg";
 import biodiversity from "@/assets/biodiversity.jpg";
 import climate from "@/assets/climate.jpg";
-import journees from "@/assets/journees.jpg";
-import sentiers from "@/assets/sentiers.jpg";
+import { ProjectCards } from '@/components/ProjectCards';
+import { useSetting } from '@/components/ManagedSite';
+import { readProjects } from '@/lib/projects';
+import { visibleProjects } from '@/lib/project-schema';
 import { PartnerLogos } from '@/components/PartnerLogos';
 
 export const Route = createFileRoute("/")({
@@ -18,6 +20,7 @@ export const Route = createFileRoute("/")({
 });
 
 function Home() {
+  const projects=visibleProjects(readProjects(useSetting('site.projects')));
   const heroTitle = useSiteText("home.hero.title", "");
   const heroIntro = useSiteText("home.hero.intro", "Green Ivory est une ONG ivoirienne fondée en 2017. Nous formons les jeunes, dépolluons les plages et plaidons pour des politiques climatiques ambitieuses en Côte d’Ivoire.");
   return (
@@ -36,7 +39,7 @@ function Home() {
               <Link to="/faire-un-don" className="btn-primary">
                 Soutenir nos projets <ArrowRight className="h-4 w-4" />
               </Link>
-              <Link to="/projets/journees-sans-plastique" className="btn-ghost">
+              <Link to="/projets" className="btn-ghost">
                 Découvrir nos projets
               </Link>
             </div>
@@ -179,22 +182,8 @@ function Home() {
             Nos projets au cœur de l’actualité.
           </h2>
         </div>
-        <div className="grid lg:grid-cols-2 gap-6">
-          <ProjectCard
-            to="/projets/journees-sans-plastique"
-            tag="Emploi vert"
-            title="Les Journées Sans Plastique"
-            text="Une initiative majeure pour combattre la pollution plastique en Côte d’Ivoire. Réduction du plastique à usage unique, gestion des déchets, création d’emplois durables."
-            image={journees}
-          />
-          <ProjectCard
-            to="/projets/sentiers-verts"
-            tag="Éco-entrepreneuriat"
-            title="Les Sentiers Verts"
-            text="Programme pour promouvoir l’employabilité des jeunes, la citoyenneté active et la transition vers des modèles économiques durables."
-            image={sentiers}
-          />
-        </div>
+        <ProjectCards projects={projects}/>
+        <Link to="/projets" className="mt-8 inline-flex items-center gap-2 font-semibold text-primary">Tous nos projets <ArrowRight className="h-4 w-4"/></Link>
       </section>
 
       {/* Chiffres clés */}
@@ -283,22 +272,3 @@ function Pillar({ icon, title, text }: { icon: React.ReactNode; title: string; t
   );
 }
 
-function ProjectCard({ to, tag, title, text, image }: { to: string; tag: string; title: string; text: string; image: string }) {
-  return (
-    <Link to={to} className="bento group block overflow-hidden">
-      <div className="relative h-72 overflow-hidden">
-        <img src={image} alt={title} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
-        <span className="absolute top-4 left-4 rounded-full bg-background/90 backdrop-blur px-3 py-1 text-xs font-semibold text-primary">
-          <Leaf className="h-3.5 w-3.5 inline mr-1" /> {tag}
-        </span>
-      </div>
-      <div className="p-7">
-        <h3 className="text-2xl font-bold">{title}</h3>
-        <p className="mt-3 text-sm text-muted-foreground">{text}</p>
-        <span className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary">
-          En savoir plus <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-        </span>
-      </div>
-    </Link>
-  );
-}

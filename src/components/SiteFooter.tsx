@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Linkedin, Instagram, Youtube, Mail, Phone, MapPin, Leaf } from "lucide-react";
+import { groupProjectMenu } from '@/lib/projects';
 import { useSetting } from './ManagedSite';
 import { Button } from '@/components/ui/button';
 import { readNewsletter } from '@/lib/newsletter';
@@ -9,8 +10,8 @@ export function SiteFooter() {
   const name=useSetting('site.name','Green Ivory'),tagline=useSetting('site.tagline','Le pouvoir citoyen pour l’environnement. ONG ivoirienne engagée contre la pollution plastique, pour la biodiversité et le climat depuis 2017.'),address=useSetting('site.address','Côte d’Ivoire — Abidjan, Bingerville'),phone=useSetting('site.phone','+225 01 03 05 83 63'),email=useSetting('site.email','info@greenivory.com');
   const facebook=useSetting('social.facebook'),linkedin=useSetting('social.linkedin'),instagram=useSetting('social.instagram'),youtube=useSetting('social.youtube'),menuValue=useSetting('site.footerMenu');
   const newsletter=readNewsletter(useSetting('site.newsletter'));
-  let menu=[{label:'À propos',url:'/a-propos'},{label:'Journées sans Plastique',url:'/projets/journees-sans-plastique'},{label:'Sentiers Verts',url:'/projets/sentiers-verts'},{label:'Galerie',url:'/galerie'},{label:'Blog',url:'/blog'},{label:'Devenir bénévole',url:'/devenir-benevole'}];
-  try{if(menuValue)menu=JSON.parse(menuValue);}catch{}
+  let menu=[{label:'À propos',url:'/a-propos'},{label:'Projets',url:'/projets'},{label:'Galerie',url:'/galerie'},{label:'Blog',url:'/blog'},{label:'Devenir bénévole',url:'/devenir-benevole'}];
+  try{if(menuValue)menu=groupProjectMenu(JSON.parse(menuValue));}catch{}
   return (
     <footer className="mt-24 border-t border-border bg-primary text-primary-foreground">
       <div className="container-x py-16 grid gap-12 lg:grid-cols-4">
