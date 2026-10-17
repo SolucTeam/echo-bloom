@@ -46,7 +46,7 @@ export function ProjectLayout({ info }: { info: ProjectInfo }) {
           <h2 className="text-3xl lg:text-4xl font-bold">{info.goal}</h2>
           <p className="mt-5 text-muted-foreground text-lg">{info.goalDetail}</p>
         </div>
-        <img src={info.hero} alt={info.title} loading="lazy" className="bento h-[420px] w-full object-cover" />
+        {info.hero && <img src={info.hero} alt={info.title} loading="lazy" className="bento h-[420px] w-full object-cover" />}
       </section>
 
       <section className="container-x py-16 lg:py-24 grid lg:grid-cols-3 gap-10">

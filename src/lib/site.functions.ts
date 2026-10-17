@@ -4,6 +4,7 @@ import { publicClient } from './public-client.server';
 import { pageSchema } from './cms-schema';
 import { dbPostToBlogPost } from './cms';
 import { readProjects } from './projects';
+import { findVisibleProject, projectSlugSchema } from './project-schema';
 import sanitizeHtml from 'sanitize-html';
 
 export const loadSite = createServerFn({method:'GET'}).handler(async () => {
@@ -33,8 +34,9 @@ export const loadGallery = createServerFn({method:'GET'}).handler(async()=>{
   if(photos.error || setting.error) throw new Error('Impossible de charger la galerie.');
   return {photos:photos.data??[],imported:setting.data?.value==='true'};
 });
-export const loadProject=createServerFn({method:'GET'}).inputValidator((v:unknown)=>z.string().regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/).parse(v)).handler(async({data})=>{
+export const loadProject=createServerFn({method:'GET'}).inputValidator((v:unknown)=>z.string().parse(v)).handler(async({data})=>{
+ if(!projectSlugSchema.safeParse(data).success)return null;
  const db=publicClient();const result=await db.from('site_content').select('value').eq('key','site.projects').maybeSingle();
  if(result.error)throw new Error('Impossible de charger ce projet.');
- return readProjects(result.data?.value||'').find(p=>p.slug===data&&p.visible)??null;
+ return findVisibleProject(readProjects(result.data?.value||''),data);
 });

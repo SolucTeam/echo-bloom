@@ -41,9 +41,8 @@ function ThankYou() {
             Découvrir nos articles <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
-        <div className="mt-10 grid sm:grid-cols-3 gap-3 text-sm">
-          <Link to="/projets/journees-sans-plastique" className="bento p-4 hover:bg-accent transition">Journées sans Plastique</Link>
-          <Link to="/projets/sentiers-verts" className="bento p-4 hover:bg-accent transition">Sentiers Verts</Link>
+        <div className="mt-10 grid sm:grid-cols-2 gap-3 text-sm">
+          <Link to="/projets" className="bento p-4 hover:bg-accent transition">Découvrir nos projets</Link>
           <Link to="/devenir-benevole" className="bento p-4 hover:bg-accent transition">Devenir bénévole</Link>
         </div>
       </div>
