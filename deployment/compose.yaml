@@ -1,3 +1,6 @@
+# Requires a separately installed self-hosted Supabase distribution and schema.
+# This file starts only the site, private admin initialization and optional SMTP worker.
+# Backend URLs, network and keys must belong to that installation, not Lovable Cloud.
 services:
   admin-init:
     build:

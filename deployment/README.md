@@ -3,11 +3,19 @@
 ## État de cette livraison
 Le site existant reste sur Lovable Cloud. Les fichiers ci-dessous préparent une **installation séparée** : aucune bascule n'est automatique. Le fonctionnement sur un serveur Linux, la construction de l'image Docker, HTTPS et la restauration doivent encore être vérifiés sur votre machine. Un serveur n'est pas fourni.
 
+## Supabase reste nécessaire, mais auto-hébergé
+
+**Nous utilisons toujours Supabase.** Ce qui change est l’hébergement : sur l’installation autonome, les comptes, PostgreSQL, les API et les images sont gérés par la distribution Supabase installée sur votre propre serveur, pas par Lovable Cloud ni par un projet Supabase hébergé à distance.
+
+`deployment/compose.yaml` démarre uniquement le site, la création privée de l’administrateur et le processus SMTP optionnel. **Il ne contient pas les services Supabase** : installez leur distribution officielle séparément. Une base PostgreSQL seule ne suffit pas ; l’authentification, les API et le stockage sont également requis. Les noms internes `SUPABASE_*` et la bibliothèque cliente restent donc nécessaires ; ils ne signifient pas que les données sont envoyées au projet Lovable.
+
+Le site utilise TanStack Start ; sa version autonome est construite avec Vite/Nitro pour Node. Ne pas remplacer `vite.selfhost.config.ts` par la configuration de l’aperçu Lovable.
+
 ## Prérequis
 Une machine Linux avec Docker Compose, Bun 1.3, et au moins les ressources recommandées par le service auto-hébergé. Pour un site public, prévoir un serveur disponible en permanence, deux noms d'hôte et un accès administrateur. Une machine locale permet un essai, mais ne rend pas le site accessible sur Internet par elle-même.
 
 ## 1. Installer les comptes, contenus et fichiers localement
-Utiliser la distribution Docker officielle du service compatible avec les API existantes : [guide officiel d'auto-hébergement](https://supabase.com/docs/guides/self-hosting/docker). Elle comprend PostgreSQL, l'authentification, les API et le stockage. Tous ces services doivent être sur votre infrastructure, pas sur Lovable Cloud.
+Utiliser la distribution Docker officielle de Supabase : [guide officiel d'auto-hébergement](https://supabase.com/docs/guides/self-hosting/docker). Elle comprend PostgreSQL, l'authentification, les API et le stockage. Tous ces services doivent être sur votre infrastructure, pas sur Lovable Cloud.
 
 Suivre le guide pour obtenir la distribution officielle, **épingler une version**, générer les clés, définir les mots de passe et démarrer les services. Ne pas réutiliser les clés du projet Lovable. Conserver les secrets uniquement dans un fichier privé hors du dépôt, lisible par son propriétaire (`chmod 600`).
 
@@ -65,6 +73,22 @@ docker compose --env-file /etc/green-ivory/server.env -f deployment/compose.yaml
 
 La construction utilise une configuration autonome, sans l'enveloppe Vite de Lovable. Pour un essai local, utiliser une URL d'API accessible au navigateur local ; une adresse Docker interne ne fonctionne pas dans le navigateur.
 
+### Essai sur une machine locale, sans domaine public
+
+Installer d’abord les services de données et le schéma selon les sections 1 et 2, puis préparer les fichiers privés selon la section 3. Pour un navigateur ouvert **sur la même machine que Docker**, utiliser :
+
+```dotenv
+SITE_URL=http://localhost:3000
+PUBLIC_BACKEND_URL=http://localhost:8000
+INTERNAL_BACKEND_URL=http://kong:8000
+```
+
+Ces adresses sont des exemples locaux, pas des adresses de production. Le port 8000 doit correspondre au port réellement publié par votre API, limité à l’interface locale. `kong` doit être le nom accessible sur le réseau partagé avec le site ; renseigner `BACKEND_NETWORK` avec le nom réel de ce réseau. Renseigner aussi les clés de **cette installation** et les variables administrateur du tableau précédent. Configurer l’URL du site et les redirections autorisées dans le service d’authentification avec `http://localhost:3000`.
+
+Lancer la commande Docker ci-dessus, puis ouvrir `http://localhost:3000/auth` et vérifier l’accès à la console. Cet essai HTTP est réservé à la machine locale : il ne met pas le site sur Internet et ne doit pas servir à exposer des comptes ou des données publiquement. Depuis un téléphone ou une autre machine, `localhost` désigne cet appareil, pas votre serveur.
+
+Pour passer à un serveur public, remplacer les deux adresses publiques par vos adresses HTTPS, adapter les redirections d’authentification et Caddy, puis reconstruire le site avec `--build` : les adresses publiques sont incorporées lors de la construction. L’adresse interne peut rester sur le réseau Docker privé.
+
 Consulter l'état avec `docker compose --env-file /etc/green-ivory/server.env -f deployment/compose.yaml ps -a` : `admin-init` doit être terminé avec le code `0` et `site` en cours d'exécution. Les messages de création ne contiennent pas le mot de passe. Ne pas partager une sortie `docker compose config`, qui peut afficher les clés.
 
 Installer Caddy sur l'hôte et adapter `deployment/Caddyfile`, en fournissant `SITE_HOST` et `BACKEND_HOST`. Caddy termine HTTPS. Ne rendre publics que les ports 80 et 443 ; les ports 3000 et 8000 doivent rester locaux. Vérifier aussi les en-têtes et redirections configurés dans la distribution de l'API.
@@ -102,3 +126,14 @@ Pour restaurer : arrêter les écritures, restaurer PostgreSQL et les volumes de
 
 ## Limites à connaître
 Les pages administrées utilisent des blocs prédéfinis ; les formulaires de contact, partenariat et bénévolat restent des fonctions dédiées. Ce n'est pas un système de thèmes ou d'extensions WordPress. Les comptes, base et fichiers sont auto-hébergés sur la cible ; les polices Google peuvent encore être téléchargées par le navigateur. Les e-mails de contact, paiements et newsletter ne deviennent pas opérationnels par le simple déploiement : ils nécessitent leur propre configuration.
+
+## Vérifications avant une bascule
+
+- Les services Supabase sont sur votre infrastructure ; aucune variable du site ne pointe vers le projet Lovable Cloud actuel.
+- `admin-init` termine avec le code `0`, le site démarre et le compte provisionné ouvre `/admin` ; l’inscription publique reste désactivée.
+- Une modification depuis la console se retrouve sur la page publique ; une image transférée s’affiche et les fichiers privés restent inaccessibles aux visiteurs.
+- Contact, bénévoles et partenariat enregistrent chacun une demande visible dans la console.
+- Si SMTP est installé : un test est marqué « Envoyé » **et reçu dans la boîte du destinataire**, puis chaque notification activée est vérifiée avec son formulaire.
+- Les pages publiques, les collectes externes, la newsletter, HTTPS et la restauration d’une sauvegarde sont vérifiés sur la cible.
+
+Ces contrôles sont à effectuer sur votre machine ; ils ne sont pas confirmés par les vérifications de l’aperçu Lovable.
