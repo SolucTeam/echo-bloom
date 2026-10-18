@@ -1,8 +1,9 @@
-import plastic from "@/assets/plastic.jpg";
-import biodiv from "@/assets/biodiversity.jpg";
-import climate from "@/assets/climate.jpg";
-import journees from "@/assets/journees.jpg";
-import sentiers from "@/assets/sentiers.jpg";
+// Chemins publics stables : identiques en dev et en production, insensibles aux hash de build.
+const plastic = "/images/plastic.jpg";
+const biodiv = "/images/biodiversity.jpg";
+const climate = "/images/climate.jpg";
+const journees = "/images/journees.jpg";
+const sentiers = "/images/sentiers.jpg";
 
 export type BlogCategory =
   | "Pollution plastique"
