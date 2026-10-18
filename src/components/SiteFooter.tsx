@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { Facebook, Linkedin, Instagram, Youtube, Mail, Phone, MapPin, Leaf } from "lucide-react";
+import { Facebook, Linkedin, Instagram, Youtube, Mail, Phone, MapPin, Leaf, Lock } from "lucide-react";
 import { groupProjectMenu } from '@/lib/projects';
 import { useSetting } from './ManagedSite';
 import { Button } from '@/components/ui/button';
@@ -70,7 +70,12 @@ export function SiteFooter() {
       <div className="border-t border-background/10">
         <div className="container-x py-5 text-xs opacity-70 flex flex-wrap justify-between gap-2">
           <span>© {new Date().getFullYear()} {name} — Tous droits réservés.</span>
-          <span>Conçu avec ❤️ pour la planète.</span>
+          <span className="flex items-center gap-3">
+            <span>Conçu avec ❤️ pour la planète.</span>
+            <Link to="/admin" aria-label="Console d'administration" title="Console d'administration" className="opacity-50 hover:opacity-100 transition">
+              <Lock className="h-3.5 w-3.5" />
+            </Link>
+          </span>
         </div>
       </div>
     </footer>
