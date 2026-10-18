@@ -1,7 +1,7 @@
 import type { Partner } from '@/lib/cms-schema';
-import thinkHuman from '@/assets/think-human.jpg.asset.json';
-import unicef from '@/assets/unicef.png.asset.json';
-import europeanUnion from '@/assets/european-union.jpg.asset.json';
+import thinkHuman from '@/assets/think-human.jpg';
+import unicef from '@/assets/unicef.png';
+import europeanUnion from '@/assets/european-union.jpg';
 
 /** Logos présents sur le site d'origine, utilisés tant que la liste n'a pas été enregistrée depuis la console. */
 export const DEFAULT_PARTNERS: Partner[] = [
