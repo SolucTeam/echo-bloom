@@ -10,8 +10,6 @@ import { Calendar, User, ArrowRight, Search, Tag } from "lucide-react";
 import { POSTS, CATEGORIES, type BlogCategory } from "@/data/blog-posts";
 import { loadPosts } from '@/lib/site.functions';
 
-const SITE_URL = "https://greenivory-reborn.lovable.app";
-
 export const Route = createFileRoute("/blog")({
   loader:async()=>{const [content,cmsPage]=await Promise.all([loadPosts(),loadPage({data:'/blog'})]);return {...content,cmsPage};},
   head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Blog — Green Ivory | Pollution plastique, biodiversité, climat', "Articles, décryptages et conseils éco-responsables sur la pollution plastique, la biodiversité et le climat en Côte d'Ivoire.", '/blog'),

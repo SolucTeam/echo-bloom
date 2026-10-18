@@ -26,7 +26,7 @@ export function ManagedContent({children}:{children:React.ReactNode}) {
 }
 export function pageHead(page:CmsPageData|null, fallbackTitle:string, fallbackDescription:string, path:string){
   const title=page?.title||fallbackTitle,description=page?.description||fallbackDescription;
-  const base=import.meta.env.VITE_SITE_URL || 'https://greenivory-reborn.lovable.app';
+  const base=import.meta.env.VITE_SITE_URL || 'https://green-ivory-tan.vercel.app';
   const image=page?.share_image;
   return {meta:[{title},{name:'description',content:description},{property:'og:title',content:title},{property:'og:description',content:description},{property:'og:type',content:'website'},{property:'og:url',content:base+path},{name:'twitter:card',content:'summary_large_image'},...(image?.startsWith('https://')?[{property:'og:image',content:image},{name:'twitter:image',content:image}]:[])],links:[{rel:'canonical',href:base+path}]};
 }

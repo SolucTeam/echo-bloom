@@ -4,7 +4,7 @@ import { Calendar, User, ArrowLeft, ArrowRight, Tag, Clock } from "lucide-react"
 import { getPostBySlug, getRelatedPosts, type BlogPost } from "@/data/blog-posts";
 import { loadPosts } from '@/lib/site.functions';
 
-const SITE_URL = import.meta.env.VITE_SITE_URL || "https://greenivory-reborn.lovable.app";
+const SITE_URL = import.meta.env.VITE_SITE_URL || "https://green-ivory-tan.vercel.app";
 
 export const Route = createFileRoute("/blog_/$slug")({
   loader: async ({ params }) => {

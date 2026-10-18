@@ -5,7 +5,7 @@ import { readProjects } from '@/lib/projects';
 import { isPublicProjectPath } from '@/lib/project-schema';
 import { publicClient } from '@/lib/public-client.server';
 
-const BASE_URL = import.meta.env.VITE_SITE_URL || "https://greenivory-reborn.lovable.app";
+const BASE_URL = import.meta.env.VITE_SITE_URL || "https://green-ivory-tan.vercel.app";
 
 export const Route = createFileRoute("/sitemap.xml")({
   server: {

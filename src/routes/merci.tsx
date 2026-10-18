@@ -4,7 +4,7 @@ import { CheckCircle2, ArrowRight } from "lucide-react";
 import { useSetting } from '@/components/ManagedSite';
 import { readContact } from '@/lib/form-settings';
 
-const SITE_URL = import.meta.env.VITE_SITE_URL || "https://greenivory-reborn.lovable.app";
+const SITE_URL = import.meta.env.VITE_SITE_URL || "https://green-ivory-tan.vercel.app";
 
 export const Route = createFileRoute("/merci")({
   head: () => ({
