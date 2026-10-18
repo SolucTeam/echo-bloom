@@ -24,7 +24,7 @@ import { RichEditor } from '@/components/RichEditor';
 import { CmsBlocks } from '@/components/ManagedSite';
 import { supabase } from '@/integrations/supabase/client';
 import { FileText, Newspaper, Images, Settings, Mail, Users, LogOut, Plus, Save, Trash2, Pencil, ArrowUp, ArrowDown, Eye, X, Download, ImagePlus, Home } from 'lucide-react';
-import { readHomeStats, readHomeTexts, HOME_IMAGES, HOME_TEXT_FALLBACKS, DEFAULT_HOME_BIGSTATS, type HomeStat } from '@/data/home';
+import { readHomeStats, readHomeTexts, HOME_IMAGES, HOME_TEXT_FALLBACKS, DEFAULT_HOME_BIGSTATS } from '@/data/home';
 import hero from '@/assets/hero.jpg';
 import journees from '@/assets/journees.jpg';
 import plastic from '@/assets/plastic.jpg';
