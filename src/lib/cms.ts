@@ -34,12 +34,6 @@ export async function fetchPostBySlug(slug: string): Promise<BlogPost | null> {
   return data ? dbPostToBlogPost(data as DbPost) : null;
 }
 
-/** Editable site texts with built-in fallback. */
-export const EDITABLE_TEXTS: { key: string; label: string; fallback: string }[] = [
-  { key: "home.hero.title", label: "Accueil — grand titre", fallback: "" },
-  { key: "home.hero.intro", label: "Accueil — texte d'introduction", fallback: "" },
-];
-
 let cache: Record<string, string> | null = null;
 let pending: Promise<Record<string, string>> | null = null;
 function loadTexts() {

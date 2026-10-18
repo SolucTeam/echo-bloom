@@ -13,6 +13,7 @@ import { useSetting } from '@/components/ManagedSite';
 import { readProjects } from '@/lib/projects';
 import { visibleProjects } from '@/lib/project-schema';
 import { PartnerLogos } from '@/components/PartnerLogos';
+import { HOME_HERO_INTRO_FALLBACK, readHomeStats } from '@/data/home';
 
 export const Route = createFileRoute("/")({
   loader:async()=>({cmsPage:await loadPage({data:'/'})}),
@@ -25,7 +26,8 @@ export const Route = createFileRoute("/")({
 function Home() {
   const projects=visibleProjects(readProjects(useSetting('site.projects')));
   const heroTitle = useSiteText("home.hero.title", "");
-  const heroIntro = useSiteText("home.hero.intro", "Green Ivory est une ONG ivoirienne fondée en 2017. Nous formons les jeunes, dépolluons les plages et plaidons pour des politiques climatiques ambitieuses en Côte d’Ivoire.");
+  const heroIntro = useSiteText("home.hero.intro", HOME_HERO_INTRO_FALLBACK);
+  const stats = readHomeStats(useSetting('site.stats'));
   return (
     <>
       {/* HERO */}
@@ -48,9 +50,7 @@ function Home() {
             </div>
 
             <div className="mt-10 grid grid-cols-3 gap-6 max-w-md">
-              <Stat value="15k+" label="Jeunes sensibilisés" />
-              <Stat value="2 500" label="Arbres plantés" />
-              <Stat value="7 ans" label="d’engagement" />
+              {stats.map(s=><Stat key={s.label} value={s.value} label={s.label} />)}
             </div>
           </div>
 

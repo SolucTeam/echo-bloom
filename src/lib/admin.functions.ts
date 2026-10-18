@@ -59,6 +59,7 @@ export const adminWrite = createServerFn({method:'POST'}).middleware([adminMiddl
       if(p.key.startsWith('social.')||['site.logo','site.donation'].includes(p.key))safeLink.parse(p.value);
       if(['site.menu','site.footerMenu'].includes(p.key))z.array(z.object({label:z.string().max(200),url:safeLink})).max(50).parse(JSON.parse(p.value));
       if(p.key==='site.donations')z.array(z.object({label:z.string().min(1).max(200),url:safeLink})).max(10).parse(JSON.parse(p.value));
+      if(p.key==='site.stats')z.array(z.object({value:z.string().max(20),label:z.string().min(1).max(100)})).min(1).max(6).parse(JSON.parse(p.value));
       if(p.key==='site.projects')projectsSchema.parse(JSON.parse(p.value));
       if(p.key==='site.partners')partnersSchema.parse(JSON.parse(p.value));
       if(p.key==='site.contact')contactSettingsSchema.parse(JSON.parse(p.value));
