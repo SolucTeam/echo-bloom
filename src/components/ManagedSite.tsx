@@ -18,6 +18,7 @@ export function ManagedContent({children}:{children:React.ReactNode}) {
   const path=useLocation({select:l=>l.pathname});
   const {pages}=useContext(SiteContext);
   const page=pages.find(p=>p.path===path);
+  if(path==='/'||path==='/a-propos')return <>{children}</>;
   if(path.startsWith('/projets/'))return <>{children}</>;
   if(!page) return <>{children}</>;
   const formPage=['/nous-joindre','/devenir-benevole','/devenir-partenaire','/faire-un-don'].includes(path);
