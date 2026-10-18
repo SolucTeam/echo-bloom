@@ -169,7 +169,11 @@ CREATE INDEX mail_jobs_pending ON public.mail_jobs(status,available_at);
 CREATE FUNCTION public.queue_form_notification() RETURNS trigger LANGUAGE plpgsql SECURITY DEFINER SET search_path=public AS $$
 DECLARE cfg jsonb; kind text;
 BEGIN
- kind := CASE WHEN TG_TABLE_NAME='contact_submissions' THEN 'contact' ELSE NEW.kind END;
+ IF TG_TABLE_NAME='contact_submissions' THEN
+   kind := 'contact';
+ ELSE
+   kind := NEW.kind;
+ END IF;
  SELECT config INTO cfg FROM public.mail_settings WHERE id='notifications';
  IF cfg IS NOT NULL AND cfg->kind->>'enabled'='true' AND coalesce(cfg->kind->>'recipient','')<>'' THEN
  INSERT INTO public.mail_jobs(source_kind,source_id,config) VALUES(kind,NEW.id,cfg) ON CONFLICT(source_kind,source_id) DO NOTHING;
