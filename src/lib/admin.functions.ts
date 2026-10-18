@@ -7,6 +7,7 @@ import { contactSettingsSchema, volunteerSettingsSchema, contactDetailsSchema } 
 import { projectsSchema } from './project-schema';
 import { newsletterSchema } from './newsletter';
 import { mailSettingsSchema, readMailSettings, mailServerOnline } from './mail-settings';
+import { HOME_TEXT_FALLBACKS } from '../data/home';
 
 const adminMiddleware = requireSupabaseAuth;
 export const adminSnapshot = createServerFn({method:'GET'}).middleware([adminMiddleware]).handler(async({context})=>{
@@ -60,6 +61,8 @@ export const adminWrite = createServerFn({method:'POST'}).middleware([adminMiddl
       if(['site.menu','site.footerMenu'].includes(p.key))z.array(z.object({label:z.string().max(200),url:safeLink})).max(50).parse(JSON.parse(p.value));
       if(p.key==='site.donations')z.array(z.object({label:z.string().min(1).max(200),url:safeLink})).max(10).parse(JSON.parse(p.value));
       if(p.key==='site.stats')z.array(z.object({value:z.string().max(20),label:z.string().min(1).max(100)})).min(1).max(6).parse(JSON.parse(p.value));
+      if(p.key==='home.bigstats')z.array(z.object({value:z.string().min(1).max(20),label:z.string().min(1).max(100)})).min(1).max(8).parse(JSON.parse(p.value));
+      if(p.key==='home.texts'){const parsed=z.record(z.string(),z.string().max(3000)).parse(JSON.parse(p.value));for(const k of Object.keys(parsed))if(!(k in HOME_TEXT_FALLBACKS))throw new Error('Clé de texte inconnue.');}
       if(p.key.startsWith('home.')&&p.key.endsWith('.image'))safeLink.parse(p.value);
       if(p.key==='site.projects')projectsSchema.parse(JSON.parse(p.value));
       if(p.key==='site.partners')partnersSchema.parse(JSON.parse(p.value));

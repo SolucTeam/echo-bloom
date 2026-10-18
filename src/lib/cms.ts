@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { BlogPost, BlogCategory } from "@/data/blog-posts";
 
@@ -32,27 +31,6 @@ export async function fetchPublishedPosts(): Promise<BlogPost[]> {
 export async function fetchPostBySlug(slug: string): Promise<BlogPost | null> {
   const { data } = await supabase.from("blog_posts").select("*").eq("slug", slug).eq("published", true).maybeSingle();
   return data ? dbPostToBlogPost(data as DbPost) : null;
-}
-
-let cache: Record<string, string> | null = null;
-let pending: Promise<Record<string, string>> | null = null;
-function loadTexts() {
-  if (cache) return Promise.resolve(cache);
-  pending ??= Promise.resolve(supabase.from("site_content").select("key,value")).then(({ data }) => {
-    cache = Object.fromEntries((data ?? []).filter((r) => r.value.trim()).map((r) => [r.key, r.value]));
-    return cache;
-  });
-  return pending;
-}
-
-export function useSiteText(key: string, fallback: string) {
-  const [text, setText] = useState(fallback);
-  useEffect(() => {
-    let alive = true;
-    loadTexts().then((t) => alive && t[key] && setText(t[key]));
-    return () => { alive = false; };
-  }, [key]);
-  return text;
 }
 
 export async function uploadMedia(file: File): Promise<string> {

@@ -1,7 +1,6 @@
 import { pageHead } from '@/components/ManagedSite';
 import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { loadPage } from '@/lib/site.functions';
-import { useSiteText } from "@/lib/cms";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Leaf, Recycle, Trees, ThermometerSun, Users, Sprout, Award, Globe2 } from "lucide-react";
 import hero from "@/assets/hero.jpg";
@@ -13,7 +12,7 @@ import { useSetting } from '@/components/ManagedSite';
 import { readProjects } from '@/lib/projects';
 import { visibleProjects } from '@/lib/project-schema';
 import { PartnerLogos } from '@/components/PartnerLogos';
-import { HOME_HERO_INTRO_FALLBACK, readHomeStats } from '@/data/home';
+import { HOME_TEXT_FALLBACKS, DEFAULT_HOME_BIGSTATS, readHomeStats, readHomeTexts } from '@/data/home';
 
 export const Route = createFileRoute("/")({
   loader:async()=>({cmsPage:await loadPage({data:'/'})}),
@@ -25,9 +24,10 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const projects=visibleProjects(readProjects(useSetting('site.projects')));
-  const heroTitle = useSiteText("home.hero.title", "");
-  const heroIntro = useSiteText("home.hero.intro", HOME_HERO_INTRO_FALLBACK);
-  const stats = readHomeStats(useSetting('site.stats'));
+  const texts=readHomeTexts(useSetting('home.texts'));
+  const T=(key:string)=>texts[key]||HOME_TEXT_FALLBACKS[key]||'';
+  const stats=readHomeStats(useSetting('site.stats'));
+  const bigstats=readHomeStats(useSetting('home.bigstats'),DEFAULT_HOME_BIGSTATS);
   const heroImage = useSetting('home.hero.image') || hero;
   const axis1Image = useSetting('home.axis1.image') || plastic;
   const axis2Image = useSetting('home.axis2.image') || biodiversity;
@@ -41,11 +41,11 @@ function Home() {
         <div className="absolute inset-0 grain opacity-40 pointer-events-none" aria-hidden />
         <div className="container-x pt-12 pb-20 lg:pt-20 lg:pb-28 grid lg:grid-cols-12 gap-10 items-center">
           <div className="lg:col-span-6">
-            <span className="eyebrow">La promotion de l’emploi vert</span>
+            <span className="eyebrow">{T('home.hero.eyebrow')}</span>
             <h1 className="mt-5 text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.02] tracking-tight">
-              {heroTitle || (<>Engageons-nous pour <span className="text-secondary">un avenir</span> <span className="italic font-semibold" style={{ fontFamily: "Outfit" }}>durable.</span></>)}
+              {T('home.hero.title') || (<>Engageons-nous pour <span className="text-secondary">un avenir</span> <span className="italic font-semibold" style={{ fontFamily: "Outfit" }}>durable.</span></>)}
             </h1>
-            <p className="mt-6 text-lg text-muted-foreground max-w-xl">{heroIntro}</p>
+            <p className="mt-6 text-lg text-muted-foreground max-w-xl">{T('home.hero.intro')}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link to="/faire-un-don" className="btn-primary">
                 Soutenir nos projets <ArrowRight className="h-4 w-4" />
@@ -89,43 +89,42 @@ function Home() {
       <section className="container-x py-16 lg:py-24">
         <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
           <div>
-            <span className="eyebrow">Notre intervention</span>
+            <span className="eyebrow">{T('home.axis.eyebrow')}</span>
             <h2 className="mt-3 text-4xl sm:text-5xl font-bold tracking-tight max-w-2xl">
-              3 axes clés qui orientent nos actions
+              {T('home.axis.title')}
             </h2>
           </div>
           <p className="text-muted-foreground max-w-md">
-            Chez Green Ivory, notre engagement repose sur trois piliers stratégiques qui guident
-            chacune de nos actions sur le terrain et au plaidoyer.
+            {T('home.axis.intro')}
           </p>
         </div>
 
         <div className="grid gap-5 lg:grid-cols-6 lg:grid-rows-2 lg:auto-rows-fr">
           <AxisCard
             className="lg:col-span-3 lg:row-span-2"
-            tag="Axe 1"
+            tag={T('home.axis1.tag')}
             icon={<Recycle className="h-5 w-5" />}
-            title="La pollution plastique"
+            title={T('home.axis1.title')}
             image={axis1Image}
-            text="Un fléau qui impacte gravement nos écosystèmes, nos océans et notre santé. En Côte d’Ivoire, il engorge les villes et dégrade plages et cours d’eau. Nous menons des campagnes de sensibilisation, des nettoyages et déployons des solutions de collecte et de recyclage."
+            text={T('home.axis1.text')}
           />
           <AxisCard
             className="lg:col-span-3"
-            tag="Axe 2"
+            tag={T('home.axis2.tag')}
             icon={<Trees className="h-5 w-5" />}
-            title="La perte de la biodiversité"
+            title={T('home.axis2.title')}
             image={axis2Image}
             compact
-            text="Déforestation, urbanisation et pollution menacent les écosystèmes. Nous agissons par le reboisement, la protection des forêts et la sensibilisation à la conservation."
+            text={T('home.axis2.text')}
           />
           <AxisCard
             className="lg:col-span-3"
-            tag="Axe 3"
+            tag={T('home.axis3.tag')}
             icon={<ThermometerSun className="h-5 w-5" />}
-            title="Changement climatique"
+            title={T('home.axis3.title')}
             image={axis3Image}
             compact
-            text="Élévation des températures, érosion côtière, précipitations irrégulières. Nous portons la voix des jeunes aux COP et promouvons l’économie verte."
+            text={T('home.axis3.text')}
           />
         </div>
       </section>
@@ -135,20 +134,18 @@ function Home() {
         <div className="bento p-8 lg:p-14 bg-primary text-primary-foreground border-0">
           <div className="grid lg:grid-cols-2 gap-10">
             <div>
-              <span className="eyebrow !text-leaf">Face à la crise climatique</span>
+              <span className="eyebrow !text-leaf">{T('home.climate.eyebrow')}</span>
               <h2 className="mt-4 text-4xl lg:text-5xl font-bold leading-tight">
-                Green Ivory s’engage avec et pour la jeunesse.
+                {T('home.climate.title')}
               </h2>
               <p className="mt-5 opacity-85 max-w-xl">
-                Montée des températures, érosion côtière, déforestation accélérée, raréfaction
-                des ressources en eau. Ces impacts menacent notre environnement et nos communautés.
-                Nous agissons sur trois fronts complémentaires.
+                {T('home.climate.text')}
               </p>
             </div>
             <div className="grid sm:grid-cols-3 gap-4">
-              <Pillar icon={<Users className="h-5 w-5" />} title="Sensibilisation & éducation" text="Programmes Journées Sans Plastique et Sentiers Verts pour former jeunes et communautés." />
-              <Pillar icon={<Sprout className="h-5 w-5" />} title="Actions terrain" text="Nettoyages, recyclage et promotion de l’économie circulaire." />
-              <Pillar icon={<Globe2 className="h-5 w-5" />} title="Plaidoyer" text="Portage de la voix des jeunes auprès des décideurs et instances COP." />
+              <Pillar icon={<Users className="h-5 w-5" />} title={T('home.climate.p1.title')} text={T('home.climate.p1.text')} />
+              <Pillar icon={<Sprout className="h-5 w-5" />} title={T('home.climate.p2.title')} text={T('home.climate.p2.text')} />
+              <Pillar icon={<Globe2 className="h-5 w-5" />} title={T('home.climate.p3.title')} text={T('home.climate.p3.text')} />
             </div>
           </div>
         </div>
@@ -157,20 +154,15 @@ function Home() {
       {/* Qui sommes-nous */}
       <section className="container-x py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-center">
         <div>
-          <span className="eyebrow">Qui sommes-nous ?</span>
+          <span className="eyebrow">{T('home.about.eyebrow')}</span>
           <h2 className="mt-3 text-4xl lg:text-5xl font-bold tracking-tight">
-            Une équipe passionnée, un impact mesurable.
+            {T('home.about.title')}
           </h2>
           <p className="mt-5 text-muted-foreground">
-            Green Ivory est une ONG fondée en 2017, basée en Côte d’Ivoire. Nous œuvrons pour la
-            protection de l’environnement à travers des actions contre la pollution plastique,
-            le changement climatique et la perte de biodiversité — avec une attention particulière
-            à l’éducation environnementale des jeunes et des enfants.
+            {T('home.about.text1')}
           </p>
           <p className="mt-4 text-muted-foreground">
-            L’ONG est dirigée par <strong className="text-foreground">Khérann YAO</strong>,
-            Président du Conseil d’Administration, nommé Jeune Ambassadeur de l’UNICEF pour
-            l’Environnement en 2018.
+            {T('home.about.text2')}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link to="/a-propos" className="btn-primary">En savoir plus <ArrowRight className="h-4 w-4" /></Link>
@@ -186,9 +178,9 @@ function Home() {
       {/* Projets phares */}
       <section className="container-x py-16 lg:py-24">
         <div className="mb-10">
-          <span className="eyebrow">Nos projets</span>
+          <span className="eyebrow">{T('home.projects.eyebrow')}</span>
           <h2 className="mt-3 text-4xl lg:text-5xl font-bold tracking-tight max-w-3xl">
-            Nos projets au cœur de l’actualité.
+            {T('home.projects.title')}
           </h2>
         </div>
         <ProjectCards projects={projects}/>
@@ -199,10 +191,9 @@ function Home() {
       <section className="container-x py-16 lg:py-24">
         <div className="bento p-8 lg:p-12 bg-accent border-0">
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-            <BigStat value="15 000+" label="Jeunes et adolescents sensibilisés" />
-            <BigStat value="800+" label="Jeunes formés à l’économie verte et bleue" />
-            <BigStat value="2 500+" label="Arbres plantés" />
-            <BigStat value="45+" label="Éco-entreprises accompagnées" />
+            {bigstats.map((s, i) => (
+              <BigStat key={i} value={s.value} label={s.label} />
+            ))}
           </div>
         </div>
       </section>
@@ -210,13 +201,12 @@ function Home() {
       {/* Partenaires CTA */}
       <section className="container-x py-16 lg:py-24 grid lg:grid-cols-2 gap-10 items-center">
         <div>
-          <span className="eyebrow">Devenir partenaire</span>
+          <span className="eyebrow">{T('home.partners.eyebrow')}</span>
           <h2 className="mt-3 text-4xl lg:text-5xl font-bold tracking-tight">
-            Soutenez notre organisation, nos missions et nos actions.
+            {T('home.partners.title')}
           </h2>
           <p className="mt-5 text-muted-foreground max-w-xl">
-            Entreprises, institutions, ONG, collectivités — rejoignez-nous pour développer des
-            solutions durables face aux défis environnementaux.
+            {T('home.partners.text')}
           </p>
           <div className="mt-7">
             <Link to="/devenir-partenaire" className="btn-primary">
