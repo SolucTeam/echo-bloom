@@ -1,6 +1,8 @@
 import { pageHead } from '@/components/ManagedSite';
+import { useSetting } from '@/components/ManagedSite';
 import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { loadPage } from '@/lib/site.functions';
+import { ABOUT_TEXT_FALLBACKS, readAboutTexts } from '@/data/about';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
 import { ArrowRight, Target, Eye, Heart } from "lucide-react";
@@ -17,55 +19,53 @@ export const Route = createFileRoute("/a-propos")({
 });
 
 function About() {
+  const texts=readAboutTexts(useSetting('about.texts'));
+  const T=(key:string)=>texts[key]||ABOUT_TEXT_FALLBACKS[key]||'';
+  const imgPlastic=useSetting('about.plastic.image')||plastic;
+  const imgFounder=useSetting('about.founder.image')||founder;
+  const imgForest=useSetting('about.forest.image')||biodiv;
   return (
     <>
       <PageHero
-        eyebrow="Tout savoir de nous"
-        title="Nous sommes engagés contre la pollution plastique."
-        intro="Plus de 7 ans d’action environnementale en Côte d’Ivoire, au service des jeunes, des communautés et de la planète."
+        eyebrow={T('about.hero.eyebrow')}
+        title={T('about.hero.title')}
+        intro={T('about.hero.intro')}
       />
 
       <section className="container-x py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-center">
-        <img src={plastic} alt="Nettoyage" loading="lazy" className="bento h-[420px] w-full object-cover" />
+        <img src={imgPlastic} alt="Nettoyage" loading="lazy" className="bento h-[420px] w-full object-cover" />
         <div>
-          <h2 className="text-3xl lg:text-4xl font-bold">Protéger l’environnement et réduire la pollution plastique</h2>
+          <h2 className="text-3xl lg:text-4xl font-bold">{T('about.plastic.title')}</h2>
           <p className="mt-5 text-muted-foreground">
-            Nous œuvrons pour diminuer l’impact des déchets plastiques et promouvoir des modes de vie
-            respectueux de la planète. En Côte d’Ivoire, nous menons des opérations de nettoyage,
-            de tri et de recyclage.
+            {T('about.plastic.text1')}
           </p>
-          <h3 className="mt-8 text-xl font-semibold">Sensibiliser et éduquer les communautés</h3>
+          <h3 className="mt-8 text-xl font-semibold">{T('about.plastic.subtitle')}</h3>
           <p className="mt-3 text-muted-foreground">
-            À travers des programmes scolaires, ateliers et événements publics, nous encourageons
-            chaque citoyen, des plus jeunes aux plus âgés, à adopter des comportements écoresponsables.
+            {T('about.plastic.text2')}
           </p>
         </div>
       </section>
 
       <section className="container-x py-16 grid md:grid-cols-3 gap-6">
-        <ValueCard icon={<Target className="h-5 w-5" />} title="Notre mission" text="Protéger l’environnement à travers des actions concrètes contre la pollution plastique, la perte de biodiversité et le changement climatique." />
-        <ValueCard icon={<Eye className="h-5 w-5" />} title="Notre vision" text="Une Côte d’Ivoire — et une Afrique — où la jeunesse est actrice d’une économie verte, juste et durable." />
-        <ValueCard icon={<Heart className="h-5 w-5" />} title="Nos valeurs" text="Engagement citoyen, transparence, inclusion des jeunes, respect du vivant, et collaboration." />
+        <ValueCard icon={<Target className="h-5 w-5" />} title={T('about.mission.title')} text={T('about.mission.text')} />
+        <ValueCard icon={<Eye className="h-5 w-5" />} title={T('about.vision.title')} text={T('about.vision.text')} />
+        <ValueCard icon={<Heart className="h-5 w-5" />} title={T('about.values.title')} text={T('about.values.text')} />
       </section>
 
       <section className="container-x py-16 lg:py-24 grid lg:grid-cols-5 gap-10 items-center">
         <div className="lg:col-span-2">
-          <img src={founder} alt="Khérann YAO, Président" loading="lazy" className="bento h-[520px] w-full object-cover" />
+          <img src={imgFounder} alt="Khérann YAO, Président" loading="lazy" className="bento h-[520px] w-full object-cover" />
         </div>
         <div className="lg:col-span-3">
-          <span className="eyebrow">Notre histoire</span>
-          <h2 className="mt-3 text-3xl lg:text-4xl font-bold">De la passion à l’action.</h2>
+          <span className="eyebrow">{T('about.history.eyebrow')}</span>
+          <h2 className="mt-3 text-3xl lg:text-4xl font-bold">{T('about.history.title')}</h2>
           <p className="mt-5 text-muted-foreground">
-            Fondée en 2017 par un collectif de jeunes ivoiriens passionnés par l’environnement,
-            Green Ivory est née d’un constat simple : la pollution plastique et la dégradation des
-            écosystèmes menacent notre avenir commun. Depuis, nous avons formé des milliers de jeunes,
-            organisé des centaines d’opérations de terrain et porté la voix de la jeunesse ivoirienne
-            jusque dans les grandes conférences internationales (COP).
+            {T('about.history.text1')}
           </p>
           <p className="mt-4 text-muted-foreground">
-            L’ONG est dirigée par <strong className="text-foreground">Khérann YAO</strong>,
-            Jeune Ambassadeur de l’UNICEF pour l’Environnement (2018), entouré d’une équipe
-            pluridisciplinaire et de bénévoles dévoués.
+            {texts['about.history.text2']
+              ? texts['about.history.text2']
+              : <>L’ONG est dirigée par <strong className="text-foreground">Khérann YAO</strong>, Jeune Ambassadeur de l’UNICEF pour l’Environnement (2018), entouré d’une équipe pluridisciplinaire et de bénévoles dévoués.</>}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link to="/devenir-benevole" className="btn-primary">Devenir bénévole <ArrowRight className="h-4 w-4" /></Link>
@@ -75,7 +75,7 @@ function About() {
       </section>
 
       <section className="container-x pb-16 lg:pb-24">
-        <img src={biodiv} alt="Forêt" loading="lazy" className="bento h-[360px] w-full object-cover" />
+        <img src={imgForest} alt="Forêt" loading="lazy" className="bento h-[360px] w-full object-cover" />
       </section>
     </>
   );
