@@ -17,3 +17,13 @@ export function readHomeStats(raw: string | undefined): HomeStat[] {
     return DEFAULT_HOME_STATS;
   }
 }
+
+/** Images de la page d'accueil remplaçables depuis la console (clés de réglages site_content). */
+export const HOME_IMAGES: { key: string; label: string }[] = [
+  { key: "home.hero.image", label: "Grande image d’accueil" },
+  { key: "home.axis1.image", label: "Axe 1 — pollution plastique" },
+  { key: "home.axis2.image", label: "Axe 2 — biodiversité" },
+  { key: "home.axis3.image", label: "Axe 3 — climat" },
+  { key: "home.about.image1", label: "Qui sommes-nous — image gauche" },
+  { key: "home.about.image2", label: "Qui sommes-nous — image droite" },
+];

@@ -28,6 +28,12 @@ function Home() {
   const heroTitle = useSiteText("home.hero.title", "");
   const heroIntro = useSiteText("home.hero.intro", HOME_HERO_INTRO_FALLBACK);
   const stats = readHomeStats(useSetting('site.stats'));
+  const heroImage = useSetting('home.hero.image') || hero;
+  const axis1Image = useSetting('home.axis1.image') || plastic;
+  const axis2Image = useSetting('home.axis2.image') || biodiversity;
+  const axis3Image = useSetting('home.axis3.image') || climate;
+  const aboutImage1 = useSetting('home.about.image1') || biodiversity;
+  const aboutImage2 = useSetting('home.about.image2') || plastic;
   return (
     <>
       {/* HERO */}
@@ -59,7 +65,7 @@ function Home() {
               <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-leaf/40 blur-3xl" />
               <div className="bento p-0 aspect-[4/5] sm:aspect-[5/4]">
                 <img
-                  src={hero}
+                  src={heroImage}
                   alt="Volontaires Green Ivory nettoyant une plage en Côte d’Ivoire"
                   className="h-full w-full object-cover"
                   width={1600} height={1100}
@@ -100,7 +106,7 @@ function Home() {
             tag="Axe 1"
             icon={<Recycle className="h-5 w-5" />}
             title="La pollution plastique"
-            image={plastic}
+            image={axis1Image}
             text="Un fléau qui impacte gravement nos écosystèmes, nos océans et notre santé. En Côte d’Ivoire, il engorge les villes et dégrade plages et cours d’eau. Nous menons des campagnes de sensibilisation, des nettoyages et déployons des solutions de collecte et de recyclage."
           />
           <AxisCard
@@ -108,7 +114,7 @@ function Home() {
             tag="Axe 2"
             icon={<Trees className="h-5 w-5" />}
             title="La perte de la biodiversité"
-            image={biodiversity}
+            image={axis2Image}
             compact
             text="Déforestation, urbanisation et pollution menacent les écosystèmes. Nous agissons par le reboisement, la protection des forêts et la sensibilisation à la conservation."
           />
@@ -117,7 +123,7 @@ function Home() {
             tag="Axe 3"
             icon={<ThermometerSun className="h-5 w-5" />}
             title="Changement climatique"
-            image={climate}
+            image={axis3Image}
             compact
             text="Élévation des températures, érosion côtière, précipitations irrégulières. Nous portons la voix des jeunes aux COP et promouvons l’économie verte."
           />
@@ -172,8 +178,8 @@ function Home() {
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <img src={biodiversity} alt="Forêt ivoirienne" loading="lazy" className="bento h-72 w-full object-cover" />
-          <img src={plastic} alt="Sensibilisation jeunes" loading="lazy" className="bento h-72 w-full object-cover mt-10" />
+          <img src={aboutImage1} alt="Forêt ivoirienne" loading="lazy" className="bento h-72 w-full object-cover" />
+          <img src={aboutImage2} alt="Sensibilisation jeunes" loading="lazy" className="bento h-72 w-full object-cover mt-10" />
         </div>
       </section>
 
