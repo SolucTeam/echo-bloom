@@ -62,9 +62,11 @@ export function SiteFooter() {
         {newsletter.enabled&&<div>
           <h4 className="font-semibold mb-4">{newsletter.title}</h4>
           <p className="text-sm opacity-85 mb-4">{newsletter.description}</p>
-          <Button asChild variant="secondary" className="h-auto min-h-10 max-w-full whitespace-normal text-center">
-            <a href={newsletter.url} target="_blank" rel="noopener noreferrer">{newsletter.buttonLabel}<ExternalLink/></a>
-          </Button>
+          {newsletter.embed
+            ? <iframe src={newsletter.embed} title={newsletter.title} loading="lazy" className="w-full max-w-sm rounded-md border-0" style={{ height: '480px' }} />
+            : <Button asChild variant="secondary" className="h-auto min-h-10 max-w-full whitespace-normal text-center">
+              <a href={newsletter.url} target="_blank" rel="noopener noreferrer">{newsletter.buttonLabel}<ExternalLink/></a>
+            </Button>}
         </div>}
       </div>
       <div className="border-t border-background/10">
