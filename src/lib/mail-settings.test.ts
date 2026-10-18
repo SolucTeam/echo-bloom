@@ -1,6 +1,6 @@
 import { describe, it, expect } from 'vitest';
 import { DEFAULT_MAIL, mailSettingsSchema, readMailSettings, mailServerOnline } from './mail-settings';
-import { notificationMessage } from '../../scripts/mail-message';
+import { notificationMessage } from './mail-message';
 
 describe('private server mail configuration', () => {
   it('does not activate emails by default', () => {
@@ -25,8 +25,9 @@ describe('private server mail configuration', () => {
   });
   it('does not call an absent or stale server connected', () => {
     expect(mailServerOnline(null)).toBe(false);
-    expect(mailServerOnline(new Date(0).toISOString(),90_001)).toBe(false);
-    expect(mailServerOnline(new Date(1000).toISOString(),2000)).toBe(true);
+    expect(mailServerOnline(undefined)).toBe(false);
+    expect(mailServerOnline(new Date(0).toISOString(), 601_000)).toBe(false);
+    expect(mailServerOnline(new Date(1000).toISOString(), 61_000)).toBe(true);
   });
   it('sends the specific form notification to one configured team recipient', () => {
     const config={...DEFAULT_MAIL,senderEmail:'sender@example.org',benevole:{...DEFAULT_MAIL.benevole,recipient:'team@example.org'}};

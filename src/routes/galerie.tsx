@@ -59,7 +59,7 @@ function Gallery() {
         title="Des images qui racontent nos actions."
         intro="Plongez au cœur des moments forts de Green Ivory : terrain, formations, plaidoyer et rencontres."
       />
-      {cols.map((c) => (
+      {cols.length===0?<section className="container-x py-16"><p className="text-center text-muted-foreground">Aucune photo pour le moment — revenez bientôt.</p></section>:cols.map((c) => (
         <Collection key={c.title} {...c} />
       ))}
     </>

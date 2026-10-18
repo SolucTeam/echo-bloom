@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://green-ivory-tan.vercel.app/sitemap.xml

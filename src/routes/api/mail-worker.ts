@@ -80,6 +80,7 @@ export const Route = createFileRoute("/api/mail-worker")({
             }
             let source = {};
             if (job.source_kind !== "test") {
+              if (!job.source_id) throw new Error("source_missing");
               const result = await supabaseAdmin
                 .from(job.source_kind === "contact" ? "contact_submissions" : "applications")
                 .select("*")
@@ -89,7 +90,7 @@ export const Route = createFileRoute("/api/mail-worker")({
               source = result.data;
             }
             await transport.sendMail({
-              ...notificationMessage(config, job.source_kind, source),
+              ...notificationMessage(config, job.source_kind as "contact" | "benevole" | "partenaire" | "test", source),
               messageId: `<${job.id}@green-ivory.local>`,
             });
             await supabaseAdmin
