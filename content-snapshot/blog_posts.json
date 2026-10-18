@@ -45,6 +45,21 @@
     "content_format": "text"
   },
   {
+    "id": "92317f40-c181-4a4b-91ca-5c635a07f940",
+    "slug": "test-sauvegarde-github",
+    "title": "Test sauvegarde GitHub",
+    "excerpt": "Brouillon de test, sera supprimé.",
+    "content": "Contenu de test pour vérifier le pont console→GitHub.",
+    "category": "Initiatives",
+    "image_url": null,
+    "author": "Green Ivory",
+    "published": false,
+    "published_at": "2026-10-18T12:00:00+00:00",
+    "created_at": "2026-10-18T14:11:44.780306+00:00",
+    "updated_at": "2026-10-18T14:11:44.780306+00:00",
+    "content_format": "text"
+  },
+  {
     "id": "961a2dc2-12ce-4a2f-a535-9ae1df211c9b",
     "slug": "eduquer-a-lenvironnement-des-le-plus-jeune-age",
     "title": "Éduquer à l'environnement dès le plus jeune âge",
