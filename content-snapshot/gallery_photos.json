@@ -1,0 +1,110 @@
+[
+  {
+    "id": "2a570b47-4419-42cb-94e1-3678fab2c1f6",
+    "collection": "Journées sans plastique",
+    "tag": "Éco-ambassadeurs",
+    "image_url": "/images/journees.jpg",
+    "created_at": "2026-10-18T12:46:13.485899+00:00",
+    "caption": "",
+    "alt": "Éco-ambassadeurs"
+  },
+  {
+    "id": "33f10b35-f619-4cbd-9dbe-a113a45df7d8",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/plastic.jpg",
+    "created_at": "2026-10-18T12:46:13.987562+00:00",
+    "caption": "",
+    "alt": "Journées de dépollution"
+  },
+  {
+    "id": "42c86150-7ff8-4db1-ae22-de26df622e88",
+    "collection": "Sentiers verts",
+    "tag": "Visites de terrain",
+    "image_url": "/images/climate.jpg",
+    "created_at": "2026-10-18T12:46:14.401069+00:00",
+    "caption": "",
+    "alt": "Visites de terrain"
+  },
+  {
+    "id": "4d9f2dcd-aa4b-4718-8dfb-d9bc0c94cf0c",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/hero.jpg",
+    "created_at": "2026-10-18T12:46:13.329117+00:00",
+    "caption": "",
+    "alt": "Journées de dépollution"
+  },
+  {
+    "id": "4f2e52d6-79ab-45f3-8037-45430e1b2c9a",
+    "collection": "Sentiers verts",
+    "tag": "Journées carrières",
+    "image_url": "/images/sentiers.jpg",
+    "created_at": "2026-10-18T12:46:14.277895+00:00",
+    "caption": "",
+    "alt": "Journées carrières"
+  },
+  {
+    "id": "565fb784-c58b-4f7d-bac8-37040597d3a7",
+    "collection": "Sentiers verts",
+    "tag": "Visites de terrain",
+    "image_url": "/images/biodiversity.jpg",
+    "created_at": "2026-10-18T12:46:14.61064+00:00",
+    "caption": "",
+    "alt": "Visites de terrain"
+  },
+  {
+    "id": "5dd3b73d-d880-4a4a-afe2-c5087b72b578",
+    "collection": "Sentiers verts",
+    "tag": "Éco-entrepreneurs",
+    "image_url": "/images/sentiers.jpg",
+    "created_at": "2026-10-18T12:46:14.525374+00:00",
+    "caption": "",
+    "alt": "Éco-entrepreneurs"
+  },
+  {
+    "id": "95a62adc-dc09-466f-bcf3-5d90f687472b",
+    "collection": "Journées sans plastique",
+    "tag": "Recyclage",
+    "image_url": "/images/hero.jpg",
+    "created_at": "2026-10-18T12:46:13.767219+00:00",
+    "caption": "",
+    "alt": "Recyclage"
+  },
+  {
+    "id": "9bfa4e07-08c1-4105-988e-029124451d0d",
+    "collection": "Journées sans plastique",
+    "tag": "Agents de collecte",
+    "image_url": "/images/journees.jpg",
+    "created_at": "2026-10-18T12:46:13.894091+00:00",
+    "caption": "",
+    "alt": "Agents de collecte"
+  },
+  {
+    "id": "ace72f1b-71c7-4bdc-974e-28f3c9ed372b",
+    "collection": "Journées sans plastique",
+    "tag": "Formation",
+    "image_url": "/images/plastic.jpg",
+    "created_at": "2026-10-18T12:46:13.608777+00:00",
+    "caption": "",
+    "alt": "Formation"
+  },
+  {
+    "id": "b11213f2-1baa-42cb-8cd2-f4b1ecce66d9",
+    "collection": "Sentiers verts",
+    "tag": "Visites de terrain",
+    "image_url": "/images/biodiversity.jpg",
+    "created_at": "2026-10-18T12:46:14.192323+00:00",
+    "caption": "",
+    "alt": "Visites de terrain"
+  },
+  {
+    "id": "e57c6726-413f-446e-b694-514da1b8e631",
+    "collection": "Sentiers verts",
+    "tag": "Éco-entrepreneurs",
+    "image_url": "/images/sentiers.jpg",
+    "created_at": "2026-10-18T12:46:14.087296+00:00",
+    "caption": "",
+    "alt": "Éco-entrepreneurs"
+  }
+]
