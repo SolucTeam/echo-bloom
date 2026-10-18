@@ -23,6 +23,7 @@ import { Route as MerciRouteImport } from './routes/merci'
 import { Route as NousJoindreRouteImport } from './routes/nous-joindre'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as ApiMailWorkerRouteImport } from './routes/api/mail-worker'
 import { Route as BlogSlugRouteImport } from './routes/blog_.$slug'
 import { Route as ProjetsIndexRouteImport } from './routes/projets/index'
 import { Route as ProjetsSlugRouteImport } from './routes/projets/$slug'
@@ -98,6 +99,11 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const ApiMailWorkerRoute = ApiMailWorkerRouteImport.update({
+  id: '/api/mail-worker',
+  path: '/api/mail-worker',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog_/$slug',
   path: '/blog/$slug',
@@ -138,6 +144,7 @@ export interface FileRoutesByFullPath {
   '/nous-joindre': typeof NousJoindreRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/api/mail-worker': typeof ApiMailWorkerRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/projets/$slug': typeof ProjetsSlugRoute
   '/projets/': typeof ProjetsIndexRoute
@@ -158,6 +165,7 @@ export interface FileRoutesByTo {
   '/nous-joindre': typeof NousJoindreRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRoute
+  '/api/mail-worker': typeof ApiMailWorkerRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/projets/$slug': typeof ProjetsSlugRoute
   '/projets': typeof ProjetsIndexRoute
@@ -180,6 +188,7 @@ export interface FileRoutesById {
   '/nous-joindre': typeof NousJoindreRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/api/mail-worker': typeof ApiMailWorkerRoute
   '/blog_/$slug': typeof BlogSlugRoute
   '/projets/$slug': typeof ProjetsSlugRoute
   '/projets/': typeof ProjetsIndexRoute
@@ -202,6 +211,7 @@ export interface FileRouteTypes {
     | '/nous-joindre'
     | '/sitemap.xml'
     | '/admin'
+    | '/api/mail-worker'
     | '/blog/$slug'
     | '/projets/$slug'
     | '/projets/'
@@ -222,6 +232,7 @@ export interface FileRouteTypes {
     | '/nous-joindre'
     | '/sitemap.xml'
     | '/admin'
+    | '/api/mail-worker'
     | '/blog/$slug'
     | '/projets/$slug'
     | '/projets'
@@ -243,6 +254,7 @@ export interface FileRouteTypes {
     | '/nous-joindre'
     | '/sitemap.xml'
     | '/_authenticated/admin'
+    | '/api/mail-worker'
     | '/blog_/$slug'
     | '/projets/$slug'
     | '/projets/'
@@ -264,6 +276,7 @@ export interface RootRouteChildren {
   MerciRoute: typeof MerciRoute
   NousJoindreRoute: typeof NousJoindreRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
+  ApiMailWorkerRoute: typeof ApiMailWorkerRoute
   BlogSlugRoute: typeof BlogSlugRoute
   ProjetsSlugRoute: typeof ProjetsSlugRoute
   ProjetsIndexRoute: typeof ProjetsIndexRoute
@@ -371,6 +384,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/mail-worker': {
+      id: '/api/mail-worker'
+      path: '/api/mail-worker'
+      fullPath: '/api/mail-worker'
+      preLoaderRoute: typeof ApiMailWorkerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog_/$slug': {
       id: '/blog_/$slug'
       path: '/blog/$slug'
@@ -434,6 +454,7 @@ const rootRouteChildren: RootRouteChildren = {
   MerciRoute: MerciRoute,
   NousJoindreRoute: NousJoindreRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
+  ApiMailWorkerRoute: ApiMailWorkerRoute,
   BlogSlugRoute: BlogSlugRoute,
   ProjetsSlugRoute: ProjetsSlugRoute,
   ProjetsIndexRoute: ProjetsIndexRoute,

@@ -27,6 +27,7 @@ export function readMailSettings(value: unknown): MailSettings {
 }
 export const mailKinds = ['contact', 'benevole', 'partenaire'] as const;
 export function mailServerOnline(heartbeat: string | null | undefined, now = Date.now()) {
+  // Fenêtre alignée sur un déclencheur périodique (ping toutes les 1 à 5 minutes).
   const time = heartbeat ? Date.parse(heartbeat) : NaN;
-  return Number.isFinite(time) && time <= now && now - time < 90_000;
+  return Number.isFinite(time) && time <= now && now - time < 600_000;
 }

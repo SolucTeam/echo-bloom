@@ -3,7 +3,7 @@ import { readFileSync } from 'node:fs';
 import nodemailer from 'nodemailer';
 import { createClient } from '@supabase/supabase-js';
 import { mailSettingsSchema } from '../src/lib/mail-settings';
-import { notificationMessage } from './mail-message';
+import { notificationMessage } from '../src/lib/mail-message';
 
 function required(name: string) { const value = process.env[name]; if (!value) throw new Error('missing_configuration'); return value; }
 async function main() {

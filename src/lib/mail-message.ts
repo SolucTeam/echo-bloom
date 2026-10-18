@@ -1,4 +1,4 @@
-import { mailSettingsSchema, type MailSettings } from '../src/lib/mail-settings';
+import { mailSettingsSchema, type MailSettings } from './mail-settings';
 
 export type Source = { name?: string | null; email?: string; subject?: string; message?: string | null; phone?: string | null; city?: string | null; organization?: string | null };
 export function notificationMessage(config: MailSettings, kind: 'contact' | 'benevole' | 'partenaire' | 'test', source: Source) {
