@@ -10,5 +10,59 @@
     "label": "",
     "value": "true",
     "updated_at": "2026-10-17T17:45:33.113+00:00"
+  },
+  {
+    "key": "home.about.image1",
+    "label": "",
+    "value": "",
+    "updated_at": "2026-10-18T15:36:07.094+00:00"
+  },
+  {
+    "key": "home.about.image2",
+    "label": "",
+    "value": "",
+    "updated_at": "2026-10-18T15:36:07.204+00:00"
+  },
+  {
+    "key": "home.axis1.image",
+    "label": "",
+    "value": "",
+    "updated_at": "2026-10-18T15:36:06.418+00:00"
+  },
+  {
+    "key": "home.axis2.image",
+    "label": "",
+    "value": "",
+    "updated_at": "2026-10-18T15:36:06.621+00:00"
+  },
+  {
+    "key": "home.axis3.image",
+    "label": "",
+    "value": "",
+    "updated_at": "2026-10-18T15:36:06.86+00:00"
+  },
+  {
+    "key": "home.hero.image",
+    "label": "",
+    "value": "",
+    "updated_at": "2026-10-18T15:36:06.123+00:00"
+  },
+  {
+    "key": "home.hero.intro",
+    "label": "",
+    "value": "",
+    "updated_at": "2026-10-18T15:36:05.653+00:00"
+  },
+  {
+    "key": "home.hero.title",
+    "label": "",
+    "value": "",
+    "updated_at": "2026-10-18T15:36:05.351+00:00"
+  },
+  {
+    "key": "site.stats",
+    "label": "Chiffres de l’accueil",
+    "value": "[{\"value\":\"15k+\",\"label\":\"Jeunes sensibilisés\"},{\"value\":\"2 500\",\"label\":\"Arbres plantés\"},{\"value\":\"7 ans\",\"label\":\"d’engagement\"}]",
+    "updated_at": "2026-10-18T15:36:05.837+00:00"
   }
 ]
