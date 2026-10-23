@@ -16,7 +16,7 @@ import { Suspense, lazy, useEffect, useRef, useState } from "react";
  * 4. the target is near the viewport (IntersectionObserver).
  */
 
-export type ShaderPreset = "cardDuotone" | "heroAmbient";
+export type ShaderPreset = "cardDuotone";
 
 const presetLoaders: Record<ShaderPreset, () => Promise<{ default: React.ComponentType<{ image?: string }> }>> = {
   // On the server the preset never renders, so resolve to a no-op component;
@@ -25,10 +25,6 @@ const presetLoaders: Record<ShaderPreset, () => Promise<{ default: React.Compone
     import.meta.env.SSR
       ? Promise.resolve({ default: () => null })
       : import("./presets").then((m) => ({ default: m.DuotoneCard })),
-  heroAmbient: () =>
-    import.meta.env.SSR
-      ? Promise.resolve({ default: () => null })
-      : import("./presets").then((m) => ({ default: m.HeroAmbient })),
 };
 
 const presetCache = new Map<ShaderPreset, React.LazyExoticComponent<React.ComponentType<{ image?: string }>>>();

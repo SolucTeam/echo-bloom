@@ -3,6 +3,7 @@ import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { loadPage } from '@/lib/site.functions';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Leaf, Recycle, Trees, ThermometerSun, Users, Sprout, Award, Globe2 } from "lucide-react";
+import { useEffect, useRef } from "react";
 import hero from "@/assets/hero.jpg";
 import plastic from "@/assets/plastic.jpg";
 import biodiversity from "@/assets/biodiversity.jpg";
@@ -12,7 +13,7 @@ import { useSetting } from '@/components/ManagedSite';
 import { readProjects } from '@/lib/projects';
 import { visibleProjects } from '@/lib/project-schema';
 import { PartnerLogos } from '@/components/PartnerLogos';
-import { ClientShader } from '@/components/shaders/ClientShader';
+import { FloatingLeaves } from '@/components/FloatingLeaves';
 import { HOME_TEXT_FALLBACKS, DEFAULT_HOME_BIGSTATS, readHomeStats, readHomeTexts } from '@/data/home';
 import { AnimatedNumber } from '@/components/AnimatedNumber';
 import { BeforeAfter } from '@/components/BeforeAfter';
@@ -45,8 +46,8 @@ function Home() {
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 grain opacity-40 pointer-events-none" aria-hidden />
-        {/* Brume de forêt + particules (WebGPU, derrière le contenu) */}
-        <ClientShader preset="heroAmbient" className="absolute inset-0 -z-10 opacity-45 pointer-events-none" />
+        {/* Feuilles flottantes de la marque, dérivant derrière le titre */}
+        <FloatingLeaves className="absolute inset-0 -z-10 pointer-events-none" />
         <div className="container-x pt-12 pb-20 lg:pt-20 lg:pb-28 grid lg:grid-cols-12 gap-10 items-center">
           <div className="lg:col-span-6">
             <span className="eyebrow">{T('home.hero.eyebrow')}</span>
@@ -72,11 +73,9 @@ function Home() {
             <div className="relative">
               <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-leaf/40 blur-3xl" />
               <div className="bento p-0 aspect-[4/5] sm:aspect-[5/4]">
-                <img
+                <ParallaxHeroImage
                   src={heroImage}
                   alt="Volontaires Green Ivory nettoyant une plage en Côte d’Ivoire"
-                  className="h-full w-full object-cover"
-                  width={1600} height={1100}
                 />
               </div>
               <div className="bento absolute -bottom-6 -left-6 hidden sm:flex items-center gap-3 px-5 py-4 max-w-[260px]">
@@ -255,6 +254,41 @@ function Stat({ value, label }: { value: string; label: string }) {
       <div className="text-xs text-muted-foreground mt-1">{label}</div>
     </div>
   );
+}
+
+/**
+ * Image du hero avec parallaxe de scroll : elle glisse légèrement plus lentement
+ * que la page (translateY borné, image agrandie pour ne jamais découvrir de vide,
+ * le cadre .bento clippe les débordements). rAF + écouteurs passifs, travail
+ * coupé dès que le hero sort de l'écran. prefers-reduced-motion : aucune
+ * transformation, image statique.
+ */
+function ParallaxHeroImage({ src, alt }: { src: string; alt: string }) {
+  const ref = useRef<HTMLImageElement>(null);
+  useEffect(() => {
+    const img = ref.current;
+    if (!img || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    const update = () => {
+      raf = 0;
+      const frame = img.parentElement;
+      if (!frame) return;
+      const r = frame.getBoundingClientRect();
+      if (r.bottom < 0 || r.top > window.innerHeight) return;
+      const p = Math.min(1, Math.max(0, (window.innerHeight - r.top) / (window.innerHeight + r.height)));
+      img.style.transform = `scale(1.15) translate3d(0, ${(p - 0.5) * 64}px, 0)`;
+    };
+    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
+    update();
+    addEventListener("scroll", onScroll, { passive: true });
+    addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      removeEventListener("scroll", onScroll);
+      removeEventListener("resize", onScroll);
+      if (raf) cancelAnimationFrame(raf);
+    };
+  }, []);
+  return <img ref={ref} src={src} alt={alt} className="h-full w-full object-cover will-change-transform" width={1600} height={1100} />;
 }
 
 function BigStat({ value, label }: { value: string; label: string }) {
