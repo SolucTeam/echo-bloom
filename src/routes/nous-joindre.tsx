@@ -4,7 +4,7 @@ import { loadPage } from '@/lib/site.functions';
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
 import { MapPin, Phone, Mail, ArrowRight, Loader2 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSetting } from '@/components/ManagedSite';
 
 import { Button } from '@/components/ui/button';
@@ -27,6 +27,12 @@ function Contact() {
   const startedAtRef = useRef<number>(Date.now());
   const [errors, setErrors] = useState<FormErrors>({});
   const [loading, setLoading] = useState(false);
+  const formErrorRef = useRef<HTMLParagraphElement>(null);
+
+  // Pattern GOV.UK : après un échec serveur, le focus va au message d'erreur (annoncé par role="alert").
+  useEffect(() => {
+    if (errors.form) formErrorRef.current?.focus();
+  }, [errors.form]);
 
   function validate(form: HTMLFormElement): FormErrors {
     const fd = new FormData(form);
@@ -42,6 +48,10 @@ function Contact() {
     const v = validate(form);
     if (Object.keys(v).length > 0) {
       setErrors(v);
+      // Le focus va au premier champ invalide : les utilisateurs clavier/lecteur d'écran
+      // trouvent l'erreur sans devoir la chercher.
+      const first = (["name", "email", "subject", "message"] as const).find((k) => v[k]);
+      if (first) document.getElementById(first)?.focus();
       return;
     }
     setErrors({});
@@ -133,7 +143,9 @@ function Contact() {
           </div>
 
           {errors.form && (
-            <p className="rounded-xl bg-destructive/10 text-destructive px-4 py-3 text-sm">{errors.form}</p>
+            <p ref={formErrorRef} tabIndex={-1} role="alert" className="rounded-xl bg-destructive/10 text-destructive px-4 py-3 text-sm">
+              {errors.form}
+            </p>
           )}
 
           <Button type="submit" disabled={loading} className="btn-primary w-full justify-center disabled:opacity-60">

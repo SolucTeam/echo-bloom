@@ -4,11 +4,12 @@ import { loadPage } from '@/lib/site.functions';
 import { createFileRoute } from "@tanstack/react-router";
 import { Link } from "@tanstack/react-router";
 import { PageHero } from "@/components/PageHero";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from '@/components/ui/button';
 import { supabase } from "@/integrations/supabase/client";
 import { PartnerLogos } from '@/components/PartnerLogos';
 import { Heart } from 'lucide-react';
+import { leafBurst } from '@/components/leafCelebration';
 
 export const Route = createFileRoute("/devenir-partenaire")({
   loader: async () => ({ cmsPage: await loadPage({ data: '/devenir-partenaire' }) }),
@@ -23,6 +24,13 @@ function Partner() {
   const [busy, setBusy] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const submitting = useRef(false);
+  const errorSummaryRef = useRef<HTMLParagraphElement>(null);
+  const submitRef = useRef<HTMLButtonElement>(null);
+
+  // Pattern GOV.UK : après un échec d'envoi, le focus va au message d'erreur (annoncé par role="alert").
+  useEffect(() => {
+    if (errorMessage) errorSummaryRef.current?.focus();
+  }, [errorMessage]);
   return (
     <>
       <PageHero
@@ -76,6 +84,8 @@ function Partner() {
               const { error } = await supabase.from("applications").insert({ kind: "partenaire", name, email: g("email") ?? "", phone: g("phone"), organization: g("org"), message: msg || null });
               if (error) throw new Error('Envoi impossible, réessayez.');
               setSent(true); form.reset();
+              const rect = submitRef.current?.getBoundingClientRect();
+              if (rect) leafBurst(rect.left + rect.width / 2, rect.top);
             } catch { setErrorMessage('Envoi impossible, réessayez.'); }
             finally { submitting.current = false; setBusy(false); }
           }}
@@ -91,8 +101,8 @@ function Partner() {
             <label htmlFor="partner-message" className="text-sm font-medium">Votre message</label>
             <textarea id="partner-message" name="message" maxLength={5000} required rows={5} className="mt-2 w-full rounded-2xl border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring" />
           </div>
-          <Button type="submit" disabled={busy} className="sm:col-span-2 btn-primary justify-center">{busy ? 'Envoi en cours…' : 'Envoyer ma demande'}</Button>
-          {errorMessage && <p role="alert" className="sm:col-span-2 text-sm text-destructive">{errorMessage}</p>}
+          <Button ref={submitRef} type="submit" disabled={busy} className="sm:col-span-2 btn-primary justify-center">{busy ? 'Envoi en cours…' : 'Envoyer ma demande'}</Button>
+          {errorMessage && <p ref={errorSummaryRef} tabIndex={-1} role="alert" className="sm:col-span-2 text-sm text-destructive">{errorMessage}</p>}
           {sent && <p role="status" className="sm:col-span-2 text-sm text-secondary font-medium">Merci, nous vous recontactons rapidement.</p>}
         </form>
       </section>

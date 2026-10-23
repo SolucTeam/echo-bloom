@@ -1,5 +1,5 @@
 import { Link } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Menu, X, Heart, Leaf } from "lucide-react";
 import { groupProjectMenu } from '@/lib/projects';
 import { useSetting } from './ManagedSite';
@@ -20,11 +20,17 @@ export function SiteHeader() {
   const menuValue=useSetting('site.menu');
   let menu:{to:string,label:string}[]=[...nav];
   try { if(menuValue)menu=groupProjectMenu(JSON.parse(menuValue) as {url:string,label:string}[]).map(n=>({to:n.url,label:n.label})); }catch{}
+  useEffect(()=>{
+    if(!open)return;
+    const onKey=(e:KeyboardEvent)=>{ if(e.key==='Escape')setOpen(false); };
+    window.addEventListener('keydown',onKey);
+    return ()=>window.removeEventListener('keydown',onKey);
+  },[open]);
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="container-x flex h-16 items-center justify-between gap-6">
         <Link to="/" className="flex items-center gap-2 font-display font-bold text-lg">
-          {logo?<img src={logo} alt={siteName} className="h-9 w-9 object-contain"/>:<span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
+          {logo?<img src={logo} alt="" className="h-9 w-9 object-contain"/>:<span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
             <Leaf className="h-5 w-5" />
           </span>}
           <span>{siteName}</span>
@@ -49,9 +55,11 @@ export function SiteHeader() {
             <Heart className="h-4 w-4" /> Faire un don
           </Link>
           <button
-            className="lg:hidden inline-flex h-10 w-10 items-center justify-center rounded-full border border-border"
+            className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full border border-border"
             onClick={() => setOpen((v) => !v)}
-            aria-label="Menu"
+            aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-expanded={open}
+            aria-controls="mobile-menu"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -59,7 +67,7 @@ export function SiteHeader() {
       </div>
 
       {open && (
-        <div className="lg:hidden border-t border-border bg-background">
+        <div id="mobile-menu" className="lg:hidden border-t border-border bg-background">
           <div className="container-x py-4 flex flex-col gap-1">
             {menu.map((n) => (
               <Link

@@ -1,8 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { CheckCircle2, ArrowRight } from "lucide-react";
+import { useEffect, useRef } from "react";
 
 import { useSetting } from '@/components/ManagedSite';
 import { readContact } from '@/lib/form-settings';
+import { leafBurst } from '@/components/leafCelebration';
 
 const SITE_URL = import.meta.env.VITE_SITE_URL || "https://green-ivory-tan.vercel.app";
 
@@ -25,10 +27,16 @@ export const Route = createFileRoute("/merci")({
 
 function ThankYou() {
   const config=readContact(useSetting('site.contact'));
+  const badgeRef = useRef<HTMLSpanElement>(null);
+  // Célébration à l'arrivée sur la page : une pluie de feuilles depuis la coche (rien en mouvement réduit).
+  useEffect(() => {
+    const rect = badgeRef.current?.getBoundingClientRect();
+    if (rect) leafBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, 18);
+  }, []);
   return (
     <section className="container-x py-24 lg:py-32">
       <div className="bento p-10 lg:p-14 max-w-2xl mx-auto text-center">
-        <span className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-accent text-primary">
+        <span ref={badgeRef} className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-accent text-primary">
           <CheckCircle2 className="h-8 w-8" />
         </span>
         <h1 className="mt-6 text-3xl lg:text-4xl font-bold">Merci pour votre message !</h1>

@@ -3,10 +3,11 @@ import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { loadPage } from '@/lib/site.functions';
 import { createFileRoute } from '@tanstack/react-router';
 import { PageHero } from '@/components/PageHero';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CheckCircle2, Loader2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { readVolunteer, volunteerSubmissionSchema } from '@/lib/form-settings';
+import { leafBurst } from '@/components/leafCelebration';
 
 export const Route = createFileRoute('/devenir-benevole')({
   loader: async () => ({ cmsPage: await loadPage({ data: '/devenir-benevole' }) }),
@@ -19,17 +20,38 @@ function Volunteer() {
   const config = readVolunteer(useSetting('site.volunteer'));
   const [sent, setSent] = useState(false), [busy, setBusy] = useState(false), [error, setError] = useState('');
   const startedAt = useRef(Date.now());
+  const errorSummaryRef = useRef<HTMLParagraphElement>(null);
+  const submitRef = useRef<HTMLButtonElement>(null);
+  // Où placer le focus : sur le champ invalide (validation) ou sur le message (erreur serveur/réseau).
+  const errorFocusTarget = useRef<'field' | 'summary'>('summary');
+
+  // Pattern GOV.UK : après un échec d'envoi, le focus va au message d'erreur (annoncé par role="alert").
+  useEffect(() => {
+    if (error && errorFocusTarget.current === 'summary') errorSummaryRef.current?.focus();
+  }, [error]);
+
   async function submit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
     const result = volunteerSubmissionSchema.safeParse({ ...Object.fromEntries(new FormData(form)), startedAt: startedAt.current });
-    if (!result.success) { setError(result.error.issues[0]?.message || 'Vérifiez les champs.'); return; }
+    if (!result.success) {
+      const firstIssue = result.error.issues[0];
+      setError(firstIssue?.message || 'Vérifiez les champs.');
+      errorFocusTarget.current = 'field';
+      // Focus du premier champ invalide : les erreurs ne sont pas nominatives ici.
+      const firstField = firstIssue?.path[0];
+      if (firstField !== undefined) document.getElementById('volunteer-' + String(firstField))?.focus();
+      return;
+    }
+    errorFocusTarget.current = 'summary';
     setBusy(true); setError(''); setSent(false);
     try {
       const response = await fetch('/api/public/volunteer', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(result.data) });
       const reply = await response.json() as { ok?: boolean; error?: string };
       if (!response.ok || !reply.ok) throw new Error(reply.error || 'Envoi impossible.');
       setSent(true); form.reset(); startedAt.current = Date.now();
+      const rect = submitRef.current?.getBoundingClientRect();
+      if (rect) leafBurst(rect.left + rect.width / 2, rect.top);
     } catch (err) { setError(err instanceof Error ? err.message : 'Envoi impossible.'); }
     finally { setBusy(false); }
   }
@@ -46,8 +68,8 @@ function Volunteer() {
         {config.showPhone && <Field label="Téléphone" name="phone" maxLength={50} autoComplete="tel"/>}
         {config.showCity && <Field label="Ville" name="city" maxLength={100}/>}
         {config.showMessage && <div className="sm:col-span-2"><label htmlFor="volunteer-message" className="text-sm font-medium">{config.messageLabel}</label><textarea id="volunteer-message" name="message" maxLength={5000} rows={5} className="mt-2 w-full rounded-lg border border-input bg-background px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-ring"/></div>}
-        <Button type="submit" disabled={busy} className="sm:col-span-2">{busy ? <><Loader2 className="animate-spin"/>Envoi en cours…</> : config.buttonLabel}</Button>
-        {error && <p role="alert" className="sm:col-span-2 text-sm text-destructive">{error}</p>}
+        <Button ref={submitRef} type="submit" disabled={busy} className="sm:col-span-2">{busy ? <><Loader2 className="animate-spin"/>Envoi en cours…</> : config.buttonLabel}</Button>
+        {error && <p ref={errorSummaryRef} tabIndex={-1} role="alert" className="sm:col-span-2 text-sm text-destructive">{error}</p>}
         {sent && <p role="status" className="sm:col-span-2 text-sm text-secondary font-medium">{config.successMessage}</p>}
       </form> : <p data-form-closed role="status" className="border-l-4 border-primary p-6 bg-accent">{config.closedMessage}</p>}
     </section>

@@ -28,6 +28,9 @@ export const getRouter = () => {
     context: { queryClient },
     scrollRestoration: true,
     defaultPreloadStaleTime: 0,
+    // Crossfade entre les routes via la View Transitions API (styles dans styles.css).
+    // Les navigateurs sans l'API ignorent l'option : navigation identique à avant.
+    defaultViewTransition: true,
   });
 
   return router;

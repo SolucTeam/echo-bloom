@@ -12,7 +12,10 @@ import { useSetting } from '@/components/ManagedSite';
 import { readProjects } from '@/lib/projects';
 import { visibleProjects } from '@/lib/project-schema';
 import { PartnerLogos } from '@/components/PartnerLogos';
+import { ClientShader } from '@/components/shaders/ClientShader';
 import { HOME_TEXT_FALLBACKS, DEFAULT_HOME_BIGSTATS, readHomeStats, readHomeTexts } from '@/data/home';
+import { AnimatedNumber } from '@/components/AnimatedNumber';
+import { BeforeAfter } from '@/components/BeforeAfter';
 
 export const Route = createFileRoute("/")({
   loader:async()=>({cmsPage:await loadPage({data:'/'})}),
@@ -34,11 +37,16 @@ function Home() {
   const axis3Image = useSetting('home.axis3.image') || climate;
   const aboutImage1 = useSetting('home.about.image1') || biodiversity;
   const aboutImage2 = useSetting('home.about.image2') || plastic;
+  // Comparateur avant/après : images éditables dans la console, repli sur les originaux.
+  const baBefore = useSetting('home.beforeafter.before') || plastic;
+  const baAfter = useSetting('home.beforeafter.after') || hero;
   return (
     <>
       {/* HERO */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 grain opacity-40 pointer-events-none" aria-hidden />
+        {/* Brume de forêt + particules (WebGPU, derrière le contenu) */}
+        <ClientShader preset="heroAmbient" className="absolute inset-0 -z-10 opacity-45 pointer-events-none" />
         <div className="container-x pt-12 pb-20 lg:pt-20 lg:pb-28 grid lg:grid-cols-12 gap-10 items-center">
           <div className="lg:col-span-6">
             <span className="eyebrow">{T('home.hero.eyebrow')}</span>
@@ -127,6 +135,26 @@ function Home() {
             text={T('home.axis3.text')}
           />
         </div>
+      </section>
+
+      {/* Avant / Après — le résultat d'une collecte en un geste */}
+      <section className="container-x py-16 lg:py-24">
+        <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
+          <div>
+            <span className="eyebrow">Avant / Après</span>
+            <h2 className="mt-3 text-4xl sm:text-5xl font-bold tracking-tight max-w-2xl">Le résultat, en un geste.</h2>
+          </div>
+          <p className="text-muted-foreground max-w-md">
+            Glissez le curseur : une plage saturée de plastique redevient un littoral propre, collecte après collecte, grâce à nos bénévoles.
+          </p>
+        </div>
+        <BeforeAfter
+          before={baBefore}
+          after={baAfter}
+          beforeAlt="Plage polluée par les déchets plastiques, avant la collecte"
+          afterAlt="Plage propre après le passage des bénévoles Green Ivory"
+          className="bento p-0"
+        />
       </section>
 
       {/* Engagement climat */}
@@ -223,7 +251,7 @@ function Home() {
 function Stat({ value, label }: { value: string; label: string }) {
   return (
     <div>
-      <div className="text-2xl font-bold text-primary">{value}</div>
+      <div className="text-2xl font-bold text-primary"><AnimatedNumber value={value} /></div>
       <div className="text-xs text-muted-foreground mt-1">{label}</div>
     </div>
   );
@@ -232,7 +260,7 @@ function Stat({ value, label }: { value: string; label: string }) {
 function BigStat({ value, label }: { value: string; label: string }) {
   return (
     <div>
-      <div className="text-5xl font-bold text-primary tracking-tight">{value}</div>
+      <div className="text-5xl font-bold text-primary tracking-tight"><AnimatedNumber value={value} /></div>
       <div className="mt-2 text-sm text-foreground/70">{label}</div>
     </div>
   );
