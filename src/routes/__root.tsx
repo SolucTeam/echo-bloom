@@ -1,7 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
-  Link,
   createRootRouteWithContext,
   useRouter,
   HeadContent,
@@ -13,23 +12,15 @@ import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { SiteContext, ManagedContent } from '@/components/ManagedSite';
 import { loadSite } from '@/lib/site.functions';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { RouteError } from '@/components/RouteFeedback';
+import { ErrorScene, NotFoundScene, MaintenancePage } from '@/components/StatusPages';
 
 function NotFoundComponent() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-7xl font-bold text-foreground">404</h1>
-        <h2 className="mt-4 text-xl font-semibold">Page introuvable</h2>
-        <p className="mt-2 text-sm text-muted-foreground">
-          La page que vous cherchez n’existe pas ou a été déplacée.
-        </p>
-        <div className="mt-6">
-          <Link to="/" className="btn-primary">Retour à l’accueil</Link>
-        </div>
-      </div>
+    <div className="grid min-h-svh place-items-center bg-background px-4 py-16">
+      <NotFoundScene />
     </div>
   );
 }
@@ -38,17 +29,8 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background px-4">
-      <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold">Cette page n’a pas pu se charger</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Une erreur est survenue. Réessayez ou revenez à l’accueil.
-        </p>
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
-          <button onClick={() => { router.invalidate(); reset(); }} className="btn-primary">Réessayer</button>
-          <a href="/" className="btn-ghost">Accueil</a>
-        </div>
-      </div>
+    <div className="grid min-h-svh place-items-center bg-background px-4 py-16">
+      <ErrorScene onRetry={() => { router.invalidate(); reset(); }} />
     </div>
   );
 }
@@ -102,22 +84,32 @@ function RootComponent() {
   const { queryClient } = Route.useRouteContext();
   const site=Route.useLoaderData();
   const router=useRouter();
+  // Maintenance : réglage éditable dans la console (site.maintenance).
+  // La console (/admin) et la page de connexion restent accessibles,
+  // tout comme le site pour une session connectée (prévisualisation).
+  const [authed,setAuthed]=useState(false);
   useEffect(()=>{
+    supabase.auth.getUser().then(({data})=>setAuthed(Boolean(data.user)));
     const {data}=supabase.auth.onAuthStateChange(event=>{
-      if(!['SIGNED_IN','SIGNED_OUT','USER_UPDATED'].includes(event))return;
-      router.invalidate();
-      if(event!=='SIGNED_OUT')queryClient.invalidateQueries();
+      if(event==='SIGNED_IN')setAuthed(true);
+      if(event==='SIGNED_OUT'){setAuthed(false);router.invalidate();queryClient.invalidateQueries();}
+      else if(['USER_UPDATED'].includes(event)){router.invalidate();queryClient.invalidateQueries();}
     });
     return ()=>data.subscription.unsubscribe();
   },[router,queryClient]);
+  const maintenance=site.settings['site.maintenance']==='true';
+  const path=router.state.location.pathname;
+  const showMaintenance=maintenance&&!authed&&!path.startsWith('/admin')&&!path.startsWith('/auth');
   return (
     <QueryClientProvider client={queryClient}>
       <SiteContext.Provider value={site}>
+      {showMaintenance?<MaintenancePage/>:<>
       <SiteHeader />
       <main className="min-h-[60vh]">
         <ManagedContent><Outlet /></ManagedContent>
       </main>
       <SiteFooter />
+      </>}
       </SiteContext.Provider>
     </QueryClientProvider>
   );
