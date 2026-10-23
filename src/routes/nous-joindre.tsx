@@ -21,7 +21,7 @@ export const Route = createFileRoute("/nous-joindre")({
 type FormErrors = Partial<Record<"name" | "email" | "subject" | "message" | "form", string>>;
 
 function Contact() {
-  const address=useSetting('site.address','Côte d’Ivoire — Bingerville, Cité Ital'),phone=useSetting('site.phone','+225 07 772 689 96'),email=useSetting('site.email','info@greenivory.org'),recruitment=useSetting('site.recruitment','recrutement@greenivory.org');
+  const address=useSetting('site.address','Bingerville Cité Ital, Côte d’Ivoire'),phone=useSetting('site.phone','+225 07 772 689 96'),email=useSetting('site.email','info@greenivory.org'),recruitment=useSetting('site.recruitment','recrutement@greenivory.org');
   const config=readContact(useSetting('site.contact'));
   const navigate = useNavigate();
   const startedAtRef = useRef<number>(Date.now());

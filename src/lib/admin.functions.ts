@@ -67,6 +67,7 @@ export const adminWrite = createServerFn({method:'POST'}).middleware([adminMiddl
       if(p.key==='about.texts'){const parsed=z.record(z.string(),z.string().max(3000)).parse(JSON.parse(p.value));for(const k of Object.keys(parsed))if(!(k in ABOUT_TEXT_FALLBACKS))throw new Error('Clé de texte inconnue.');}
       if(p.key.startsWith('about.')&&p.key.endsWith('.image'))safeLink.parse(p.value);
       if(p.key.startsWith('home.')&&p.key.endsWith('.image'))safeLink.parse(p.value);
+      if(p.key==='home.beforeafter.before'||p.key==='home.beforeafter.after')safeLink.parse(p.value);
       if(p.key==='site.projects')projectsSchema.parse(JSON.parse(p.value));
       if(p.key==='site.partners')partnersSchema.parse(JSON.parse(p.value));
       if(p.key==='site.contact')contactSettingsSchema.parse(JSON.parse(p.value));

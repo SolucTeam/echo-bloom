@@ -104,4 +104,6 @@ export const HOME_IMAGES: { key: string; label: string }[] = [
   { key: "home.axis3.image", label: "Axe 3 — climat" },
   { key: "home.about.image1", label: "Qui sommes-nous — image gauche" },
   { key: "home.about.image2", label: "Qui sommes-nous — image droite" },
+  { key: "home.beforeafter.before", label: "Comparateur — avant (plage polluée)" },
+  { key: "home.beforeafter.after", label: "Comparateur — après (littoral propre)" },
 ];
