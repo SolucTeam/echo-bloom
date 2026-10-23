@@ -63,7 +63,7 @@ function Blog() {
               <button
                 key={c}
                 onClick={() => setCategory(c as BlogCategory | "Tous")}
-                className={`inline-flex items-center gap-1.5 rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
+                className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2.5 text-xs font-semibold transition ${
                   category === c
                     ? "bg-primary text-primary-foreground"
                     : "bg-accent text-foreground hover:bg-accent/70"
@@ -115,7 +115,7 @@ function Blog() {
                   <Link
                     to="/blog/$slug"
                     params={{ slug: p.slug }}
-                    className="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-primary"
+                    className="mt-5 inline-flex items-center gap-1 py-2 -my-2 text-sm font-semibold text-primary"
                   >
                     Lire l'article <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
                   </Link>

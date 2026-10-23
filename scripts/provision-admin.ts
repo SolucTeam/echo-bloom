@@ -2,6 +2,9 @@ import { createClient } from '@supabase/supabase-js';
 import { readFile } from 'node:fs/promises';
 import { z } from 'zod';
 import { provisionAdmin, assertPrivateSignup } from './provision-admin-core';
+import { ensureNodeWebSocket } from '../src/lib/server-ws.server';
+
+ensureNodeWebSocket();
 
 const url=process.env['SUPABASE_URL'];
 const key=process.env['SUPABASE_SERVICE_ROLE_KEY'];

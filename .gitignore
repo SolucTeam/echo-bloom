@@ -37,3 +37,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Documents parsemés localement (brochures, analyses)
+.firecrawl/

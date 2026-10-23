@@ -153,6 +153,46 @@
 }
 .animate-float-slow { animation: float-slow 6s ease-in-out infinite; }
 
+/* Logos partenaires : bande défilante en boucle (deux rangées, directions opposées).
+   Le rail contient deux copies identiques : translateX(-50%) reboucle sans à-coup. */
+@keyframes marquee-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+@keyframes marquee-right { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.partner-marquee-track { animation: marquee-left var(--marquee-duration, 32s) linear infinite; will-change: transform; }
+.partner-marquee-track[data-reverse='true'] { animation-name: marquee-right; }
+.partner-marquee:hover .partner-marquee-track { animation-play-state: paused; }
+
+/* Révélations premium : entrée du hero au chargement + titres qui montent derrière un
+   masque au scroll. 100 % opacity/transform, statique si « Réduire les animations ». */
+@keyframes reveal-rise {
+  from { opacity: 0; transform: translateY(26px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.reveal { overflow: hidden; }
+.reveal-armed:not(.reveal-in) .reveal-inner { opacity: 0; transform: translateY(26px); }
+.reveal-in .reveal-inner { opacity: 1; transform: none; }
+.hero-word { display: inline-block; overflow: hidden; vertical-align: bottom; }
+.hero-word > span { display: inline-block; }
+@media (prefers-reduced-motion: no-preference) {
+  .reveal-in .reveal-inner { animation: reveal-rise 0.65s cubic-bezier(0.16, 1, 0.3, 1) both; animation-delay: var(--reveal-delay, 0ms); }
+  .hero-stagger > * { animation: reveal-rise 0.7s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .hero-stagger > *:nth-child(1) { animation-delay: 40ms; }
+  .hero-stagger > *:nth-child(2) { animation-delay: 140ms; }
+  .hero-stagger > *:nth-child(3) { animation-delay: 260ms; }
+  .hero-stagger > *:nth-child(4) { animation-delay: 380ms; }
+  .hero-stagger > *:nth-child(5) { animation-delay: 500ms; }
+  .hero-stagger > *:nth-child(6) { animation-delay: 620ms; }
+  .hero-stagger > .hero-words { animation: none; }
+  .hero-word > span { animation: reveal-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+  .hero-media-in { animation: hero-media 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both; }
+}
+@keyframes hero-media {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-armed:not(.reveal-in) .reveal-inner { opacity: 1; transform: none; }
+}
+
 .cms-preserve-forms section:not(:has(form)):not(:has([data-form-closed])):not([data-partner-logos]):not([data-donation-collections]) { display: none; }
 .cms-preserve-collection section:first-child { display: none; }
 .cms-editor p { margin: 0.75rem 0; }
@@ -160,7 +200,7 @@
 .cms-editor ul { list-style: disc; padding-left: 1.5rem; }
 .cms-editor ol { list-style: decimal; padding-left: 1.5rem; }
 .cms-editor a { color: var(--primary); text-decoration: underline; }
-@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .animate-float-slow { animation: none; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .animate-float-slow { animation: none; } .partner-marquee-track { animation: none; } }
 
 /* Transitions de pages — crossfade via la View Transitions API
    (activée par defaultViewTransition dans router.tsx). Les navigateurs sans

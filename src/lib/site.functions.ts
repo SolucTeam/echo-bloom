@@ -22,7 +22,7 @@ export const loadSite = createServerFn({method:'GET'}).handler(async () => {
     return {pages:[],settings:{}};
   }
 });
-export const loadPage = createServerFn({method:'GET'}).inputValidator((p:unknown)=>z.string().parse(p)).handler(async ({data}) => {
+export const loadPage = createServerFn({method:'GET'}).validator((p:unknown)=>z.string().parse(p)).handler(async ({data}) => {
   try {
     const db = publicClient();
     const {data:row,error} = await db.from('cms_pages').select('path,title,description,share_image,blocks,published').eq('path',data).eq('published',true).maybeSingle();
@@ -55,7 +55,7 @@ export const loadGallery = createServerFn({method:'GET'}).handler(async()=>{
     return {photos:[],imported:false};
   }
 });
-export const loadProject=createServerFn({method:'GET'}).inputValidator((v:unknown)=>z.string().parse(v)).handler(async({data})=>{
+export const loadProject=createServerFn({method:'GET'}).validator((v:unknown)=>z.string().parse(v)).handler(async({data})=>{
  if(!projectSlugSchema.safeParse(data).success)return null;
  try{
   const db=publicClient();const result=await db.from('site_content').select('value').eq('key','site.projects').maybeSingle();

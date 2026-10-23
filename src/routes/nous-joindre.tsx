@@ -21,7 +21,7 @@ export const Route = createFileRoute("/nous-joindre")({
 type FormErrors = Partial<Record<"name" | "email" | "subject" | "message" | "form", string>>;
 
 function Contact() {
-  const address=useSetting('site.address',"Côte d'Ivoire — Abidjan / Bingerville / Bassam"),phone=useSetting('site.phone','+225 01 03 05 83 63'),email=useSetting('site.email','info@greenivory.com'),recruitment=useSetting('site.recruitment','recrutement@greenivory.com');
+  const address=useSetting('site.address','Côte d’Ivoire — Bingerville, Cité Ital'),phone=useSetting('site.phone','+225 07 772 689 96'),email=useSetting('site.email','info@greenivory.org'),recruitment=useSetting('site.recruitment','recrutement@greenivory.org');
   const config=readContact(useSetting('site.contact'));
   const navigate = useNavigate();
   const startedAtRef = useRef<number>(Date.now());
@@ -98,7 +98,7 @@ function Contact() {
         <InfoCard icon={<Mail className="h-5 w-5" />} label="Nos emails" lines={[email,recruitment]} />
       </section>
 
-      <section className="container-x py-10 lg:py-16 grid lg:grid-cols-2 gap-10 items-start">
+      <section className="container-x py-6 lg:py-10 grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <h2 className="text-3xl lg:text-4xl font-bold">{config.formTitle}</h2>
           <p className="mt-4 text-muted-foreground max-w-md">

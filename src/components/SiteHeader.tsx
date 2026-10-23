@@ -1,8 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { Menu, X, Heart, Leaf } from "lucide-react";
+import { Menu, X, Heart } from "lucide-react";
 import { groupProjectMenu } from '@/lib/projects';
 import { useSetting } from './ManagedSite';
+import logoMark from '@/assets/logo-mark.png';
 
 const nav = [
   { to: "/", label: "Accueil" },
@@ -30,9 +31,7 @@ export function SiteHeader() {
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="container-x flex h-16 items-center justify-between gap-6">
         <Link to="/" className="flex items-center gap-2 font-display font-bold text-lg">
-          {logo?<img src={logo} alt="" className="h-9 w-9 object-contain"/>:<span className="inline-flex h-9 w-9 items-center justify-center rounded-full bg-primary text-primary-foreground">
-            <Leaf className="h-5 w-5" />
-          </span>}
+          <img src={logo || logoMark} alt="" className="h-9 w-9 object-contain" />
           <span>{siteName}</span>
         </Link>
 

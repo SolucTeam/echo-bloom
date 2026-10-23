@@ -1,5 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
+import { ensureNodeWebSocket } from './server-ws.server';
 import type { Database } from '@/integrations/supabase/types';
+
+ensureNodeWebSocket();
 
 export function publicClient() {
   const url = process.env['SUPABASE_URL'];

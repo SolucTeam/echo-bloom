@@ -1,7 +1,11 @@
 import journees from '@/assets/journees.jpg';
 import sentiers from '@/assets/sentiers.jpg';
+import biodiversity from '@/assets/biodiversity.jpg';
+import hero from '@/assets/hero.jpg';
+import founder from '@/assets/founder.jpg';
 import type { Project } from '@/lib/project-schema';
-export const DEFAULT_PROJECTS: Project[] = [
+
+const PROJETS_ORIGINE: Project[] = [
 {slug:'journees-sans-plastique', visible:true,
         eyebrow: "Emploi vert",
         title: "Journées Sans Plastique",
@@ -54,3 +58,71 @@ export const DEFAULT_PROJECTS: Project[] = [
           { value: "200k+", label: "Jeunes touchés en ligne" },
           { value: "3M", label: "U-reporters mobilisés" },
         ],}];
+// Initiatives complémentaires décrites dans la brochure Green Ivory 2026.
+const INITIATIVES_BROCHURE: Project[] = [
+{slug:'we-plant', visible:true,
+        eyebrow: "Reboisement",
+        title: "We Plant",
+        tagline: "Contribuer à la restauration des écosystèmes à travers le reboisement et la mobilisation citoyenne en faveur de la protection des espaces naturels.",
+        org: "Green Ivory",
+        launched: "", pilot: "", firstEdition: "",
+        goal: "Reboiser et protéger les espaces naturels avec les communautés.",
+        goalDetail:
+          "We Plant mobilise les citoyens autour du reboisement et de la protection des espaces naturels : chaque arbre planté restaure un écosystème, ancre une conscience écologique et rapproche les communautés de leur environnement.",
+        hero: biodiversity,
+        context:
+          "La déforestation et la dégradation des écosystèmes menacent la biodiversité, les sols et les moyens de subsistance des communautés ivoiriennes. We Plant répond à cette urgence par des campagnes de plantation d’espèces locales et par la mobilisation citoyenne pour la protection durable des espaces naturels — forêts urbaines, côtes et zones rurales.",
+        objectives: [
+          "Planter des arbres d’espèces locales dans les zones dégradées.",
+          "Mobiliser les citoyens, les écoles et les entreprises autour du reboisement.",
+          "Protéger les espaces naturels existants aux côtés des communautés.",
+          "Suivre la survie des plants pour garantir un impact durable.",
+        ],
+        outcomes: [
+          { value: "5 000+", label: "Arbres plantés" },
+        ],},
+{slug:'green-schools', visible:true,
+        eyebrow: "Éducation environnementale",
+        title: "Green Schools",
+        tagline: "Éveiller les plus jeunes aux enjeux environnementaux et développer, dès l’école, les connaissances et les réflexes nécessaires à une citoyenneté écologique.",
+        org: "Green Ivory",
+        launched: "", pilot: "", firstEdition: "",
+        goal: "Ancrer la citoyenneté écologique dès l’école.",
+        goalDetail:
+          "Green Schools forme la génération montante aux enjeux environnementaux : sessions de sensibilisation dans les établissements, clubs environnementaux et projets pédagogiques pour faire des élèves des ambassadeurs du changement.",
+        hero: hero,
+        context:
+          "La protection de l’environnement se construit dès l’enfance. Green Schools intervient dans les écoles pour éveiller les plus jeunes à l’écologie : compréhension des enjeux climatiques, gestes du quotidien, gestion des déchets et amorçage d’une citoyenneté écologique durable, en lien avec les enseignants et les familles.",
+        objectives: [
+          "Éveiller les plus jeunes aux enjeux environnementaux dès l’école.",
+          "Développer les connaissances et les réflexes d’une citoyenneté écologique.",
+          "Accompagner les enseignants et les établissements dans une démarche durable.",
+          "Créer des clubs environnementaux pérennes dans les écoles partenaires.",
+        ],
+        outcomes: [
+          { value: "Écoles", label: "Partenaires d’une éducation environnementale durable" },
+        ],},
+{slug:'plaidoyer-environnemental', visible:true,
+        eyebrow: "Influence & politiques publiques",
+        title: "Plaidoyer environnemental",
+        tagline: "Contribuer au dialogue et à la promotion de politiques publiques favorables à une gestion durable de l’environnement.",
+        org: "Green Ivory",
+        launched: "", pilot: "", firstEdition: "",
+        goal: "Faire monter les priorités environnementales des jeunes dans le débat public.",
+        goalDetail:
+          "Green Ivory contribue au dialogue avec les décideurs et à la promotion de politiques publiques favorables à une gestion durable de l’environnement, en portant la voix des jeunes jusqu’aux instances nationales et internationales.",
+        hero: founder,
+        context:
+          "Face à l’urgence environnementale, les politiques publiques sont un levier décisif. Green Ivory fédère la jeunesse ivoirienne pour porter des propositions concrètes auprès des autorités et des partenaires institutionnels, et participe aux grandes rendez-vous internationaux comme les COP pour faire résonner les priorités climatiques de la jeunesse africaine.",
+        objectives: [
+          "Contribuer au dialogue avec les décideurs publics et institutionnels.",
+          "Promouvoir des politiques favorables à une gestion durable de l’environnement.",
+          "Porter la voix des jeunes dans les instances internationales (COP).",
+          "Fédérer les organisations de jeunesse autour de priorités climatiques communes.",
+        ],
+        outcomes: [
+          { value: "COP", label: "La voix des jeunes portée auprès des décideurs" },
+        ],}];
+
+/** Catalogue complet : projets détaillés d'origine + initiatives complémentaires de la brochure 2026. */
+export const DEFAULT_PROJECTS: Project[] = [...PROJETS_ORIGINE, ...INITIATIVES_BROCHURE];

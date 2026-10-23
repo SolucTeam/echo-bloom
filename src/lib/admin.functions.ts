@@ -30,7 +30,7 @@ export const adminSnapshot = createServerFn({method:'GET'}).middleware([adminMid
 });
 
 export const adminWrite = createServerFn({method:'POST'}).middleware([adminMiddleware])
-  .inputValidator((v:unknown)=>z.object({entity:adminEntitySchema,id:z.string().optional(),remove:z.boolean().default(false),payload:z.unknown().optional()}).parse(v))
+  .validator((v:unknown)=>z.object({entity:adminEntitySchema,id:z.string().optional(),remove:z.boolean().default(false),payload:z.unknown().optional()}).parse(v))
   .handler(async({data,context})=>{
     const {data:allowed,error:roleError}=await context.supabase.rpc('has_role',{_user_id:context.userId,_role:'admin'});
     if(roleError || !allowed) throw new Error('Accès refusé.');
@@ -84,7 +84,7 @@ export const adminWrite = createServerFn({method:'POST'}).middleware([adminMiddl
   });
 
 export const saveMailSettings = createServerFn({method:'POST'}).middleware([adminMiddleware])
-  .inputValidator((value:unknown)=>mailSettingsSchema.parse(value))
+  .validator((value:unknown)=>mailSettingsSchema.parse(value))
   .handler(async({data,context})=>{
     const role=await context.supabase.rpc('has_role',{_user_id:context.userId,_role:'admin'});
     if(role.error || !role.data)throw new Error('Accès refusé.');

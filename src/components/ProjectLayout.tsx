@@ -21,7 +21,7 @@ export function ProjectLayout({ info }: { info: ProjectInfo }) {
   return (
     <>
       <section className="border-b border-border bg-accent/40">
-        <div className="container-x py-14 lg:py-20 grid lg:grid-cols-12 gap-10 items-end">
+        <div className="container-x py-6 lg:py-10 grid lg:grid-cols-12 gap-10 items-end">
           <div className="lg:col-span-7">
             <Link to="/projets" className="mb-6 flex items-center gap-2 text-sm font-medium text-primary"><ArrowLeft className="h-4 w-4"/>Tous les projets</Link>
             <span className="eyebrow">{info.eyebrow}</span>
@@ -33,15 +33,15 @@ export function ProjectLayout({ info }: { info: ProjectInfo }) {
             </div>
           </div>
           <div className="lg:col-span-5 grid grid-cols-2 gap-3">
-            <Meta icon={<Building2 className="h-4 w-4" />} label="Organisation" value={info.org} />
-            <Meta icon={<Calendar className="h-4 w-4" />} label="Lancement" value={info.launched} />
-            <Meta icon={<Rocket className="h-4 w-4" />} label="Phase pilote" value={info.pilot} />
-            <Meta icon={<Calendar className="h-4 w-4" />} label="1ʳᵉ édition" value={info.firstEdition} />
+            {info.org && <Meta icon={<Building2 className="h-4 w-4" />} label="Organisation" value={info.org} />}
+            {info.launched && <Meta icon={<Calendar className="h-4 w-4" />} label="Lancement" value={info.launched} />}
+            {info.pilot && <Meta icon={<Rocket className="h-4 w-4" />} label="Phase pilote" value={info.pilot} />}
+            {info.firstEdition && <Meta icon={<Calendar className="h-4 w-4" />} label="1ʳᵉ édition" value={info.firstEdition} />}
           </div>
         </div>
       </section>
 
-      <section className="container-x py-16 lg:py-24 grid lg:grid-cols-2 gap-10 items-start">
+      <section className="container-x py-6 lg:py-10 grid lg:grid-cols-2 gap-10 items-start">
         <div>
           <h2 className="text-3xl lg:text-4xl font-bold">{info.goal}</h2>
           <p className="mt-5 text-muted-foreground text-lg">{info.goalDetail}</p>
@@ -49,7 +49,7 @@ export function ProjectLayout({ info }: { info: ProjectInfo }) {
         {info.hero && <img src={info.hero} alt={info.title} loading="lazy" className="bento h-[420px] w-full object-cover" style={{ viewTransitionName: 'project-hero' } as React.CSSProperties} />}
       </section>
 
-      <section className="container-x py-16 lg:py-24 grid lg:grid-cols-3 gap-10">
+      <section className="container-x py-6 lg:py-10 grid lg:grid-cols-3 gap-10">
         <div className="lg:col-span-2">
           <span className="eyebrow">Contexte</span>
           <h3 className="mt-3 text-3xl font-bold">Pourquoi ce projet&nbsp;?</h3>
@@ -67,16 +67,20 @@ export function ProjectLayout({ info }: { info: ProjectInfo }) {
         </div>
 
         <aside className="bento p-7 bg-primary text-primary-foreground border-0 h-fit lg:sticky lg:top-24">
-          <h4 className="text-lg font-semibold">Résultats attendus</h4>
-          <div className="mt-5 space-y-5">
-            {info.outcomes.map((o) => (
-              <div key={o.label}>
-                <div className="text-3xl font-bold">{o.value}</div>
-                <div className="text-sm opacity-85 mt-1">{o.label}</div>
+          {info.outcomes.length > 0 && (
+            <>
+              <h4 className="text-lg font-semibold">Résultats attendus</h4>
+              <div className="mt-5 space-y-5">
+                {info.outcomes.map((o) => (
+                  <div key={o.label}>
+                    <div className="text-3xl font-bold">{o.value}</div>
+                    <div className="text-sm opacity-85 mt-1">{o.label}</div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-          <Link to="/faire-un-don" className="mt-7 inline-flex w-full justify-center items-center gap-2 rounded-full bg-leaf text-primary px-5 py-3 text-sm font-semibold hover:opacity-90">
+            </>
+          )}
+          <Link to="/faire-un-don" className={"mt-7 inline-flex w-full justify-center items-center gap-2 rounded-full bg-leaf text-primary px-5 py-3 text-sm font-semibold hover:opacity-90" + (info.outcomes.length ? "" : " mt-0")}>
             Soutenir ce projet
           </Link>
         </aside>

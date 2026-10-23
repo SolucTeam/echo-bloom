@@ -3,16 +3,19 @@ export const HOME_HERO_INTRO_FALLBACK = "Green Ivory est une ONG ivoirienne fond
 export type HomeStat = { value: string; label: string };
 
 export const DEFAULT_HOME_STATS: HomeStat[] = [
-  { value: "15k+", label: "Jeunes sensibilisés" },
-  { value: "2 500", label: "Arbres plantés" },
-  { value: "7 ans", label: "d’engagement" },
+  { value: "200 000+", label: "Personnes sensibilisées" },
+  { value: "5 000+", label: "Arbres plantés" },
+  { value: "9 ans", label: "d’engagement" },
 ];
 
+/** Chiffres d'impact officiels — brochure Green Ivory 2026. */
 export const DEFAULT_HOME_BIGSTATS: HomeStat[] = [
-  { value: "15 000+", label: "Jeunes et adolescents sensibilisés" },
-  { value: "800+", label: "Jeunes formés à l’économie verte et bleue" },
-  { value: "2 500+", label: "Arbres plantés" },
-  { value: "45+", label: "Éco-entreprises accompagnées" },
+  { value: "200 000+", label: "Personnes sensibilisées à la pollution plastique et au changement climatique" },
+  { value: "5", label: "Projets d’éco-entreprises accompagnés (assistance technique, incubation, financement)" },
+  { value: "120+", label: "Jeunes formés aux emplois verts (économies verte et bleue)" },
+  { value: "30+", label: "Emplois verts créés" },
+  { value: "20+", label: "Tonnes de déchets plastiques collectés et recyclés" },
+  { value: "5 000+", label: "Arbres plantés" },
 ];
 
 /** Textes de la page d'accueil : clé → valeur d'origine (repli si non personnalisée en base). */
@@ -50,6 +53,19 @@ export const HOME_TEXT_FALLBACKS: Record<string, string> = {
   "home.partners.eyebrow": "Devenir partenaire",
   "home.partners.title": "Soutenez notre organisation, nos missions et nos actions.",
   "home.partners.text": "Entreprises, institutions, ONG, collectivités — rejoignez-nous pour développer des solutions durables face aux défis environnementaux.",
+  "home.values.eyebrow": "Nos valeurs",
+  "home.values.title": "Ce qui nous anime.",
+  "home.values.intro": "Cinq valeurs portent chaque action de Green Ivory, sur le terrain comme dans le plaidoyer.",
+  "home.value1.label": "Passion",
+  "home.value1.text": "Une énergie qui se transmet : chaque membre agit avec enthousiasme et conviction.",
+  "home.value2.label": "Agilité",
+  "home.value2.text": "Des équipes réactives, adaptées aux réalités du terrain et aux urgences climatiques.",
+  "home.value3.label": "Intégrité",
+  "home.value3.text": "Transparence et exemplarité dans la gestion de nos ressources et de nos projets.",
+  "home.value4.label": "Collaboration",
+  "home.value4.text": "Agir avec les communautés, les partenaires et les institutions — ensemble, jamais seuls.",
+  "home.value5.label": "Humanisme",
+  "home.value5.text": "L’humain au centre : chaque action sert d’abord les communautés et le vivant.",
 };
 
 export type HomeTexts = Record<string, string>;

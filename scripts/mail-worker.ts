@@ -2,8 +2,11 @@
 import { readFileSync } from 'node:fs';
 import nodemailer from 'nodemailer';
 import { createClient } from '@supabase/supabase-js';
+import { ensureNodeWebSocket } from '../src/lib/server-ws.server';
 import { mailSettingsSchema } from '../src/lib/mail-settings';
 import { notificationMessage } from '../src/lib/mail-message';
+
+ensureNodeWebSocket();
 
 function required(name: string) { const value = process.env[name]; if (!value) throw new Error('missing_configuration'); return value; }
 async function main() {

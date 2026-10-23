@@ -57,7 +57,7 @@ function Donations() {
         intro="Soutenez les actions de Green Ivory en contribuant à une collecte. Ensemble, protégeons notre environnement."
       />
 
-      <section className="container-x py-14 lg:py-20" data-donation-collections>
+      <section className="container-x py-6 lg:py-10" data-donation-collections>
         <div className="max-w-3xl">
           <div className="flex items-center gap-2 text-primary text-sm font-semibold">
             <Heart className="size-5" aria-hidden="true" />
