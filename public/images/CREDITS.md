@@ -14,3 +14,7 @@ Photos libres de droits (Wikimedia Commons), utilisées comme visuels de repli d
 Licences : https://creativecommons.org/licenses/by/4.0/ · https://creativecommons.org/licenses/by-sa/4.0/ · https://creativecommons.org/licenses/by/2.0/
 
 Le portrait de la fondatrice (founder.jpg) doit être fourni par l'association.
+
+## Photos de l'association
+
+Les fichiers `plaidoyer-*.jpg`, `sentiers-*.jpg` et `weplant-*.jpg` sont des photos de Green Ivory fournies par l'équipe (dossiers programmes Plaidoyer environnemental, Sentiers verts et We Plant) — elles illustrent les pages programmes et la galerie.

@@ -2,7 +2,9 @@ import journees from '@/assets/journees.jpg';
 import sentiers from '@/assets/sentiers.jpg';
 import biodiversity from '@/assets/biodiversity.jpg';
 import depollution from '@/assets/depollution.jpg';
-import fondateur from '@/assets/fondateur.jpg';
+import plaidoyer from '@/assets/plaidoyer.jpg';
+import sentiersVerts from '@/assets/sentiers-verts.jpg';
+import wePlant from '@/assets/we-plant.jpg';
 import type { Program } from '@/lib/program-schema';
 
 const PROGRAMMES_ORIGINE: Program[] = [
@@ -43,7 +45,7 @@ const PROGRAMMES_ORIGINE: Program[] = [
         goal: "Former 50 jeunes éco-entrepreneurs.",
         goalDetail:
           "Avec 50 bénéficiaires principaux et 200 secondaires, le programme vise à toucher un large public de jeunes, notamment grâce à une portée en ligne de +200 000 personnes et une communauté de 3 000 000 de U-reporters en Côte d’Ivoire.",
-        hero: sentiers,
+        hero: sentiersVerts,
         context:
           "Sentiers Verts Jobs est un programme innovant et ambitieux qui mise sur la jeunesse comme moteur de la transition écologique. Le programme combine formation, mentorat, accompagnement à la création d’entreprise et mise en réseau, pour bâtir une nouvelle génération d’éco-entrepreneurs ivoiriens capables d’imaginer et de déployer des solutions durables.",
         objectives: [
@@ -69,7 +71,7 @@ const INITIATIVES_BROCHURE: Program[] = [
         goal: "Reboiser et protéger les espaces naturels avec les communautés.",
         goalDetail:
           "We Plant mobilise les citoyens autour du reboisement et de la protection des espaces naturels : chaque arbre planté restaure un écosystème, ancre une conscience écologique et rapproche les communautés de leur environnement.",
-        hero: biodiversity,
+        hero: wePlant,
         context:
           "La déforestation et la dégradation des écosystèmes menacent la biodiversité, les sols et les moyens de subsistance des communautés ivoiriennes. We Plant répond à cette urgence par des campagnes de plantation d’espèces locales et par la mobilisation citoyenne pour la protection durable des espaces naturels — forêts urbaines, côtes et zones rurales.",
         objectives: [
@@ -111,7 +113,7 @@ const INITIATIVES_BROCHURE: Program[] = [
         goal: "Faire monter les priorités environnementales des jeunes dans le débat public.",
         goalDetail:
           "Green Ivory contribue au dialogue avec les décideurs et à la promotion de politiques publiques favorables à une gestion durable de l’environnement, en portant la voix des jeunes jusqu’aux instances nationales et internationales.",
-        hero: fondateur,
+        hero: plaidoyer,
         context:
           "Face à l’urgence environnementale, les politiques publiques sont un levier décisif. Green Ivory fédère la jeunesse ivoirienne pour porter des propositions concrètes auprès des autorités et des partenaires institutionnels, et participe aux grandes rendez-vous internationaux comme les COP pour faire résonner les priorités climatiques de la jeunesse africaine.",
         objectives: [
