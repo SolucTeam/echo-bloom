@@ -6,7 +6,8 @@
     "image_url": "/images/plastic.jpg",
     "created_at": "2026-10-18T12:46:13.987562+00:00",
     "caption": "",
-    "alt": "Journées de dépollution"
+    "alt": "Journées de dépollution",
+    "tag_en": null
   },
   {
     "id": "42c86150-7ff8-4db1-ae22-de26df622e88",
@@ -15,7 +16,8 @@
     "image_url": "/images/climate.jpg",
     "created_at": "2026-10-18T12:46:14.401069+00:00",
     "caption": "",
-    "alt": "Visites de terrain"
+    "alt": "Visites de terrain",
+    "tag_en": null
   },
   {
     "id": "4d9f2dcd-aa4b-4718-8dfb-d9bc0c94cf0c",
@@ -24,7 +26,8 @@
     "image_url": "/images/hero.jpg",
     "created_at": "2026-10-18T12:46:13.329117+00:00",
     "caption": "",
-    "alt": "Journées de dépollution"
+    "alt": "Journées de dépollution",
+    "tag_en": null
   },
   {
     "id": "565fb784-c58b-4f7d-bac8-37040597d3a7",
@@ -33,7 +36,8 @@
     "image_url": "/images/biodiversity.jpg",
     "created_at": "2026-10-18T12:46:14.61064+00:00",
     "caption": "",
-    "alt": "Visites de terrain"
+    "alt": "Visites de terrain",
+    "tag_en": null
   },
   {
     "id": "5dd3b73d-d880-4a4a-afe2-c5087b72b578",
@@ -42,7 +46,8 @@
     "image_url": "/images/sentiers.jpg",
     "created_at": "2026-10-18T12:46:14.525374+00:00",
     "caption": "",
-    "alt": "Éco-entrepreneurs"
+    "alt": "Éco-entrepreneurs",
+    "tag_en": null
   },
   {
     "id": "9bfa4e07-08c1-4105-988e-029124451d0d",
@@ -51,6 +56,7 @@
     "image_url": "/images/journees.jpg",
     "created_at": "2026-10-18T12:46:13.894091+00:00",
     "caption": "",
-    "alt": "Agents de collecte"
+    "alt": "Agents de collecte",
+    "tag_en": null
   }
 ]

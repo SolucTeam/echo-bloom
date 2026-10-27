@@ -12,7 +12,10 @@
     "published_at": "2024-09-22T00:00:00+00:00",
     "created_at": "2026-10-17T17:45:33.003154+00:00",
     "updated_at": "2026-10-17T17:45:33.003154+00:00",
-    "content_format": "text"
+    "content_format": "text",
+    "title_en": null,
+    "excerpt_en": null,
+    "content_en": null
   },
   {
     "id": "24ad7625-7519-4c5b-8d69-7d54ba308e64",
@@ -27,7 +30,10 @@
     "published_at": "2024-10-12T00:00:00+00:00",
     "created_at": "2026-10-17T17:45:32.931758+00:00",
     "updated_at": "2026-10-17T17:45:32.931758+00:00",
-    "content_format": "text"
+    "content_format": "text",
+    "title_en": null,
+    "excerpt_en": null,
+    "content_en": null
   },
   {
     "id": "6e5b170c-5472-4347-bbbd-e7b3edc04301",
@@ -42,7 +48,10 @@
     "published_at": "2024-11-03T00:00:00+00:00",
     "created_at": "2026-10-17T17:45:32.611397+00:00",
     "updated_at": "2026-10-17T17:45:32.611397+00:00",
-    "content_format": "text"
+    "content_format": "text",
+    "title_en": null,
+    "excerpt_en": null,
+    "content_en": null
   },
   {
     "id": "961a2dc2-12ce-4a2f-a535-9ae1df211c9b",
@@ -57,7 +66,10 @@
     "published_at": "2024-08-15T00:00:00+00:00",
     "created_at": "2026-10-17T17:45:33.07353+00:00",
     "updated_at": "2026-10-17T17:45:33.07353+00:00",
-    "content_format": "text"
+    "content_format": "text",
+    "title_en": null,
+    "excerpt_en": null,
+    "content_en": null
   },
   {
     "id": "c19535bc-7588-4b00-a730-ead69ad947f4",
@@ -72,6 +84,9 @@
     "published_at": "2024-10-28T00:00:00+00:00",
     "created_at": "2026-10-17T17:45:32.716512+00:00",
     "updated_at": "2026-10-17T17:45:32.716512+00:00",
-    "content_format": "text"
+    "content_format": "text",
+    "title_en": null,
+    "excerpt_en": null,
+    "content_en": null
   }
 ]
