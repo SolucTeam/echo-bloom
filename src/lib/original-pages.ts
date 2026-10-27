@@ -2,7 +2,7 @@ import type { CmsPageData } from "./cms-schema";
 import asset_biodiversity from "@/assets/biodiversity.jpg";
 import asset_climate from "@/assets/climate.jpg";
 import asset_founder from "@/assets/founder.jpg";
-import asset_hero from "@/assets/hero.jpg";
+import asset_depollution from "@/assets/depollution.jpg";
 import asset_journees from "@/assets/journees.jpg";
 import asset_logo from "@/assets/logo.png";
 import asset_plastic from "@/assets/plastic.jpg";
@@ -19,7 +19,7 @@ export const originalPages: CmsPageData[] = [
         "type": "text",
         "title": "Engageons-nous pour un avenir durable.",
         "body": "Green Ivory est une ONG ivoirienne fondée en 2017. Nous formons les jeunes, dépolluons les plages et plaidons pour des politiques climatiques ambitieuses en Côte d’Ivoire.",
-        "image": asset_hero,
+        "image": asset_depollution,
         "alt": "Volontaires Green Ivory nettoyant une plage en Côte d’Ivoire",
         "link": "/devenir-partenaire",
         "linkLabel": "Soutenir nos programmes",

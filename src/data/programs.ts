@@ -1,8 +1,8 @@
 import journees from '@/assets/journees.jpg';
 import sentiers from '@/assets/sentiers.jpg';
 import biodiversity from '@/assets/biodiversity.jpg';
-import hero from '@/assets/hero.jpg';
-import founder from '@/assets/founder.jpg';
+import depollution from '@/assets/depollution.jpg';
+import fondateur from '@/assets/fondateur.jpg';
 import type { Program } from '@/lib/program-schema';
 
 const PROGRAMMES_ORIGINE: Program[] = [
@@ -90,7 +90,7 @@ const INITIATIVES_BROCHURE: Program[] = [
         goal: "Ancrer la citoyenneté écologique dès l’école.",
         goalDetail:
           "Green Schools forme la génération montante aux enjeux environnementaux : sessions de sensibilisation dans les établissements, clubs environnementaux et projets pédagogiques pour faire des élèves des ambassadeurs du changement.",
-        hero: hero,
+        hero: depollution,
         context:
           "La protection de l’environnement se construit dès l’enfance. Green Schools intervient dans les écoles pour éveiller les plus jeunes à l’écologie : compréhension des enjeux climatiques, gestes du quotidien, gestion des déchets et amorçage d’une citoyenneté écologique durable, en lien avec les enseignants et les familles.",
         objectives: [
@@ -111,7 +111,7 @@ const INITIATIVES_BROCHURE: Program[] = [
         goal: "Faire monter les priorités environnementales des jeunes dans le débat public.",
         goalDetail:
           "Green Ivory contribue au dialogue avec les décideurs et à la promotion de politiques publiques favorables à une gestion durable de l’environnement, en portant la voix des jeunes jusqu’aux instances nationales et internationales.",
-        hero: founder,
+        hero: fondateur,
         context:
           "Face à l’urgence environnementale, les politiques publiques sont un levier décisif. Green Ivory fédère la jeunesse ivoirienne pour porter des propositions concrètes auprès des autorités et des partenaires institutionnels, et participe aux grandes rendez-vous internationaux comme les COP pour faire résonner les priorités climatiques de la jeunesse africaine.",
         objectives: [

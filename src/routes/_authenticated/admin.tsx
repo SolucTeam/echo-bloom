@@ -34,6 +34,7 @@ import { readAboutTexts, ABOUT_TEXT_FALLBACKS, ABOUT_IMAGES } from '@/data/about
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from '@/components/ui/alert-dialog';
 import { Toaster, toast } from 'sonner';
 import hero from '@/assets/hero.jpg';
+import depollution from '@/assets/depollution.jpg';
 import journees from '@/assets/journees.jpg';
 import plastic from '@/assets/plastic.jpg';
 import sentiers from '@/assets/sentiers.jpg';
@@ -185,7 +186,7 @@ function Admin(){
   await save('settings',{key:'site.stats',label:'Chiffres de l’accueil',value:JSON.stringify(stats)});
   await save('settings',{key:'home.bigstats',label:'Chiffres clés',value:JSON.stringify(bigstats)});
   for(const {key} of HOME_IMAGES)await save('settings',{key,value:values[key]||''});}
- async function importGallery(){const groups=[{collection:'Journées sans plastique',images:[[hero,'Journées de dépollution'],[journees,'Éco-ambassadeurs'],[plastic,'Formation'],[hero,'Recyclage'],[journees,'Agents de collecte'],[plastic,'Journées de dépollution']]},{collection:'Sentiers verts',images:[[sentiers,'Éco-entrepreneurs'],[biodiversity,'Visites de terrain'],[sentiers,'Journées carrières'],[climate,'Visites de terrain'],[sentiers,'Éco-entrepreneurs'],[biodiversity,'Visites de terrain']]}];for(const g of groups)for(const [image_url,tag] of g.images)await save('gallery',{collection:g.collection,image_url,tag,alt:tag,caption:''});await save('settings',{key:'cms.gallery.imported',value:'true'});}
+ async function importGallery(){const groups=[{collection:'Journées sans plastique',images:[[depollution,'Journées de dépollution'],[journees,'Éco-ambassadeurs'],[plastic,'Formation'],[depollution,'Recyclage'],[journees,'Agents de collecte'],[plastic,'Journées de dépollution']]},{collection:'Sentiers verts',images:[[sentiers,'Éco-entrepreneurs'],[biodiversity,'Visites de terrain'],[sentiers,'Journées carrières'],[climate,'Visites de terrain'],[sentiers,'Éco-entrepreneurs'],[biodiversity,'Visites de terrain']]}];for(const g of groups)for(const [image_url,tag] of g.images)await save('gallery',{collection:g.collection,image_url,tag,alt:tag,caption:''});await save('settings',{key:'cms.gallery.imported',value:'true'});}
  function exportContent(){const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='green-ivory-contenus.json';a.click();URL.revokeObjectURL(url);}
  const importedPosts=data.settings.some(s=>s.key==='cms.posts.imported'&&s.value==='true'),importedGallery=data.settings.some(s=>s.key==='cms.gallery.imported'&&s.value==='true');
  return <div className="container-x py-10">

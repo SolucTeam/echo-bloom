@@ -5,6 +5,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { ArrowRight, Leaf, Recycle, Trees, ThermometerSun, Users, Sprout, Globe2, Flame, Zap, ShieldCheck, Handshake, Heart } from "lucide-react";
 import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import hero from "@/assets/hero.jpg";
+import accueil2 from "@/assets/accueil2.jpg";
+import accueil3 from "@/assets/accueil3.jpg";
 import plastic from "@/assets/plastic.jpg";
 import biodiversity from "@/assets/biodiversity.jpg";
 import climate from "@/assets/climate.jpg";
@@ -42,8 +44,8 @@ function Home() {
   const axis1Image = useSetting('home.axis1.image') || plastic;
   const axis2Image = useSetting('home.axis2.image') || biodiversity;
   const axis3Image = useSetting('home.axis3.image') || climate;
-  const aboutImage1 = useSetting('home.about.image1') || biodiversity;
-  const aboutImage2 = useSetting('home.about.image2') || plastic;
+  const aboutImage1 = useSetting('home.about.image1') || accueil2;
+  const aboutImage2 = useSetting('home.about.image2') || accueil3;
   return (
     <>
       {/* HERO — photo plein cadre en fond, titre posé dessus, contenu en carte chevauchant le bas du visuel */}

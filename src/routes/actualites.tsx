@@ -21,7 +21,7 @@ import sentiers from "@/assets/sentiers.jpg";
 import plastic from "@/assets/plastic.jpg";
 import biodiv from "@/assets/biodiversity.jpg";
 import climate from "@/assets/climate.jpg";
-import hero from "@/assets/hero.jpg";
+import depollution from "@/assets/depollution.jpg";
 
 const TABS = [
   { id: 'articles', label: 'tab.articles', icon: Tag },
@@ -51,7 +51,7 @@ const collections = [
     title: "Journées sans plastique",
     tags: ["Tous", "Journées de dépollution", "Agents de collecte"],
     images: [
-      { src: hero, tag: "Journées de dépollution" },
+      { src: depollution, tag: "Journées de dépollution" },
       { src: journees, tag: "Agents de collecte" },
       { src: plastic, tag: "Journées de dépollution" },
     ],
