@@ -11,6 +11,15 @@ import { ArrowRight, Target, Eye, Heart, Award, Recycle } from "lucide-react";
 import founder from "@/assets/founder.jpg";
 import protection1 from "@/assets/protection1.jpg";
 import protection2 from "@/assets/protection2.jpg";
+import avatarKherann from "@/assets/avatar-kherann.jpg";
+import avatarAkpoue from "@/assets/avatar-akpoue.jpg";
+import avatarKalifa from "@/assets/avatar-kalifa.jpg";
+import avatarLuh from "@/assets/avatar-luh.jpg";
+import avatarJoel from "@/assets/avatar-joel.jpg";
+import avatarEmieme from "@/assets/avatar-emieme.jpg";
+
+/** Photos du Conseil d'administration, dans l'ordre des emplacements 1 à 6 (brochure 2026). */
+const BOARD_PHOTOS = [avatarKherann, avatarAkpoue, avatarKalifa, avatarLuh, avatarJoel, avatarEmieme];
 
 export const Route = createFileRoute("/a-propos")({
   loader:async()=>({cmsPage:await loadPage({data:'/a-propos'})}),
@@ -88,7 +97,7 @@ function About() {
         <div className="mt-10 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {[1, 2, 3, 4, 5, 6].map((n, i) => (
             <Reveal key={n} delay={i * 80} className="h-full [&>.reveal-inner]:h-full">
-              <BoardCard name={T('about.board.name' + n)} role={T('about.board.role' + n)} />
+              <BoardCard name={T('about.board.name' + n)} role={T('about.board.role' + n)} image={BOARD_PHOTOS[n - 1]} />
             </Reveal>
           ))}
         </div>
@@ -149,13 +158,17 @@ function ValueCard({ icon, title, text, delay = 0 }: { icon: React.ReactNode; ti
   );
 }
 
-/** Membre du Conseil d'administration (brochure 2026), textes modifiables en console. */
-function BoardCard({ name, role }: { name: string; role: string }) {
+/** Membre du Conseil d'administration (brochure 2026), textes modifiables en console ; photo si disponible, sinon initiales. */
+function BoardCard({ name, role, image }: { name: string; role: string; image?: string }) {
   return (
     <div className="bento flex h-full items-center gap-4 p-5 transition duration-300 hover:border-primary/40 hover:shadow-md motion-reduce:transition-none">
-      <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent text-primary font-display font-bold">
-        {name.split(/\s+/).filter(w => w.length > 1).map(w => w[0]).slice(-2).join('')}
-      </span>
+      {image ? (
+        <img src={image} alt={name} loading="lazy" className="h-12 w-12 shrink-0 rounded-full object-cover" />
+      ) : (
+        <span className="inline-flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-accent text-primary font-display font-bold">
+          {name.split(/\s+/).filter(w => w.length > 1).map(w => w[0]).slice(-2).join('')}
+        </span>
+      )}
       <div className="min-w-0">
         <h3 className="font-bold leading-snug">{name}</h3>
         <p className="mt-1 text-sm text-muted-foreground">{role}</p>
