@@ -7,9 +7,9 @@ import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 
 import hero from "@/assets/hero.jpg";
 import accueil2 from "@/assets/accueil2.jpg";
 import accueil3 from "@/assets/accueil3.jpg";
-import plastic from "@/assets/plastic.jpg";
-import biodiversity from "@/assets/biodiversity.jpg";
-import climate from "@/assets/climate.jpg";
+import accueil4 from "@/assets/accueil4.jpg";
+import axe2 from "@/assets/axe2.jpg";
+import axe3 from "@/assets/axe3.jpg";
 import { ProgramCards } from '@/components/ProgramCards';
 import { useSetting } from '@/components/ManagedSite';
 import { useLang } from '@/components/Language';
@@ -41,11 +41,11 @@ function Home() {
   const stats=localizedHomeStats(readHomeStats(useSetting('site.stats')),lang);
   const bigstats=localizedHomeStats(readHomeStats(useSetting('home.bigstats'),DEFAULT_HOME_BIGSTATS),lang);
   const heroImage = useSetting('home.hero.image') || hero;
-  const axis1Image = useSetting('home.axis1.image') || plastic;
-  const axis2Image = useSetting('home.axis2.image') || biodiversity;
-  const axis3Image = useSetting('home.axis3.image') || climate;
+  const axis1Image = useSetting('home.axis1.image') || accueil3;
+  const axis2Image = useSetting('home.axis2.image') || axe2;
+  const axis3Image = useSetting('home.axis3.image') || axe3;
   const aboutImage1 = useSetting('home.about.image1') || accueil2;
-  const aboutImage2 = useSetting('home.about.image2') || accueil3;
+  const aboutImage2 = useSetting('home.about.image2') || accueil4;
   return (
     <>
       {/* HERO — photo plein cadre en fond, titre posé dessus, contenu en carte chevauchant le bas du visuel */}

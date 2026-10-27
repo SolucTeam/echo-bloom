@@ -297,7 +297,7 @@ export const DICT = {
   /* Repli anglais de l'interface restée en français (audits bilinguisme). */
   'home.hero.titleFallback': ['Engageons-nous pour un avenir durable.', 'Committing to a sustainable future.'],
   'home.about.imgForest': ['Forêt ivoirienne', 'Ivorian forest'],
-  'home.about.imgYouth': ['Sensibilisation jeunes', 'Youth awareness session'],
+  'home.about.imgYouth': ['Remise du chèque Unicef au projet Circulnature', 'Unicef cheque handover to the Circulnature project'],
   'about.founder.alt': ['Khérann YAO, Président', 'Khérann YAO, President'],
   'about.badge.recognized': ['Reconnue', 'Recognized'],
   'about.badge.ambassador': ['Jeune Ambassadeur\nUNICEF Environnement', 'Young Ambassador\nUNICEF Environment'],
