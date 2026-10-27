@@ -301,7 +301,7 @@ export const DICT = {
   'about.founder.alt': ['Khérann YAO, Président', 'Khérann YAO, President'],
   'about.badge.recognized': ['Reconnue', 'Recognized'],
   'about.badge.ambassador': ['Jeune Ambassadeur\nUNICEF Environnement', 'Young Ambassador\nUNICEF Environment'],
-  'about.plastic.alt': ['Nettoyage', 'Clean-up'],
+  'about.plastic.alt': ['Sensibilisation en classe sur la pollution plastique', 'Classroom session on plastic pollution'],
   'about.history.text2Strong': [
     'L’ONG est dirigée par {name}, Jeune Ambassadeur de l’UNICEF pour l’Environnement (2018), entouré d’une équipe pluridisciplinaire et de bénévoles dévoués.',
     'The NGO is led by {name}, UNICEF Young Ambassador for the Environment (2018), supported by a multidisciplinary team and dedicated volunteers.',

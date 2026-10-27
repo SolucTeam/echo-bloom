@@ -9,8 +9,8 @@ import { useLang } from '@/components/Language';
 import { Fragment } from "react";
 import { ArrowRight, Target, Eye, Heart, Award, Recycle } from "lucide-react";
 import founder from "@/assets/founder.jpg";
-import plastic from "@/assets/plastic.jpg";
-import biodiv from "@/assets/biodiversity.jpg";
+import protection1 from "@/assets/protection1.jpg";
+import protection2 from "@/assets/protection2.jpg";
 
 export const Route = createFileRoute("/a-propos")({
   loader:async()=>({cmsPage:await loadPage({data:'/a-propos'})}),
@@ -25,9 +25,9 @@ function About() {
   const L=localizedAboutTexts(readAboutTexts(useSetting('about.texts')),readAboutTexts(useSetting('about.textsEn')),lang);
   const T=(key:string)=>L[key]||ABOUT_TEXT_FALLBACKS[key]||'';
   const [hist2Before,hist2After]=t('about.history.text2Strong').split('{name}');
-  const imgPlastic=useSetting('about.plastic.image')||plastic;
+  const imgPlastic=useSetting('about.plastic.image')||protection1;
   const imgFounder=useSetting('about.founder.image')||founder;
-  const imgForest=useSetting('about.forest.image')||biodiv;
+  const imgForest=useSetting('about.forest.image')||protection2;
   return (
     <>
       <PageHero
