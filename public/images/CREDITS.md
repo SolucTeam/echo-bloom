@@ -17,4 +17,4 @@ Le portrait de la fondatrice (founder.jpg) doit être fourni par l'association.
 
 ## Photos de l'association
 
-Les fichiers `plaidoyer-*.jpg`, `sentiers-*.jpg` et `weplant-*.jpg` sont des photos de Green Ivory fournies par l'équipe (dossiers programmes Plaidoyer environnemental, Sentiers verts et We Plant) — elles illustrent les pages programmes et la galerie.
+Les fichiers `plaidoyer-*.jpg`, `sentiers-*.jpg`, `weplant-*.jpg`, `greenschool-*.jpg` et `jsp-*.jpg` sont des photos de Green Ivory fournies par l'équipe (dossiers programmes Plaidoyer environnemental, Sentiers verts, We Plant, Green Schools et Journées sans plastique) — elles illustrent les pages programmes et la galerie.

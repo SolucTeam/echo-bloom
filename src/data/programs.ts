@@ -1,10 +1,8 @@
-import journees from '@/assets/journees.jpg';
-import sentiers from '@/assets/sentiers.jpg';
-import biodiversity from '@/assets/biodiversity.jpg';
-import depollution from '@/assets/depollution.jpg';
 import plaidoyer from '@/assets/plaidoyer.jpg';
 import sentiersVerts from '@/assets/sentiers-verts.jpg';
 import wePlant from '@/assets/we-plant.jpg';
+import greenSchools from '@/assets/green-schools.jpg';
+import journeesSansPlastique from '@/assets/journees-sans-plastique.jpg';
 import type { Program } from '@/lib/program-schema';
 
 const PROGRAMMES_ORIGINE: Program[] = [
@@ -19,7 +17,7 @@ const PROGRAMMES_ORIGINE: Program[] = [
         goal: "Sensibiliser 3 millions de personnes au défi de la pollution plastique.",
         goalDetail:
           "Réduire drastiquement la pollution plastique dans la ville de Grand-Bassam à travers un momentum autour des enjeux de la pollution plastique sur l’environnement, d’avril 2024 à mars 2027.",
-        hero: journees,
+        hero: journeesSansPlastique,
         context:
           "La pollution plastique est l’un des défis environnementaux majeurs de la Côte d’Ivoire. Plages, lagunes, rivières et villes sont envahis par le plastique à usage unique. Ce programme propose une réponse intégrée : sensibilisation massive, collecte structurée, valorisation par le recyclage, et création d’emplois durables pour la jeunesse.",
         objectives: [
@@ -92,7 +90,7 @@ const INITIATIVES_BROCHURE: Program[] = [
         goal: "Ancrer la citoyenneté écologique dès l’école.",
         goalDetail:
           "Green Schools forme la génération montante aux enjeux environnementaux : sessions de sensibilisation dans les établissements, clubs environnementaux et projets pédagogiques pour faire des élèves des ambassadeurs du changement.",
-        hero: depollution,
+        hero: greenSchools,
         context:
           "La protection de l’environnement se construit dès l’enfance. Green Schools intervient dans les écoles pour éveiller les plus jeunes à l’écologie : compréhension des enjeux climatiques, gestes du quotidien, gestion des déchets et amorçage d’une citoyenneté écologique durable, en lien avec les enseignants et les familles.",
         objectives: [
