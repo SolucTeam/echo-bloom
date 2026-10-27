@@ -10,6 +10,9 @@ export type CmsBlock = z.infer<typeof blockSchema>;
 export const pageSchema = z.object({
   path: z.string().regex(/^\/(?:[a-z0-9-]+\/?)*$/), title: z.string().min(1).max(300),
   description: z.string().max(1000), share_image: safeLink, blocks: z.array(blockSchema).max(100), published: z.boolean(),
+  /* Version anglaise optionnelle (phase 3 bilingue) : méta affichées aux visiteurs
+   * anglophones ; laissées vides, les méta françaises s'affichent telles quelles. */
+  title_en: z.string().max(300).nullish(), description_en: z.string().max(1000).nullish(),
 });
 export type CmsPageData = z.infer<typeof pageSchema>;
 export const postSchema = z.object({
@@ -17,8 +20,13 @@ export const postSchema = z.object({
   excerpt: z.string().max(5000), content: z.string().max(200000), category: z.string().min(1).max(100),
   image_url: safeLink.nullable(), author: z.string().max(200), published: z.boolean(),
   published_at: z.string().datetime(), content_format: z.enum(['text', 'html']).default('text'),
+  /* Version anglaise optionnelle (phase 2 bilingue) : chaque champ EN renseigné
+   * remplace son homologue français pour les visiteurs anglophones ; laissé vide,
+   * l'article s'affiche en français tel quel (repli champ par champ).
+   * Clés alignées sur les colonnes de la table blog_posts (title_en…). */
+  title_en: z.string().max(500).nullish(), excerpt_en: z.string().max(5000).nullish(), content_en: z.string().max(200000).nullish(),
 });
-export const gallerySchema = z.object({collection: z.string().min(1).max(200), tag: z.string().max(200), image_url: safeLink, caption: z.string().max(1000).default(''), alt: z.string().max(500).default('')});
+export const gallerySchema = z.object({collection: z.string().min(1).max(200), tag: z.string().max(200), image_url: safeLink, caption: z.string().max(1000).default(''), alt: z.string().max(500).default(''), tag_en: z.string().max(200).nullish()});
 export const mediaSchema = z.object({url: safeLink, name: z.string().max(300), alt: z.string().max(500)});
 export const settingSchema = z.object({key: z.string().min(1).max(200), label: z.string().max(200).default(''), value: z.string().max(100000)});
 export const partnerSchema = z.object({ name: z.string().min(1).max(200), image: safeLink.refine(v => v.length > 0, 'Logo requis') });

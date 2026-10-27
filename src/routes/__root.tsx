@@ -11,6 +11,7 @@ import appCss from "../styles.css?url";
 import { SiteHeader } from "../components/SiteHeader";
 import { SiteFooter } from "../components/SiteFooter";
 import { SiteContext, ManagedContent } from '@/components/ManagedSite';
+import { LanguageProvider } from '@/components/Language';
 import { loadSite } from '@/lib/site.functions';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
@@ -42,14 +43,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: "Green Ivory — Le pouvoir citoyen pour l’environnement" },
-      { name: "description", content: "ONG ivoirienne engagée contre la pollution plastique, pour la biodiversité et le climat. Découvrez nos projets et soutenez l’action." },
+      { name: "description", content: "ONG ivoirienne engagée contre la pollution plastique, pour la biodiversité et le climat. Découvrez nos programmes et soutenez l’action." },
       { name: "author", content: "Green Ivory" },
       { property: "og:title", content: "Green Ivory — Le pouvoir citoyen pour l’environnement" },
-      { property: "og:description", content: "ONG ivoirienne engagée contre la pollution plastique, pour la biodiversité et le climat. Découvrez nos projets et soutenez l’action." },
+      { property: "og:description", content: "ONG ivoirienne engagée contre la pollution plastique, pour la biodiversité et le climat. Découvrez nos programmes et soutenez l’action." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:title", content: "Green Ivory — Le pouvoir citoyen pour l’environnement" },
-      { name: "twitter:description", content: "ONG ivoirienne engagée contre la pollution plastique, pour la biodiversité et le climat. Découvrez nos projets et soutenez l’action." },
+      { name: "twitter:description", content: "ONG ivoirienne engagée contre la pollution plastique, pour la biodiversité et le climat. Découvrez nos programmes et soutenez l’action." },
       { property: "og:site_name", content: "Green Ivory" },
       { property: "og:locale", content: "fr_FR" },
     ],
@@ -105,6 +106,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <SiteContext.Provider value={site}>
+      <LanguageProvider>
       {showMaintenance?<MaintenancePage/>:<>
       <SiteHeader />
       <main className="min-h-[60vh]">
@@ -112,6 +114,7 @@ function RootComponent() {
       </main>
       <SiteFooter />
       </>}
+      </LanguageProvider>
       </SiteContext.Provider>
     </QueryClientProvider>
   );

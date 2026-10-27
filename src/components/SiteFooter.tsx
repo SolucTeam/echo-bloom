@@ -1,18 +1,20 @@
 import { Link } from "@tanstack/react-router";
 import { Facebook, Linkedin, Instagram, Youtube, Mail, Phone, MapPin, Lock } from "lucide-react";
-import { groupProjectMenu } from '@/lib/projects';
+import { normalizeMenu } from '@/lib/programs';
 import { useSetting } from './ManagedSite';
+import { useLang } from './Language';
 import { Button } from '@/components/ui/button';
 import { readNewsletter } from '@/lib/newsletter';
 import { ExternalLink } from 'lucide-react';
 import logoMark from '@/assets/logo-mark.png';
 
 export function SiteFooter() {
-  const name=useSetting('site.name','Green Ivory'),tagline=useSetting('site.tagline','Le pouvoir citoyen pour l’environnement. ONG ivoirienne engagée contre la pollution plastique, pour la biodiversité et le climat depuis 2017.'),address=useSetting('site.address','Bingerville Cité Ital, Côte d’Ivoire'),phone=useSetting('site.phone','+225 07 772 689 96'),email=useSetting('site.email','info@greenivory.org');
+  const { t, tLabel } = useLang();
+  const name=useSetting('site.name','Green Ivory'),tagline=useSetting('site.tagline',t('footer.tagline')),address=useSetting('site.address','Bingerville Cité Ital, Côte d’Ivoire'),phone=useSetting('site.phone','+225 07 772 689 96'),email=useSetting('site.email','info@greenivory.org');
   const facebook=useSetting('social.facebook'),linkedin=useSetting('social.linkedin'),instagram=useSetting('social.instagram'),youtube=useSetting('social.youtube'),menuValue=useSetting('site.footerMenu');
   const newsletter=readNewsletter(useSetting('site.newsletter'));
-  let menu=[{label:'À propos',url:'/a-propos'},{label:'Projets',url:'/projets'},{label:'Galerie',url:'/galerie'},{label:'Blog',url:'/blog'},{label:'Devenir bénévole',url:'/devenir-benevole'}];
-  try{if(menuValue)menu=groupProjectMenu(JSON.parse(menuValue));}catch{}
+  let menu=[{label:'À propos',url:'/a-propos'},{label:'Programmes',url:'/programmes'},{label:'Actualités',url:'/actualites'},{label:'Devenir bénévole',url:'/devenir-benevole'}];
+  try{if(menuValue)menu=normalizeMenu(JSON.parse(menuValue));}catch{}
   return (
     <footer className="mt-24 border-t border-border bg-primary text-primary-foreground">
       <div className="container-x py-16 grid gap-12 lg:grid-cols-4">
@@ -34,14 +36,14 @@ export function SiteFooter() {
         </div>
 
         <div>
-          <h4 className="font-semibold mb-4">Liens utiles</h4>
+          <h4 className="font-semibold mb-4">{t('footer.links')}</h4>
           <ul className="space-y-1 text-sm opacity-90">
-            {menu.map((n,i)=><li key={i}><Link to={n.url} className="inline-block py-1.5">{n.label}</Link></li>)}
+            {menu.map((n,i)=><li key={i}><Link to={n.url} className="inline-block py-1.5">{tLabel(n.label)}</Link></li>)}
           </ul>
         </div>
 
         <div>
-          <h4 className="font-semibold mb-4">Nous contacter</h4>
+          <h4 className="font-semibold mb-4">{t('footer.contactUs')}</h4>
           <ul className="space-y-3 text-sm opacity-90">
             <li className="flex gap-2">
               <MapPin className="h-4 w-4 mt-0.5 shrink-0" />
@@ -70,10 +72,10 @@ export function SiteFooter() {
       </div>
       <div className="border-t border-background/10">
         <div className="container-x py-5 text-xs opacity-70 flex flex-wrap justify-between gap-2">
-          <span>© {new Date().getFullYear()} {name} — Tous droits réservés.</span>
+          <span>© {new Date().getFullYear()} {name} — {t('footer.rights')}</span>
           <span className="flex items-center gap-2">
-            <span>Conçu avec ❤️ pour la planète.</span>
-            <Link to="/admin" aria-label="Console d'administration" title="Console d'administration" className="inline-flex h-8 w-8 -mr-2 items-center justify-center rounded-full opacity-50 hover:opacity-100 hover:bg-background/10 transition">
+            <span>{t('footer.madeWith')}</span>
+            <Link to="/admin" aria-label={t('footer.admin')} title={t('footer.admin')} className="inline-flex h-8 w-8 -mr-2 items-center justify-center rounded-full opacity-50 hover:opacity-100 hover:bg-background/10 transition">
               <Lock className="h-3.5 w-3.5" />
             </Link>
           </span>

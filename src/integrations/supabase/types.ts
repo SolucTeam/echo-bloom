@@ -58,45 +58,54 @@ export type Database = {
           author: string
           category: string
           content: string
+          content_en: string | null
           content_format: string
           created_at: string
           excerpt: string
+          excerpt_en: string | null
           id: string
           image_url: string | null
           published: boolean
           published_at: string
           slug: string
           title: string
+          title_en: string | null
           updated_at: string
         }
         Insert: {
           author?: string
           category?: string
           content?: string
+          content_en?: string | null
           content_format?: string
           created_at?: string
           excerpt?: string
+          excerpt_en?: string | null
           id?: string
           image_url?: string | null
           published?: boolean
           published_at?: string
           slug: string
           title: string
+          title_en?: string | null
           updated_at?: string
         }
         Update: {
           author?: string
           category?: string
           content?: string
+          content_en?: string | null
           content_format?: string
           created_at?: string
           excerpt?: string
+          excerpt_en?: string | null
           id?: string
           image_url?: string | null
           published?: boolean
           published_at?: string
           slug?: string
           title?: string
+          title_en?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -129,31 +138,37 @@ export type Database = {
         Row: {
           blocks: Json
           description: string
+          description_en: string | null
           id: string
           path: string
           published: boolean
           share_image: string
           title: string
+          title_en: string | null
           updated_at: string
         }
         Insert: {
           blocks?: Json
           description?: string
+          description_en?: string | null
           id?: string
           path: string
           published?: boolean
           share_image?: string
           title?: string
+          title_en?: string | null
           updated_at?: string
         }
         Update: {
           blocks?: Json
           description?: string
+          description_en?: string | null
           id?: string
           path?: string
           published?: boolean
           share_image?: string
           title?: string
+          title_en?: string | null
           updated_at?: string
         }
         Relationships: []
@@ -200,6 +215,7 @@ export type Database = {
           id: string
           image_url: string
           tag: string
+          tag_en: string | null
         }
         Insert: {
           alt?: string
@@ -209,6 +225,7 @@ export type Database = {
           id?: string
           image_url: string
           tag?: string
+          tag_en?: string | null
         }
         Update: {
           alt?: string
@@ -218,6 +235,7 @@ export type Database = {
           id?: string
           image_url?: string
           tag?: string
+          tag_en?: string | null
         }
         Relationships: []
       }

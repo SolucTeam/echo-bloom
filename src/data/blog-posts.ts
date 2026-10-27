@@ -1,4 +1,5 @@
 // Chemins publics stables : identiques en dev et en production, insensibles aux hash de build.
+import type { Lang } from '../lib/i18n';
 const plastic = "/images/plastic.jpg";
 const biodiv = "/images/biodiversity.jpg";
 const climate = "/images/climate.jpg";
@@ -32,6 +33,12 @@ export type BlogPost = {
   readingTime: string;
   /** Markdown-ish paragraphs (rendered as <p>) */
   content: string[];
+  /** Version anglaise optionnelle (phase 2 bilingue) : repli français champ par champ. */
+  titleEn?: string;
+  excerptEn?: string;
+  /** Paragraphes anglais (articles au format texte) ; les articles HTML passent par htmlEn. */
+  contentEn?: string[];
+  htmlEn?: string | null;
 };
 
 export const POSTS: BlogPost[] = [
@@ -129,6 +136,42 @@ export const POSTS: BlogPost[] = [
 
 export function getPostBySlug(slug: string): BlogPost | undefined {
   return POSTS.find((p) => p.slug === slug);
+}
+
+/** Texte anglais s'il est renseigné, sinon texte français (repli champ par champ). */
+function pickEn(fr: string, en?: string) { const v = en?.trim(); return v ? v : fr; }
+
+/**
+ * Vue localisée d'un article (phase 2 bilingue) : en anglais, le titre, le
+ * résumé et le contenu EN renseignés remplacent leurs homologues français,
+ * sinon repli français. Le temps de lecture et la date affichée suivent la
+ * langue. Accepte les articles des loaders (avec `html`/`htmlEn`) comme les
+ * articles d'origine statiques.
+ */
+export function localizedBlogPost(p: BlogPost & { html?: string | null; htmlEn?: string | null }, lang: Lang): BlogPost & { html?: string | null } {
+  if (lang !== 'en') return p;
+  // Article rendu en HTML : le contenu EN est la version HTML anglaise (sanitizée au chargement).
+  if (typeof p.html === 'string') {
+    const enHtml = p.htmlEn?.trim();
+    const html = enHtml ? enHtml : p.html;
+    const words = html.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length;
+    return {
+      ...p, html,
+      title: pickEn(p.title, p.titleEn), excerpt: pickEn(p.excerpt, p.excerptEn),
+      readingTime: enHtml ? `${Math.max(1, Math.round(words / 200))} min` : p.readingTime,
+      dateLabel: new Date(p.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
+    };
+  }
+  // Article en paragraphes : le contenu EN est la version texte anglaise.
+  const paragraphs = (p.contentEn ?? []).map((s) => s.trim()).filter(Boolean);
+  const words = paragraphs.join(' ').split(/\s+/).filter(Boolean).length;
+  return {
+    ...p,
+    title: pickEn(p.title, p.titleEn), excerpt: pickEn(p.excerpt, p.excerptEn),
+    content: paragraphs.length ? paragraphs : p.content,
+    readingTime: paragraphs.length ? `${Math.max(1, Math.round(words / 200))} min` : p.readingTime,
+    dateLabel: new Date(p.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
+  };
 }
 
 export function getRelatedPosts(slug: string, limit = 3): BlogPost[] {

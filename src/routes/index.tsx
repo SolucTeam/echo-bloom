@@ -2,107 +2,94 @@ import { pageHead } from '@/components/ManagedSite';
 import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
 import { loadPage } from '@/lib/site.functions';
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Leaf, Recycle, Trees, ThermometerSun, Users, Sprout, Award, Globe2, Flame, Zap, ShieldCheck, Handshake, Heart } from "lucide-react";
-import { useEffect, useRef, type CSSProperties, type ReactNode } from "react";
+import { ArrowRight, Leaf, Recycle, Trees, ThermometerSun, Users, Sprout, Globe2, Flame, Zap, ShieldCheck, Handshake, Heart } from "lucide-react";
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
 import hero from "@/assets/hero.jpg";
 import plastic from "@/assets/plastic.jpg";
 import biodiversity from "@/assets/biodiversity.jpg";
 import climate from "@/assets/climate.jpg";
-import { ProjectCards } from '@/components/ProjectCards';
+import { ProgramCards } from '@/components/ProgramCards';
 import { useSetting } from '@/components/ManagedSite';
-import { readProjects } from '@/lib/projects';
-import { visibleProjects } from '@/lib/project-schema';
+import { useLang } from '@/components/Language';
+import { readPrograms } from '@/lib/programs';
+import { visiblePrograms, localizedProgram } from '@/lib/program-schema';
 import { PartnerLogos } from '@/components/PartnerLogos';
-import { FloatingLeaves } from '@/components/FloatingLeaves';
-import { HOME_TEXT_FALLBACKS, DEFAULT_HOME_BIGSTATS, readHomeStats, readHomeTexts } from '@/data/home';
+import { LEAF_LIMBE, LEAF_NERVURE } from '@/components/FloatingLeaves';
+import { HOME_TEXT_FALLBACKS, DEFAULT_HOME_BIGSTATS, readHomeStats, readHomeTexts, localizedHomeTexts, localizedHomeStats } from '@/data/home';
 import { AnimatedNumber } from '@/components/AnimatedNumber';
-import { BeforeAfter } from '@/components/BeforeAfter';
 import { Reveal } from '@/components/Reveal';
+import { Button } from '@/components/ui/button';
 
 export const Route = createFileRoute("/")({
   loader:async()=>({cmsPage:await loadPage({data:'/'})}),
-  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Green Ivory — Engageons-nous pour un avenir durable', 'ONG ivoirienne pour la promotion de l’emploi vert. Découvrez nos projets contre la pollution plastique, pour la biodiversité et le climat.', '/'),
+  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Green Ivory — Engageons-nous pour un avenir durable', 'ONG ivoirienne pour la promotion de l’emploi vert. Découvrez nos programmes contre la pollution plastique, pour la biodiversité et le climat.', '/', { title: 'Green Ivory — Commit to a sustainable future', description: 'Ivorian NGO promoting green jobs. Discover our programs against plastic pollution, for biodiversity and the climate.' }),
   component: Home,
   errorComponent: RouteError,
   notFoundComponent: RouteNotFound,
 });
 
 function Home() {
-  const projects=visibleProjects(readProjects(useSetting('site.projects')));
+  const { t, lang } = useLang();
+  const programs=visiblePrograms(readPrograms(useSetting('site.programs')||useSetting('site.projects'))).map(p=>localizedProgram(p,lang));
   const texts=readHomeTexts(useSetting('home.texts'));
-  const T=(key:string)=>texts[key]||HOME_TEXT_FALLBACKS[key]||'';
+  const L=localizedHomeTexts(texts,readHomeTexts(useSetting('home.textsEn')),lang);
+  const T=(key:string)=>L[key]||HOME_TEXT_FALLBACKS[key]||'';
   const heroTitle = T('home.hero.title');
-  const stats=readHomeStats(useSetting('site.stats'));
-  const bigstats=readHomeStats(useSetting('home.bigstats'),DEFAULT_HOME_BIGSTATS);
+  const heroFallbackWords = t('home.hero.titleFallback').split(' ').filter(Boolean);
+  const stats=localizedHomeStats(readHomeStats(useSetting('site.stats')),lang);
+  const bigstats=localizedHomeStats(readHomeStats(useSetting('home.bigstats'),DEFAULT_HOME_BIGSTATS),lang);
   const heroImage = useSetting('home.hero.image') || hero;
   const axis1Image = useSetting('home.axis1.image') || plastic;
   const axis2Image = useSetting('home.axis2.image') || biodiversity;
   const axis3Image = useSetting('home.axis3.image') || climate;
   const aboutImage1 = useSetting('home.about.image1') || biodiversity;
   const aboutImage2 = useSetting('home.about.image2') || plastic;
-  // Comparateur avant/après : images éditables dans la console, repli sur les originaux.
-  const baBefore = useSetting('home.beforeafter.before') || plastic;
-  const baAfter = useSetting('home.beforeafter.after') || hero;
   return (
     <>
-      {/* HERO */}
+      {/* HERO — photo plein cadre en fond, titre posé dessus, contenu en carte chevauchant le bas du visuel */}
       <section className="relative overflow-hidden">
-        <div className="absolute inset-0 grain opacity-40 pointer-events-none" aria-hidden />
-        {/* Feuilles flottantes de la marque, dérivant derrière le titre */}
-        <FloatingLeaves className="absolute inset-0 -z-10 pointer-events-none" />
-        <div className="container-x pt-12 pb-10 lg:pt-20 lg:pb-12 grid lg:grid-cols-12 gap-10 items-center">
-          <div className="lg:col-span-6 hero-stagger">
-            <span className="eyebrow">{T('home.hero.eyebrow')}</span>
-            <h1 aria-label={heroTitle || 'Engageons-nous pour un avenir durable.'} className="hero-words mt-5 text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.02] tracking-tight">
+        <div className="absolute inset-0 hero-bg-in" aria-hidden="true">
+          <img src={heroImage} alt="" className="h-full w-full object-cover" />
+          <div className="absolute inset-0 bg-gradient-to-b from-primary/75 via-primary/25 to-primary/90" />
+          <div className="absolute inset-0 grain opacity-10 pointer-events-none" />
+        </div>
+        <div className="container-x relative pt-16 sm:pt-20 lg:pt-24 pb-44 sm:pb-48 lg:pb-56">
+          <div className="hero-stagger max-w-3xl">
+            <span className="eyebrow eyebrow-light">{T('home.hero.eyebrow')}</span>
+            <h1 aria-label={heroTitle || t('home.hero.titleFallback')} className="hero-words mt-5 text-5xl sm:text-6xl lg:text-7xl font-bold leading-[1.02] tracking-tight text-background">
               {heroTitle
                 ? heroTitle.split(' ').filter(Boolean).map((word, i) => <W key={i} delay={i}>{word}</W>)
-                : (<>
-                  <W>Engageons-nous</W>
-                  <W delay={1}>pour</W>
-                  <W className="text-secondary" delay={2}>un</W>
-                  <W className="text-secondary" delay={3}>avenir</W>
-                  <W className="italic font-semibold" style={{ fontFamily: 'Outfit' }} delay={4}>durable.</W>
-                </>)}
+                : heroFallbackWords.map((word, i) => (
+                  <W key={i} delay={i} className={HERO_FALLBACK_WORD_STYLES[i]?.className} style={HERO_FALLBACK_WORD_STYLES[i]?.style}>{word}</W>
+                ))}
             </h1>
-            <p className="mt-6 text-lg text-muted-foreground max-w-xl">{T('home.hero.intro')}</p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Link to="/faire-un-don" className="btn-primary">
-                Soutenir nos projets <ArrowRight className="h-4 w-4" />
-              </Link>
-              <Link to="/projets" className="btn-ghost">
-                Découvrir nos projets
-              </Link>
-            </div>
-
-            <div className="mt-10 grid grid-cols-3 gap-3 sm:gap-6 max-w-md">
-              {stats.map(s=><Stat key={s.label} value={s.value} label={s.label} />)}
-            </div>
           </div>
+        </div>
+      </section>
 
-          <div className="lg:col-span-6">
-            <div className="relative hero-media-in">
-              <div className="absolute -inset-6 -z-10 rounded-[3rem] bg-leaf/40 blur-3xl" />
-              <div className="bento p-0 aspect-[4/5] sm:aspect-[5/4]">
-                <ParallaxHeroImage
-                  src={heroImage}
-                  alt="Volontaires Green Ivory nettoyant une plage en Côte d’Ivoire"
-                />
+      {/* Sous l'image — carte chevauchant le bas du visuel : introduction, actions et chiffres clés */}
+      <section className="container-x relative z-10 -mt-20 sm:-mt-24 lg:-mt-28 pb-10 lg:pb-14">
+        <div className="hero-media-in">
+          <div className="bento p-7 sm:p-9 lg:p-11">
+            <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
+              <p className="lg:col-span-7 text-lg lg:text-xl leading-relaxed text-muted-foreground">{T('home.hero.intro')}</p>
+              <div className="lg:col-span-5 flex flex-wrap lg:justify-end gap-3">
+                <Link to="/faire-un-don" className="btn-primary">
+                  {t('home.ctaSupport')} <ArrowRight className="h-4 w-4" />
+                </Link>
+                <Link to="/programmes" className="btn-ghost">
+                  {t('home.ctaDiscover')}
+                </Link>
               </div>
-              <div className="bento absolute -bottom-6 -left-6 hidden sm:flex items-center gap-3 px-5 py-4 max-w-[260px]">
-                <span className="h-10 w-10 rounded-full bg-secondary text-secondary-foreground inline-flex items-center justify-center">
-                  <Award className="h-5 w-5" />
-                </span>
-                <div>
-                  <div className="text-xs text-muted-foreground">Reconnue</div>
-                  <div className="text-sm font-semibold">Jeune Ambassadeur UNICEF Environnement</div>
-                </div>
-              </div>
+            </div>
+            <div className="mt-8 border-t border-border pt-7 grid grid-cols-3 gap-4 sm:gap-6">
+              {stats.map(s=><Stat key={s.label} value={s.value} label={s.label} />)}
             </div>
           </div>
         </div>
       </section>
 
-      {/* TROIS AXES — bento */}
+      {/* TROIS AXES — parcours animé : cartes échelonnées reliées par une liane dessinée au défilement */}
       <section className="container-x py-6 lg:py-10">
         <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
           <Reveal>
@@ -120,34 +107,13 @@ function Home() {
           </Reveal>
         </div>
 
-        <div className="grid gap-5 lg:grid-cols-6 lg:grid-rows-2 lg:auto-rows-fr">
-          <AxisCard
-            className="lg:col-span-3 lg:row-span-2"
-            tag={T('home.axis1.tag')}
-            icon={<Recycle className="h-5 w-5" />}
-            title={T('home.axis1.title')}
-            image={axis1Image}
-            text={T('home.axis1.text')}
-          />
-          <AxisCard
-            className="lg:col-span-3"
-            tag={T('home.axis2.tag')}
-            icon={<Trees className="h-5 w-5" />}
-            title={T('home.axis2.title')}
-            image={axis2Image}
-            compact
-            text={T('home.axis2.text')}
-          />
-          <AxisCard
-            className="lg:col-span-3"
-            tag={T('home.axis3.tag')}
-            icon={<ThermometerSun className="h-5 w-5" />}
-            title={T('home.axis3.title')}
-            image={axis3Image}
-            compact
-            text={T('home.axis3.text')}
-          />
-        </div>
+        <AxesTrail
+          axes={[
+            { tag: T('home.axis1.tag'), icon: <Recycle className="h-4 w-4" />, title: T('home.axis1.title'), text: T('home.axis1.text'), image: axis1Image },
+            { tag: T('home.axis2.tag'), icon: <Trees className="h-4 w-4" />, title: T('home.axis2.title'), text: T('home.axis2.text'), image: axis2Image },
+            { tag: T('home.axis3.tag'), icon: <ThermometerSun className="h-4 w-4" />, title: T('home.axis3.title'), text: T('home.axis3.text'), image: axis3Image },
+          ]}
+        />
       </section>
 
       {/* NOS VALEURS — brochure 2026 */}
@@ -174,30 +140,6 @@ function Home() {
           <ValueCard icon={<Handshake className="h-5 w-5" />} label={T('home.value4.label')} text={T('home.value4.text')} />
           <ValueCard icon={<Heart className="h-5 w-5" />} label={T('home.value5.label')} text={T('home.value5.text')} />
         </div>
-      </section>
-
-      {/* Avant / Après — le résultat d'une collecte en un geste */}
-      <section className="container-x py-6 lg:py-10">
-        <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
-          <Reveal>
-            <div>
-              <span className="eyebrow">Avant / Après</span>
-              <h2 className="mt-3 text-4xl sm:text-5xl font-bold tracking-tight max-w-2xl">Le résultat, en un geste.</h2>
-            </div>
-          </Reveal>
-          <Reveal delay={150}>
-            <p className="text-muted-foreground max-w-md">
-              Glissez le curseur : une plage saturée de plastique redevient un littoral propre, collecte après collecte, grâce à nos bénévoles.
-            </p>
-          </Reveal>
-        </div>
-        <BeforeAfter
-          before={baBefore}
-          after={baAfter}
-          beforeAlt="Plage polluée par les déchets plastiques, avant la collecte"
-          afterAlt="Plage propre après le passage des bénévoles Green Ivory"
-          className="bento p-0"
-        />
       </section>
 
       {/* Engagement climat */}
@@ -242,29 +184,31 @@ function Home() {
             {T('home.about.text2')}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Link to="/a-propos" className="btn-primary">En savoir plus <ArrowRight className="h-4 w-4" /></Link>
-            <Link to="/devenir-benevole" className="btn-ghost">Devenir bénévole</Link>
+            <Link to="/a-propos" className="btn-primary">{t('common.learnMore')} <ArrowRight className="h-4 w-4" /></Link>
+            <Link to="/devenir-benevole" className="btn-ghost">{t('nav.volunteer')}</Link>
           </div>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <img src={aboutImage1} alt="Forêt ivoirienne" loading="lazy" className="bento h-72 w-full object-cover" />
-          <img src={aboutImage2} alt="Sensibilisation jeunes" loading="lazy" className="bento h-72 w-full object-cover mt-10" />
+          <img src={aboutImage1} alt={t('home.about.imgForest')} loading="lazy" className="bento h-72 w-full object-cover" />
+          <img src={aboutImage2} alt={t('home.about.imgYouth')} loading="lazy" className="bento h-72 w-full object-cover mt-10" />
         </div>
       </section>
 
-      {/* Projets phares */}
+      {/* Programmes phares */}
       <section className="container-x py-6 lg:py-10">
         <Reveal className="mb-10">
           <div>
-            <span className="eyebrow">{T('home.projects.eyebrow')}</span>
+            <span className="eyebrow">{T('home.programs.eyebrow')}</span>
             <h2 className="mt-3 text-4xl lg:text-5xl font-bold tracking-tight max-w-3xl">
-              {T('home.projects.title')}
+              {T('home.programs.title')}
             </h2>
           </div>
         </Reveal>
-        {/* 3 projets maximum sur l'accueil — la liste complète vit sur /projets */}
-        <ProjectCards projects={projects.slice(0,3)}/>
-        <Link to="/projets" className="mt-8 inline-flex items-center gap-2 py-2 -my-2 font-semibold text-primary">Tous nos projets <ArrowRight className="h-4 w-4"/></Link>
+        {/* 3 programmes maximum sur l'accueil, en liste horizontale — la grille complète vit sur /programmes */}
+        <ProgramCards programs={programs.slice(0,3)} layout="row"/>
+        <Button asChild className="mt-8 h-11 rounded-full px-7 text-sm font-semibold shadow-md">
+          <Link to="/programmes">{t('home.allPrograms')} <ArrowRight className="h-4 w-4"/></Link>
+        </Button>
       </section>
 
       {/* Chiffres clés */}
@@ -294,7 +238,7 @@ function Home() {
           </p>
           <div className="mt-7">
             <Link to="/devenir-partenaire" className="btn-primary">
-              Devenir partenaire <ArrowRight className="h-4 w-4" />
+              {t('nav.partner')} <ArrowRight className="h-4 w-4" />
             </Link>
           </div>
         </div>
@@ -303,6 +247,15 @@ function Home() {
     </>
   );
 }
+
+/** Repli du titre du héros : habillage par position des mots venant du dictionnaire (même rendu que le repli FR d'origine). */
+const HERO_FALLBACK_WORD_STYLES: { className?: string; style?: CSSProperties }[] = [
+  {},
+  {},
+  { className: 'text-leaf' },
+  { className: 'text-leaf' },
+  { className: 'italic font-semibold', style: { fontFamily: 'Outfit' } },
+];
 
 /** Un mot du titre du hero, révélé derrière son propre masque (délais en cascade). */
 function W({ children, className, style, delay = 0 }: { children: ReactNode; className?: string; style?: CSSProperties; delay?: number }) {
@@ -325,41 +278,6 @@ function Stat({ value, label }: { value: string; label: string }) {
   );
 }
 
-/**
- * Image du hero avec parallaxe de scroll : elle glisse légèrement plus lentement
- * que la page (translateY borné, image agrandie pour ne jamais découvrir de vide,
- * le cadre .bento clippe les débordements). rAF + écouteurs passifs, travail
- * coupé dès que le hero sort de l'écran. prefers-reduced-motion : aucune
- * transformation, image statique.
- */
-function ParallaxHeroImage({ src, alt }: { src: string; alt: string }) {
-  const ref = useRef<HTMLImageElement>(null);
-  useEffect(() => {
-    const img = ref.current;
-    if (!img || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const frame = img.parentElement;
-      if (!frame) return;
-      const r = frame.getBoundingClientRect();
-      if (r.bottom < 0 || r.top > window.innerHeight) return;
-      const p = Math.min(1, Math.max(0, (window.innerHeight - r.top) / (window.innerHeight + r.height)));
-      img.style.transform = `scale(1.15) translate3d(0, ${(p - 0.5) * 64}px, 0)`;
-    };
-    const onScroll = () => { if (!raf) raf = requestAnimationFrame(update); };
-    update();
-    addEventListener("scroll", onScroll, { passive: true });
-    addEventListener("resize", onScroll, { passive: true });
-    return () => {
-      removeEventListener("scroll", onScroll);
-      removeEventListener("resize", onScroll);
-      if (raf) cancelAnimationFrame(raf);
-    };
-  }, []);
-  return <img ref={ref} src={src} alt={alt} className="h-full w-full object-cover will-change-transform" width={1600} height={1100} />;
-}
-
 function BigStat({ value, label }: { value: string; label: string }) {
   return (
     <div>
@@ -369,29 +287,99 @@ function BigStat({ value, label }: { value: string; label: string }) {
   );
 }
 
-function AxisCard({
-  tag, title, text, image, icon, className, compact,
-}: {
-  tag: string; title: string; text: string; image: string; icon: React.ReactNode;
-  className?: string; compact?: boolean;
-}) {
+/**
+ * Parcours des trois axes — plus de carrousel : les trois cartes sont toujours
+ * visibles côte à côte et arrivent en cascade au défilement (Reveal décalé).
+ * Au-dessus d'elles, une liane de marque se dessine d'elle-même (trait
+ * progressif normalisé par pathLength) et porte une feuille par axe qui se
+ * déploie depuis sa tige puis se balance doucement. « Réduire les
+ * animations » : la composition s'affiche directement en état final, sans
+ * dessin ni balancement ; sans JS, la liane reste simplement invisible
+ * (décor pur, cartes intactes).
+ */
+function AxesTrail({ axes }: { axes: { tag: string; icon: ReactNode; title: string; text: string; image: string }[] }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [drawn, setDrawn] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setDrawn(true); return; }
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) { setDrawn(true); io.disconnect(); }
+      },
+      { rootMargin: '0px 0px -12% 0px' },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
   return (
-    <article className={`bento group relative overflow-hidden ${className ?? ""}`}>
-      <div className={`relative ${compact ? "h-44" : "h-72"} overflow-hidden`}>
-        <img src={image} alt={title} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
-        <div className="absolute inset-0 bg-gradient-to-t from-primary/70 via-transparent" />
-        <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-background/90 backdrop-blur px-3 py-1 text-xs font-semibold text-primary">
+    <div ref={ref}>
+      {/* Liane connectrice : le trait traverse les centres des trois colonnes. */}
+      <svg
+        viewBox="0 0 1200 80"
+        preserveAspectRatio="none"
+        aria-hidden="true"
+        fill="none"
+        className={`mb-2 hidden h-20 w-full lg:block ${drawn ? 'axes-drawn' : ''}`}
+      >
+        <path
+          d="M -20 62 C 80 55 140 48 200 38 C 340 14 460 52 600 34 C 740 16 860 44 1000 30 C 1090 21 1160 34 1220 50"
+          pathLength={1}
+          className="axes-line stroke-primary/40"
+          strokeWidth={2}
+          strokeLinecap="round"
+          vectorEffect="non-scaling-stroke"
+        />
+        {[
+          { x: 200, y: 38, r: -16, s: 0.15, delay: '0.9s', sway: '-1.2s', cls: 'text-primary/50' },
+          { x: 600, y: 34, r: 8, s: 0.18, delay: '1.4s', sway: '-3s', cls: 'text-leaf' },
+          { x: 1000, y: 30, r: -4, s: 0.16, delay: '1.9s', sway: '-2s', cls: 'text-secondary/70' },
+        ].map((n, i) => (
+          <g key={i} transform={`translate(${n.x} ${n.y}) rotate(${n.r}) scale(${n.s})`}>
+            <g className="axes-pop" style={{ transitionDelay: n.delay }}>
+              <g className="axes-sway" style={{ '--sway-d': n.sway } as CSSProperties}>
+                <path d={LEAF_LIMBE} transform="translate(-141 -70)" className={`fill-current ${n.cls}`} stroke="none" />
+                <path d={LEAF_NERVURE} transform="translate(-141 -70)" className="stroke-current text-primary/60" strokeWidth={16} strokeLinecap="round" />
+              </g>
+            </g>
+          </g>
+        ))}
+      </svg>
+      <div className="relative grid gap-8 md:grid-cols-3">
+        {axes.map((axis, i) => (
+          <Reveal key={i} delay={i * 130} className="h-full [&>.reveal-inner]:h-full">
+            <AxisCard index={i} tag={axis.tag} icon={axis.icon} title={axis.title} text={axis.text} image={axis.image} />
+          </Reveal>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/** Carte d'un axe : photo avec numéro en filigrane, pastille d'icône, titre et texte. */
+function AxisCard({ index, tag, title, text, image, icon }: { index: number; tag: string; icon: ReactNode; title: string; text: string; image: string }) {
+  return (
+    <article className="bento group h-full overflow-hidden transition duration-500 hover:-translate-y-1.5 hover:shadow-lg motion-reduce:transition-none motion-reduce:hover:translate-y-0">
+      <div className="relative aspect-[16/10] overflow-hidden">
+        <img
+          src={image}
+          alt={title}
+          loading="lazy"
+          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105 motion-reduce:transition-none"
+        />
+        <span aria-hidden="true" className="absolute bottom-2 right-4 font-display text-5xl font-extrabold text-white drop-shadow-md">{'0' + (index + 1)}</span>
+        <span className="absolute left-4 top-4 inline-flex items-center gap-1.5 rounded-full bg-background/90 px-3 py-1 text-xs font-semibold text-primary backdrop-blur">
           {icon} {tag}
         </span>
       </div>
-      <div className="p-6 lg:p-8">
-        <h3 className="text-2xl font-bold">{title}</h3>
-        <p className="mt-3 text-sm text-muted-foreground leading-relaxed">{text}</p>
+      <div className="p-6 lg:p-7">
+        <h3 className="text-xl font-bold lg:text-2xl">{title}</h3>
+        <p className="mt-3 text-sm leading-relaxed text-muted-foreground">{text}</p>
       </div>
     </article>
   );
 }
-
 function Pillar({ icon, title, text }: { icon: React.ReactNode; title: string; text: string }) {
   return (
     <div className="rounded-2xl bg-background/10 p-5 border border-background/15">

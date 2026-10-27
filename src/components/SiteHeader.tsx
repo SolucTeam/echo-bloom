@@ -1,26 +1,27 @@
 import { Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Menu, X, Heart } from "lucide-react";
-import { groupProjectMenu } from '@/lib/projects';
+import { normalizeMenu } from '@/lib/programs';
 import { useSetting } from './ManagedSite';
+import { LanguageToggle, useLang } from './Language';
 import logoMark from '@/assets/logo-mark.png';
 
 const nav = [
   { to: "/", label: "Accueil" },
   { to: "/a-propos", label: "À propos" },
-  { to: "/projets", label: "Projets" },
-  { to: "/galerie", label: "Galerie" },
-  { to: "/blog", label: "Blog" },
+  { to: "/programmes", label: "Programmes" },
+  { to: "/actualites", label: "Actualités" },
   { to: "/nous-joindre", label: "Contact" },
   { to: "/devenir-partenaire", label: "Devenir partenaire" },
 ] as const;
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const { t, tLabel } = useLang();
   const siteName=useSetting('site.name','Green Ivory'),logo=useSetting('site.logo'),donation=useSetting('site.donation','/faire-un-don');
   const menuValue=useSetting('site.menu');
   let menu:{to:string,label:string}[]=[...nav];
-  try { if(menuValue)menu=groupProjectMenu(JSON.parse(menuValue) as {url:string,label:string}[]).map(n=>({to:n.url,label:n.label})); }catch{}
+  try { if(menuValue)menu=normalizeMenu(JSON.parse(menuValue) as {url:string,label:string}[]).map(n=>({to:n.url,label:n.label})); }catch{}
   useEffect(()=>{
     if(!open)return;
     const onKey=(e:KeyboardEvent)=>{ if(e.key==='Escape')setOpen(false); };
@@ -44,19 +45,20 @@ export function SiteHeader() {
               activeProps={{ className: "text-primary font-semibold" }}
               activeOptions={{ exact: n.to === "/" }}
             >
-              {n.label}
+              {tLabel(n.label)}
             </Link>
           ))}
         </nav>
 
         <div className="flex items-center gap-3">
           <Link to={donation} className="btn-primary hidden sm:inline-flex !py-2.5 !px-5">
-            <Heart className="h-4 w-4" /> Faire un don
+            <Heart className="h-4 w-4" /> {t('nav.donate')}
           </Link>
+          <LanguageToggle />
           <button
             className="lg:hidden inline-flex h-11 w-11 items-center justify-center rounded-full border border-border"
             onClick={() => setOpen((v) => !v)}
-            aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
+            aria-label={open ? t('header.closeMenu') : t('header.openMenu')}
             aria-expanded={open}
             aria-controls="mobile-menu"
           >
@@ -77,11 +79,11 @@ export function SiteHeader() {
                 activeProps={{ className: "text-primary font-semibold bg-accent" }}
                 activeOptions={{ exact: n.to === "/" }}
               >
-                {n.label}
+                {tLabel(n.label)}
               </Link>
             ))}
             <Link to={donation} onClick={() => setOpen(false)} className="btn-primary mt-2">
-              <Heart className="h-4 w-4" /> Faire un don
+              <Heart className="h-4 w-4" /> {t('nav.donate')}
             </Link>
           </div>
         </div>

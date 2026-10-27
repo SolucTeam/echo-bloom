@@ -8,11 +8,12 @@ import { useEffect, useRef, useState } from "react";
 import { useSetting } from '@/components/ManagedSite';
 
 import { Button } from '@/components/ui/button';
-import { readContact, contactSubmissionSchema } from '@/lib/form-settings';
+import { readContact, contactSubmissionSchema, localizedContact } from '@/lib/form-settings';
+import { useLang } from '@/components/Language';
 
 export const Route = createFileRoute("/nous-joindre")({
   loader:async()=>({cmsPage:await loadPage({data:'/nous-joindre'})}),
-  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Contact — Green Ivory | Écrivez-nous', "Contactez l'ONG Green Ivory : adresses, téléphone et formulaire pour un partenariat, une question ou une proposition de projet.", '/nous-joindre'),
+  head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Contact — Green Ivory | Écrivez-nous', "Contactez l'ONG Green Ivory : adresses, téléphone et formulaire pour un partenariat, une question ou une proposition de projet.", '/nous-joindre', { title: 'Contact — Green Ivory | Write to us', description: 'Contact the Green Ivory NGO: addresses, phone and form for a partnership, a question or a project proposal.' }),
   component: Contact,
   errorComponent: RouteError,
   notFoundComponent: RouteNotFound,
@@ -21,8 +22,9 @@ export const Route = createFileRoute("/nous-joindre")({
 type FormErrors = Partial<Record<"name" | "email" | "subject" | "message" | "form", string>>;
 
 function Contact() {
+  const { t, tMsg, lang } = useLang();
   const address=useSetting('site.address','Bingerville Cité Ital, Côte d’Ivoire'),phone=useSetting('site.phone','+225 07 772 689 96'),email=useSetting('site.email','info@greenivory.org'),recruitment=useSetting('site.recruitment','recrutement@greenivory.org');
-  const config=readContact(useSetting('site.contact'));
+  const config=localizedContact(readContact(useSetting('site.contact')),lang);
   const navigate = useNavigate();
   const startedAtRef = useRef<number>(Date.now());
   const [errors, setErrors] = useState<FormErrors>({});
@@ -38,7 +40,7 @@ function Contact() {
     const fd = new FormData(form);
     const parsed=contactSubmissionSchema.safeParse({...Object.fromEntries(fd),startedAt:startedAtRef.current});
     const e: FormErrors = {};
-    if(!parsed.success)for(const issue of parsed.error.issues){const key=issue.path[0];if(key==='name'||key==='email'||key==='subject'||key==='message')e[key]=issue.message;}
+    if(!parsed.success)for(const issue of parsed.error.issues){const key=issue.path[0];if(key==='name'||key==='email'||key==='subject'||key==='message')e[key]=tMsg(issue.message);}
     return e;
   }
 
@@ -73,13 +75,13 @@ function Contact() {
       });
       const json = (await res.json().catch(() => ({}))) as { ok?: boolean; error?: string };
       if (!res.ok || !json.ok) {
-        setErrors({ form: json.error || "Une erreur est survenue. Réessayez." });
+        setErrors({ form: json.error || t('contact.errorGeneric') });
         setLoading(false);
         return;
       }
       navigate({ to: "/merci" });
     } catch {
-      setErrors({ form: "Réseau indisponible. Réessayez." });
+      setErrors({ form: t('contact.errorNetwork') });
       setLoading(false);
     }
   }
@@ -87,15 +89,15 @@ function Contact() {
   return (
     <>
       <PageHero
-        eyebrow="Contact"
+        eyebrow={t('nav.contact')}
         title={config.title}
         intro={config.intro}
       />
 
       <section className="container-x py-16 grid lg:grid-cols-3 gap-6">
-        <InfoCard icon={<MapPin className="h-5 w-5" />} label="Notre adresse" lines={[address]} />
-        <InfoCard icon={<Phone className="h-5 w-5" />} label="Nos contacts" lines={[phone]} />
-        <InfoCard icon={<Mail className="h-5 w-5" />} label="Nos emails" lines={[email,recruitment]} />
+        <InfoCard icon={<MapPin className="h-5 w-5" />} label={t('contact.addressLabel')} lines={[address]} />
+        <InfoCard icon={<Phone className="h-5 w-5" />} label={t('contact.phoneLabel')} lines={[phone]} />
+        <InfoCard icon={<Mail className="h-5 w-5" />} label={t('contact.emailsLabel')} lines={[email,recruitment]} />
       </section>
 
       <section className="container-x py-6 lg:py-10 grid lg:grid-cols-2 gap-10 items-start">
@@ -105,13 +107,12 @@ function Contact() {
             {config.description}
           </p>
           <div className="mt-8 bento p-6 bg-accent border-0">
-            <h3 className="font-semibold text-lg">Devenir bénévole</h3>
+            <h3 className="font-semibold text-lg">{t('nav.volunteer')}</h3>
             <p className="mt-2 text-sm text-muted-foreground">
-              Envie d'agir pour l'environnement ? Rejoignez Green Ivory et participez
-              activement à nos actions : nettoyages, sensibilisation, reboisement, événements éco-responsables.
+              {t('contact.volunteerText')}
             </p>
             <Link to="/devenir-benevole" className="mt-5 btn-primary inline-flex">
-              <ArrowRight className="h-4 w-4" /> Devenir bénévole
+              <ArrowRight className="h-4 w-4" /> {t('nav.volunteer')}
             </Link>
           </div>
         </div>
@@ -120,16 +121,16 @@ function Contact() {
           {/* Honeypot — must remain empty. Hidden from humans. */}
           <div aria-hidden="true" className="absolute -left-[9999px] top-auto h-0 w-0 overflow-hidden">
             <label>
-              Ne remplissez pas ce champ
+              {t('form.honeypot')}
               <input type="text" name="website" tabIndex={-1} autoComplete="off" />
             </label>
           </div>
 
-          <Field label="Votre nom (facultatif)" name="name" maxLength={100} autoComplete="name" error={errors.name} />
-          <Field label="Email" name="email" type="email" maxLength={255} required autoComplete="email" error={errors.email} />
-          <Field label="Objet" name="subject" maxLength={200} required error={errors.subject} />
+          <Field label={t('contact.nameLabel')} name="name" maxLength={100} autoComplete="name" error={errors.name} />
+          <Field label={t('form.email')} name="email" type="email" maxLength={255} required autoComplete="email" error={errors.email} />
+          <Field label={t('contact.subjectLabel')} name="subject" maxLength={200} required error={errors.subject} />
           <div>
-            <label className="text-sm font-medium" htmlFor="message">Message</label>
+            <label className="text-sm font-medium" htmlFor="message">{t('form.message')}</label>
             <textarea
               id="message"
               name="message"
@@ -149,11 +150,10 @@ function Contact() {
           )}
 
           <Button type="submit" disabled={loading} className="btn-primary w-full justify-center disabled:opacity-60">
-            {loading ? <><Loader2 className="h-4 w-4 animate-spin" /> Envoi en cours…</> : config.buttonLabel}
+            {loading ? <><Loader2 className="h-4 w-4 animate-spin" /> {t('form.sending')}</> : config.buttonLabel}
           </Button>
           <p className="text-xs text-muted-foreground">
-            En soumettant ce formulaire, vous acceptez que vos informations soient utilisées
-            pour traiter votre demande. Aucune donnée n'est transmise à des tiers.
+            {t('contact.privacy')}
           </p>
         </form> : <p data-form-closed role="status" className="border-l-4 border-primary p-6 bg-accent">{config.closedMessage}</p>}
       </section>

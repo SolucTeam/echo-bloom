@@ -4,6 +4,7 @@ import type { BlogPost, BlogCategory } from "@/data/blog-posts";
 export type DbPost = {
   id: string; slug: string; title: string; excerpt: string; content: string;
   category: string; image_url: string | null; author: string; published: boolean; published_at: string;
+  title_en?: string | null; excerpt_en?: string | null; content_en?: string | null;
 };
 
 export function dbPostToBlogPost(p: DbPost): BlogPost {

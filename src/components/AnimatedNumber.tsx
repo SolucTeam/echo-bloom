@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLang } from '@/components/Language';
 
 /**
  * Compteur animé : affiche la valeur finale dès le rendu serveur (SEO, sans JS),
@@ -14,6 +15,7 @@ const DURATION_MS = 1400;
 export function AnimatedNumber({ value }: { value: string }) {
   const ref = useRef<HTMLSpanElement>(null);
   const [display, setDisplay] = useState(value);
+  const { lang } = useLang();
 
   useEffect(() => {
     const el = ref.current;
@@ -31,7 +33,7 @@ export function AnimatedNumber({ value }: { value: string }) {
       observer.disconnect();
       const start = performance.now();
       const easeOut = (t: number) => 1 - Math.pow(1 - t, 3);
-      const format = (n: number) => n.toLocaleString('fr-FR').replace(/\u202f/g, '\u00a0');
+      const format = (n: number) => n.toLocaleString(lang === 'en' ? 'en-US' : 'fr-FR').replace(/\u202f/g, '\u00a0');
       const tick = (now: number) => {
         const t = Math.min((now - start) / DURATION_MS, 1);
         if (t < 1) {
@@ -48,7 +50,7 @@ export function AnimatedNumber({ value }: { value: string }) {
       observer.disconnect();
       cancelAnimationFrame(raf);
     };
-  }, [value]);
+  }, [value, lang]);
 
   return <span ref={ref} className="tabular-nums">{display}</span>;
 }

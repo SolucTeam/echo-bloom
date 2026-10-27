@@ -1,6 +1,8 @@
+import type { Lang } from '../lib/i18n';
+
 export const HOME_HERO_INTRO_FALLBACK = "Green Ivory est une ONG ivoirienne fondée en 2017. Nous formons les jeunes, dépolluons les plages et plaidons pour des politiques climatiques ambitieuses en Côte d’Ivoire.";
 
-export type HomeStat = { value: string; label: string };
+export type HomeStat = { value: string; label: string; labelEn?: string };
 
 export const DEFAULT_HOME_STATS: HomeStat[] = [
   { value: "200 000+", label: "Personnes sensibilisées" },
@@ -11,7 +13,7 @@ export const DEFAULT_HOME_STATS: HomeStat[] = [
 /** Chiffres d'impact officiels — brochure Green Ivory 2026. */
 export const DEFAULT_HOME_BIGSTATS: HomeStat[] = [
   { value: "200 000+", label: "Personnes sensibilisées à la pollution plastique et au changement climatique" },
-  { value: "5", label: "Projets d’éco-entreprises accompagnés (assistance technique, incubation, financement)" },
+  { value: "5", label: "Programmes d’éco-entreprises accompagnés (assistance technique, incubation, financement)" },
   { value: "120+", label: "Jeunes formés aux emplois verts (économies verte et bleue)" },
   { value: "30+", label: "Emplois verts créés" },
   { value: "20+", label: "Tonnes de déchets plastiques collectés et recyclés" },
@@ -48,8 +50,8 @@ export const HOME_TEXT_FALLBACKS: Record<string, string> = {
   "home.about.title": "Une équipe passionnée, un impact mesurable.",
   "home.about.text1": "Green Ivory est une ONG fondée en 2017, basée en Côte d’Ivoire. Nous œuvrons pour la protection de l’environnement à travers des actions contre la pollution plastique, le changement climatique et la perte de biodiversité — avec une attention particulière à l’éducation environnementale des jeunes et des enfants.",
   "home.about.text2": "L’ONG est dirigée par Khérann YAO, Président du Conseil d’Administration, nommé Jeune Ambassadeur de l’UNICEF pour l’Environnement en 2018.",
-  "home.projects.eyebrow": "Nos projets",
-  "home.projects.title": "Nos projets au cœur de l’actualité.",
+  "home.programs.eyebrow": "Nos programmes",
+  "home.programs.title": "Nos programmes au cœur de l’actualité.",
   "home.partners.eyebrow": "Devenir partenaire",
   "home.partners.title": "Soutenez notre organisation, nos missions et nos actions.",
   "home.partners.text": "Entreprises, institutions, ONG, collectivités — rejoignez-nous pour développer des solutions durables face aux défis environnementaux.",
@@ -61,7 +63,7 @@ export const HOME_TEXT_FALLBACKS: Record<string, string> = {
   "home.value2.label": "Agilité",
   "home.value2.text": "Des équipes réactives, adaptées aux réalités du terrain et aux urgences climatiques.",
   "home.value3.label": "Intégrité",
-  "home.value3.text": "Transparence et exemplarité dans la gestion de nos ressources et de nos projets.",
+  "home.value3.text": "Transparence et exemplarité dans la gestion de nos ressources et de nos programmes.",
   "home.value4.label": "Collaboration",
   "home.value4.text": "Agir avec les communautés, les partenaires et les institutions — ensemble, jamais seuls.",
   "home.value5.label": "Humanisme",
@@ -70,7 +72,18 @@ export const HOME_TEXT_FALLBACKS: Record<string, string> = {
 
 export type HomeTexts = Record<string, string>;
 
-/** Réglages stockés en base (home.texts) : ne retient que les clés connues, non vides. */
+/**
+ * Vue localisée des textes de l'accueil (phase 2 bilingue) : en anglais, chaque
+ * texte EN renseigné remplace son homologue français, sinon repli français
+ * champ par champ (les replis d'origine s'appliquent au rendu).
+ */
+export function localizedHomeTexts(fr: HomeTexts, en: HomeTexts | undefined, lang: Lang): HomeTexts {
+  if (lang !== 'en' || !en) return fr;
+  return { ...fr, ...Object.fromEntries(Object.entries(en).filter(([, v]) => v.trim())) };
+}
+
+/** Réglages stockés en base (home.texts) : ne retient que les clés connues, non vides.
+ *  Compatibilité : les anciennes clés home.projects.* sont reprises sous home.programs.*. */
 export function readHomeTexts(raw: string | undefined): HomeTexts {
   try {
     const v = JSON.parse(raw || "{}");
@@ -78,6 +91,10 @@ export function readHomeTexts(raw: string | undefined): HomeTexts {
     if (v && typeof v === "object") {
       for (const [k, val] of Object.entries(v)) {
         if (k in HOME_TEXT_FALLBACKS && typeof val === "string" && val.trim()) out[k] = val;
+      }
+      for (const legacy of ["home.projects.eyebrow", "home.projects.title"] as const) {
+        const modern = legacy.replace("projects", "programs");
+        if (!(modern in out) && typeof v[legacy] === "string" && v[legacy].trim()) out[modern] = v[legacy];
       }
     }
     return out;
@@ -96,6 +113,12 @@ export function readHomeStats(raw: string | undefined, fallback: HomeStat[] = DE
   }
 }
 
+/** Vue localisée des chiffres (phase 2 bilingue) : légende EN renseignée, sinon légende française. */
+export function localizedHomeStats(stats: HomeStat[], lang: Lang): HomeStat[] {
+  if (lang !== 'en') return stats;
+  return stats.map((s) => ({ ...s, label: s.labelEn?.trim() ? s.labelEn : s.label }));
+}
+
 /** Images de la page d'accueil remplaçables depuis la console (clés de réglages site_content). */
 export const HOME_IMAGES: { key: string; label: string }[] = [
   { key: "home.hero.image", label: "Grande image d’accueil" },
@@ -104,6 +127,4 @@ export const HOME_IMAGES: { key: string; label: string }[] = [
   { key: "home.axis3.image", label: "Axe 3 — climat" },
   { key: "home.about.image1", label: "Qui sommes-nous — image gauche" },
   { key: "home.about.image2", label: "Qui sommes-nous — image droite" },
-  { key: "home.beforeafter.before", label: "Comparateur — avant (plage polluée)" },
-  { key: "home.beforeafter.after", label: "Comparateur — après (littoral propre)" },
 ];

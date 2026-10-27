@@ -10,6 +10,7 @@ import { Link } from '@tanstack/react-router';
 import { Button } from '@/components/ui/button';
 import { AnimatedLeaf } from '@/components/AnimatedLeaf';
 import { FloatingLeaves } from '@/components/FloatingLeaves';
+import { useLang } from '@/components/Language';
 
 /** Silhouette feuille de la marque (limbe + nervure), colorée via currentColor. */
 function LeafMark({ className }: { className?: string }) {
@@ -24,17 +25,18 @@ function LeafMark({ className }: { className?: string }) {
 /* ---------------------------------------------------------------- 404 */
 
 export function NotFoundScene() {
+  const { t } = useLang();
   return (
     <div className="relative overflow-hidden text-center space-y-5 max-w-xl mx-auto">
       <FloatingLeaves className="absolute -inset-10 pointer-events-none" />
       <div className="relative">
         <p className="text-[6.5rem] sm:text-[8rem] leading-none font-extrabold tracking-tighter bg-gradient-to-br from-primary via-secondary to-leaf bg-clip-text text-transparent select-none">404</p>
         <AnimatedLeaf className="mx-auto w-64 max-w-full h-auto -mt-4 text-primary/70 select-none" />
-        <h1 className="text-3xl font-bold">Cette page n'a pas poussé ici</h1>
-        <p className="text-muted-foreground">Elle a peut-être été déplacée, renommée, ou c'est simplement une graine qui n'a pas encore germé.</p>
+        <h1 className="text-3xl font-bold">{t('notfound.title')}</h1>
+        <p className="text-muted-foreground">{t('notfound.text')}</p>
         <div className="flex flex-wrap justify-center gap-3 pt-2">
-          <Button asChild><Link to="/">Retour à l'accueil</Link></Button>
-          <Button variant="outline" asChild><Link to="/projets">Découvrir nos projets</Link></Button>
+          <Button asChild><Link to="/">{t('notfound.backHome')}</Link></Button>
+          <Button variant="outline" asChild><Link to="/programmes">{t('home.ctaDiscover')}</Link></Button>
         </div>
       </div>
     </div>
@@ -52,6 +54,7 @@ const ERROR_CSS = `
 `;
 
 export function ErrorScene({ onRetry }: { onRetry: () => void }) {
+  const { t } = useLang();
   return (
     <div className="text-center space-y-5 max-w-md mx-auto">
       <style>{ERROR_CSS}</style>
@@ -61,11 +64,11 @@ export function ErrorScene({ onRetry }: { onRetry: () => void }) {
           <LeafMark className="w-16 h-auto text-secondary" />
         </div>
       </div>
-      <h1 className="text-2xl font-bold">Cette page n'a pas pu se charger</h1>
-      <p className="text-muted-foreground">Une erreur est survenue de notre côté. Réessayez — le reste du site reste accessible.</p>
+      <h1 className="text-2xl font-bold">{t('error.title')}</h1>
+      <p className="text-muted-foreground">{t('error.text')}</p>
       <div className="flex flex-wrap justify-center gap-3 pt-1">
-        <Button onClick={onRetry}>Réessayer</Button>
-        <Button variant="outline" asChild><Link to="/">Accueil</Link></Button>
+        <Button onClick={onRetry}>{t('error.retry')}</Button>
+        <Button variant="outline" asChild><Link to="/">{t('nav.home')}</Link></Button>
       </div>
     </div>
   );
@@ -107,6 +110,7 @@ const MAINT_CSS = `
 /** Scène de maintenance : soleil, nuages, goutte d'eau et une pousse qui
  *  grandit en boucle — le jardinage du site, en direct. */
 export function MaintenanceScene({ onReload }: { onReload: () => void }) {
+  const { t } = useLang();
   return (
     <div className="text-center space-y-6 max-w-lg mx-auto">
       <style>{MAINT_CSS}</style>
@@ -139,23 +143,24 @@ export function MaintenanceScene({ onReload }: { onReload: () => void }) {
         </div>
       </div>
       <div>
-        <h1 className="text-3xl font-bold">Petite pause jardinage</h1>
-        <p className="mt-3 text-muted-foreground">Le site est en entretien — on arrose, on désherbe et on plante. Tout repoussera plus vert d'ici quelques instants.</p>
-        <p className="mt-2 text-sm text-muted-foreground">Merci de votre patience<span className="mt-dots"><span>.</span><span>.</span><span>.</span></span></p>
+        <h1 className="text-3xl font-bold">{t('maint.title')}</h1>
+        <p className="mt-3 text-muted-foreground">{t('maint.text')}</p>
+        <p className="mt-2 text-sm text-muted-foreground">{t('maint.thanks')}<span className="mt-dots"><span>.</span><span>.</span><span>.</span></span></p>
       </div>
-      <Button variant="outline" onClick={onReload}>Recharger la page</Button>
+      <Button variant="outline" onClick={onReload}>{t('maint.reload')}</Button>
     </div>
   );
 }
 
 /** Page plein écran utilisée quand la maintenance est activée. */
 export function MaintenancePage() {
+  const { t } = useLang();
   return (
     <div className="relative min-h-svh overflow-hidden bg-background grid place-items-center px-4 py-16">
       <div className="absolute inset-0 grain opacity-40 pointer-events-none" aria-hidden />
       <FloatingLeaves className="absolute inset-0 -z-10 pointer-events-none" />
       <MaintenanceScene onReload={() => location.reload()} />
-      <p className="absolute bottom-6 text-xs text-muted-foreground">Green Ivory — Le pouvoir citoyen pour l'environnement</p>
+      <p className="absolute bottom-6 text-xs text-muted-foreground">Green Ivory — {t('maint.tagline')}</p>
     </div>
   );
 }

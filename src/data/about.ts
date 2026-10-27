@@ -1,3 +1,5 @@
+import type { Lang } from '../lib/i18n';
+
 /** Textes de la page « À propos » : clé → valeur d'origine (repli si non personnalisée en base). */
 export const ABOUT_TEXT_FALLBACKS: Record<string, string> = {
   "about.hero.eyebrow": "Tout savoir de nous",
@@ -35,6 +37,16 @@ export const ABOUT_TEXT_FALLBACKS: Record<string, string> = {
 };
 
 export type AboutTexts = Record<string, string>;
+
+/**
+ * Vue localisée des textes de la page « À propos » (phase 2 bilingue) : en
+ * anglais, chaque texte EN renseigné remplace son homologue français, sinon
+ * repli français champ par champ (les replis d'origine s'appliquent au rendu).
+ */
+export function localizedAboutTexts(fr: AboutTexts, en: AboutTexts | undefined, lang: Lang): AboutTexts {
+  if (lang !== 'en' || !en) return fr;
+  return { ...fr, ...Object.fromEntries(Object.entries(en).filter(([, v]) => v.trim())) };
+}
 
 /** Réglages stockés en base (about.texts) : ne retient que les clés connues, non vides. */
 export function readAboutTexts(raw: string | undefined): AboutTexts {

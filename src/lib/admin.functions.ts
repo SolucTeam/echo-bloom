@@ -4,9 +4,12 @@ import { requireSupabaseAuth } from '@/integrations/supabase/auth-middleware';
 import { adminEntitySchema, pageSchema, postSchema, gallerySchema, mediaSchema, settingSchema, partnersSchema, safeLink } from './cms-schema';
 import sanitizeHtml from 'sanitize-html';
 import { contactSettingsSchema, volunteerSettingsSchema, contactDetailsSchema } from './form-settings';
-import { projectsSchema } from './project-schema';
+import { programsSchema } from './program-schema';
 import { newsletterSchema } from './newsletter';
+import { pressItemsSchema } from './press-schema';
+import { eventItemsSchema } from './event-schema';
 import { mailSettingsSchema, readMailSettings, mailServerOnline } from './mail-settings';
+import { translateFrToEn } from './translate';
 import { HOME_TEXT_FALLBACKS } from '../data/home';
 import { ABOUT_TEXT_FALLBACKS } from '../data/about';
 
@@ -48,7 +51,7 @@ export const adminWrite = createServerFn({method:'POST'}).middleware([adminMiddl
       const result=await db.from('cms_pages').upsert({...p,updated_at:new Date().toISOString()},{onConflict:'path'}); error=result.error;
     }else if(data.entity==='posts'){
       const p=postSchema.parse(data.payload);
-      if(p.content_format==='html') p.content=sanitizeHtml(p.content);
+      if(p.content_format==='html'){p.content=sanitizeHtml(p.content);if(p.content_en)p.content_en=sanitizeHtml(p.content_en);}
       const result=data.id ? await db.from('blog_posts').update({...p,updated_at:new Date().toISOString()}).eq('id',data.id):await db.from('blog_posts').upsert(p,{onConflict:'slug'}); error=result.error;
     }else if(data.entity==='gallery'){
       const p=gallerySchema.parse(data.payload);
@@ -61,15 +64,16 @@ export const adminWrite = createServerFn({method:'POST'}).middleware([adminMiddl
       if(p.key.startsWith('social.')||['site.logo','site.donation'].includes(p.key))safeLink.parse(p.value);
       if(['site.menu','site.footerMenu'].includes(p.key))z.array(z.object({label:z.string().max(200),url:safeLink})).max(50).parse(JSON.parse(p.value));
       if(p.key==='site.donations')z.array(z.object({label:z.string().min(1).max(200),url:safeLink})).max(10).parse(JSON.parse(p.value));
-      if(p.key==='site.stats')z.array(z.object({value:z.string().max(20),label:z.string().min(1).max(100)})).min(1).max(6).parse(JSON.parse(p.value));
-      if(p.key==='home.bigstats')z.array(z.object({value:z.string().min(1).max(20),label:z.string().min(1).max(100)})).min(1).max(8).parse(JSON.parse(p.value));
-      if(p.key==='home.texts'){const parsed=z.record(z.string(),z.string().max(3000)).parse(JSON.parse(p.value));for(const k of Object.keys(parsed))if(!(k in HOME_TEXT_FALLBACKS))throw new Error('Clé de texte inconnue.');}
-      if(p.key==='about.texts'){const parsed=z.record(z.string(),z.string().max(3000)).parse(JSON.parse(p.value));for(const k of Object.keys(parsed))if(!(k in ABOUT_TEXT_FALLBACKS))throw new Error('Clé de texte inconnue.');}
+      if(p.key==='site.stats')z.array(z.object({value:z.string().max(20),label:z.string().min(1).max(100),labelEn:z.string().max(100).nullish()})).min(1).max(6).parse(JSON.parse(p.value));
+      if(p.key==='home.bigstats')z.array(z.object({value:z.string().min(1).max(20),label:z.string().min(1).max(100),labelEn:z.string().max(100).nullish()})).min(1).max(8).parse(JSON.parse(p.value));
+      if(p.key==='home.texts'||p.key==='home.textsEn'){const parsed=z.record(z.string(),z.string().max(3000)).parse(JSON.parse(p.value));for(const k of Object.keys(parsed))if(!(k in HOME_TEXT_FALLBACKS))throw new Error('Clé de texte inconnue.');}
+      if(p.key==='about.texts'||p.key==='about.textsEn'){const parsed=z.record(z.string(),z.string().max(3000)).parse(JSON.parse(p.value));for(const k of Object.keys(parsed))if(!(k in ABOUT_TEXT_FALLBACKS))throw new Error('Clé de texte inconnue.');}
       if(p.key.startsWith('about.')&&p.key.endsWith('.image'))safeLink.parse(p.value);
       if(p.key.startsWith('home.')&&p.key.endsWith('.image'))safeLink.parse(p.value);
-      if(p.key==='home.beforeafter.before'||p.key==='home.beforeafter.after')safeLink.parse(p.value);
-      if(p.key==='site.projects')projectsSchema.parse(JSON.parse(p.value));
+      if(p.key==='site.programs'||p.key==='site.projects')programsSchema.parse(JSON.parse(p.value));
       if(p.key==='site.partners')partnersSchema.parse(JSON.parse(p.value));
+      if(p.key==='site.press')pressItemsSchema.parse(JSON.parse(p.value));
+      if(p.key==='site.events')eventItemsSchema.parse(JSON.parse(p.value));
       if(p.key==='site.contact')contactSettingsSchema.parse(JSON.parse(p.value));
       if(p.key==='site.volunteer')volunteerSettingsSchema.parse(JSON.parse(p.value));
       if(p.key in contactDetailsSchema.shape)contactDetailsSchema.shape[p.key as keyof typeof contactDetailsSchema.shape].parse(p.value);
@@ -106,4 +110,16 @@ export const testMail = createServerFn({method:'POST'}).middleware([adminMiddlew
   const result=await db.from('mail_jobs').insert({source_kind:'test',config});
   if(result.error)throw new Error('Test impossible.');
   return {ok:true};
-});
+});/**
+ * Traduction automatique FR → EN des champs anglais de la console. Réservée aux
+ * administrateurs comme toute écriture ; la clé DeepL (optionnelle) vient des
+ * variables d'environnement du serveur et n'est jamais exposée au navigateur.
+ */
+export const adminTranslate = createServerFn({method:'POST'}).middleware([adminMiddleware])
+  .validator((v:unknown)=>z.object({items:z.array(z.object({id:z.string().min(1).max(120),text:z.string().min(1).max(20000)})).min(1).max(40)}).parse(v))
+  .handler(async({data,context})=>{
+    const role=await context.supabase.rpc('has_role',{_user_id:context.userId,_role:'admin'});
+    if(role.error || !role.data)throw new Error('Accès refusé.');
+    const translations=await translateFrToEn(data.items.map((i)=>i.text),{deeplKey:process.env.DEEPL_API_KEY,mymemoryEmail:process.env.MYMEMORY_EMAIL});
+    return {translations:data.items.map((i,index)=>({id:i.id,text:translations[index]??''}))};
+  });

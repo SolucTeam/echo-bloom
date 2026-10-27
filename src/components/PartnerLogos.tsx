@@ -1,5 +1,6 @@
 import type { CSSProperties } from 'react';
 import { useSetting } from './ManagedSite';
+import { useLang } from '@/components/Language';
 import { partnersSchema, type Partner } from '@/lib/cms-schema';
 import { DEFAULT_PARTNERS } from '@/data/partners';
 
@@ -44,11 +45,12 @@ function MarqueeRow({ partners, reverse, duration }: { partners: Partner[]; reve
 }
 
 export function PartnerLogos() {
+  const { t } = useLang();
   const partners = readPartners(useSetting('site.partners', ''));
   if (!partners.length) return null;
   const half = Math.ceil(partners.length / 2);
   return (
-    <div className="grid gap-2" aria-label="Partenaires Green Ivory">
+    <div className="grid gap-2" aria-label={t('partner.logosAria')}>
       <MarqueeRow partners={partners.slice(0, half)} duration="32s" />
       <MarqueeRow partners={partners.slice(half)} reverse duration="40s" />
     </div>

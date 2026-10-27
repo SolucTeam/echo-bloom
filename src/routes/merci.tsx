@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 
 import { useSetting } from '@/components/ManagedSite';
 import { readContact } from '@/lib/form-settings';
+import { useLang } from '@/components/Language';
 import { leafBurst } from '@/components/leafCelebration';
 
 const SITE_URL = import.meta.env.VITE_SITE_URL || "https://green-ivory-tan.vercel.app";
@@ -19,6 +20,9 @@ export const Route = createFileRoute("/merci")({
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "robots", content: "noindex,follow" },
+      /* Phase 3 bilingue : version anglaise optionnelle, appliquée côté client par Language.tsx. */
+      { name: "x-title-en", content: "Message received — Thank you! | Green Ivory" },
+      { name: "x-description-en", content: "Thank you for writing to us. The Green Ivory team will get back to you within 48 hours." },
     ],
     links: [{ rel: "canonical", href: `${SITE_URL}/merci` }],
   }),
@@ -26,6 +30,7 @@ export const Route = createFileRoute("/merci")({
 });
 
 function ThankYou() {
+  const { t } = useLang();
   const config=readContact(useSetting('site.contact'));
   const badgeRef = useRef<HTMLSpanElement>(null);
   // Célébration à l'arrivée sur la page : une pluie de feuilles depuis la coche (rien en mouvement réduit).
@@ -39,19 +44,19 @@ function ThankYou() {
         <span ref={badgeRef} className="inline-flex h-16 w-16 items-center justify-center rounded-full bg-accent text-primary">
           <CheckCircle2 className="h-8 w-8" />
         </span>
-        <h1 className="mt-6 text-3xl lg:text-4xl font-bold">Merci pour votre message !</h1>
+        <h1 className="mt-6 text-3xl lg:text-4xl font-bold">{t('merci.title')}</h1>
         <p className="mt-4 text-muted-foreground">
           {config.successMessage}
         </p>
         <div className="mt-8 flex flex-wrap justify-center gap-3">
-          <Link to="/" className="btn-ghost">Retour à l'accueil</Link>
+          <Link to="/" className="btn-ghost">{t('notfound.backHome')}</Link>
           <Link to="/blog" className="btn-primary">
-            Découvrir nos articles <ArrowRight className="h-4 w-4" />
+            {t('merci.readArticles')} <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
         <div className="mt-10 grid sm:grid-cols-2 gap-3 text-sm">
-          <Link to="/projets" className="bento p-4 hover:bg-accent transition">Découvrir nos projets</Link>
-          <Link to="/devenir-benevole" className="bento p-4 hover:bg-accent transition">Devenir bénévole</Link>
+          <Link to="/programmes" className="bento p-4 hover:bg-accent transition">{t('home.ctaDiscover')}</Link>
+          <Link to="/devenir-benevole" className="bento p-4 hover:bg-accent transition">{t('nav.volunteer')}</Link>
         </div>
       </div>
     </section>
