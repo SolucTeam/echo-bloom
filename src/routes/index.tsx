@@ -70,7 +70,7 @@ function Home() {
       </section>
 
       {/* Sous l'image — carte chevauchant le bas du visuel : introduction, actions et chiffres clés */}
-      <section className="container-x relative z-10 -mt-20 sm:-mt-24 lg:-mt-28 pb-10 lg:pb-14">
+      <section className="container-x relative z-10 -mt-10 sm:-mt-12 lg:-mt-16 pb-10 lg:pb-14">
         <div className="hero-media-in">
           <div className="bento p-7 sm:p-9 lg:p-11">
             <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
