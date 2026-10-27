@@ -4,7 +4,7 @@ import { loadPage, loadPosts, loadGallery } from '@/lib/site.functions';
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useRef, useState, type MouseEvent } from "react";
 import type { BlogPost } from "@/data/blog-posts";
-import { localizedBlogPost } from "@/data/blog-posts";
+import { localizedBlogPost, localizedCategory } from "@/data/blog-posts";
 import { PageHero } from "@/components/PageHero";
 import { PressSection } from '@/components/PressSection';
 import { EventsSection } from '@/components/EventsSection';
@@ -187,7 +187,7 @@ function ArticlesSection({ posts: dbPosts, imported }: { posts: BlogPost[]; impo
                     : "bg-accent text-foreground hover:bg-accent/70"
                 }`}
               >
-                {c === "Tous" ? t('common.all') : c}
+                {c === "Tous" ? t('common.all') : localizedCategory(c, lang)}
               </button>
             ))}
           </div>
@@ -218,7 +218,7 @@ function ArticlesSection({ posts: dbPosts, imported }: { posts: BlogPost[]; impo
                   </span>
                 </div>
                 <div className="flex flex-col p-7 lg:p-10">
-                  <span className="eyebrow">{filtered[0].category}</span>
+                  <span className="eyebrow">{localizedCategory(filtered[0].category, lang)}</span>
                   <h2 className="mt-4 text-2xl lg:text-3xl font-bold leading-tight break-words">
                     <Link to="/blog/$slug" params={{ slug: filtered[0].slug }} className="hover:text-primary">
                       {filtered[0].title}
@@ -259,7 +259,7 @@ function ArticlesSection({ posts: dbPosts, imported }: { posts: BlogPost[]; impo
                           />
                         </Link>
                         <span className="pointer-events-none absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[11px] font-semibold text-primary shadow-sm">
-                          {p.category}
+                          {localizedCategory(p.category, lang)}
                         </span>
                       </div>
                       <div className="flex flex-1 flex-col p-6">
@@ -299,14 +299,24 @@ function ArticlesSection({ posts: dbPosts, imported }: { posts: BlogPost[]; impo
 
 /* ── Onglet Photos ── */
 function GallerySection({ cols }: { cols: ReturnType<typeof galleryCollections> }) {
-  const { t } = useLang();
+  const { t, lang } = useLang();
   return cols.length === 0 ? (
     <section className="container-x py-16">
       <p className="text-center text-muted-foreground">{t('gallery.empty')}</p>
     </section>
   ) : (
-    cols.map((c) => <Collection key={c.title} {...c} />)
+    cols.map((c) => <Collection key={c.title} {...c} title={localizedCollectionTitle(c.title, lang)} />)
   );
+}
+
+/** Titres anglais des collections d'origine (bilingue) ; collection inconnue → titre affiché tel quel. */
+const COLLECTION_EN: Record<string, string> = {
+  'Journées sans plastique': 'Plastic-Free Days',
+  'Sentiers verts': 'Green Trails',
+};
+function localizedCollectionTitle(title: string, lang: string): string {
+  if (lang !== 'en') return title;
+  return COLLECTION_EN[title] ?? title;
 }
 
 /* Aperçu plein écran : taille réelle (sans recadrage), fermeture ✕/Échap/clic dehors, navigation ‹ › */

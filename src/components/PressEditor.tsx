@@ -21,6 +21,7 @@ export function PressEditor({ items, setItems, busy, onSave }: { items: PressIte
       </div>
       <Button variant="outline" onClick={() => setItems([...items, { title: '', date: new Date().toISOString().slice(0, 10), summary: '', url: '' }])}><Plus />Ajouter un communiqué</Button>
     </div>
+    <p className="text-sm text-muted-foreground">Version anglaise : laissez un champ « (EN) » vide pour conserver le texte français.</p>
     {items.map((item, index) => <div key={index} className="border border-border rounded-lg p-4 space-y-3">
       <div className="flex items-center justify-between gap-3">
         <span className="text-sm font-semibold">Communiqué {index + 1}</span>
@@ -31,11 +32,13 @@ export function PressEditor({ items, setItems, busy, onSave }: { items: PressIte
         </div>
       </div>
       <label className="block text-sm font-medium space-y-1"><span>Titre</span><input maxLength={300} className={field} value={item.title} onChange={e => patch(index, { title: e.target.value })} /></label>
+      <label className="block text-sm font-medium space-y-1"><span>Titre (EN)</span><input maxLength={300} className={field} placeholder={item.title || 'Version anglaise'} value={item.titleEn || ''} onChange={e => patch(index, { titleEn: e.target.value })} /></label>
       <div className="grid sm:grid-cols-2 gap-4">
         <label className="block text-sm font-medium space-y-1"><span>Date</span><input type="date" className={field} value={item.date} onChange={e => patch(index, { date: e.target.value })} /></label>
         <label className="block text-sm font-medium space-y-1"><span>Lien du communiqué (PDF, https://…)</span><input type="url" placeholder="https://" className={field} value={item.url} onChange={e => patch(index, { url: e.target.value })} /></label>
       </div>
       <label className="block text-sm font-medium space-y-1"><span>Résumé</span><textarea rows={3} maxLength={2000} className={field} value={item.summary} onChange={e => patch(index, { summary: e.target.value })} /></label>
+      <label className="block text-sm font-medium space-y-1"><span>Résumé (EN)</span><textarea rows={3} maxLength={2000} className={field} placeholder={item.summary || 'Version anglaise'} value={item.summaryEn || ''} onChange={e => patch(index, { summaryEn: e.target.value })} /></label>
     </div>)}
     <Button disabled={busy} onClick={onSave}><Save />{busy ? 'Enregistrement…' : 'Enregistrer les communiqués'}</Button>
   </section>;

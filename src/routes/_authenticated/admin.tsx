@@ -156,6 +156,9 @@ function Admin(){
   {label:'Articles',tab:'posts' as Section,missing:data.posts.reduce((n,p)=>n+((p.title.trim()&&!(p.title_en||'').trim())?1:0)+((p.excerpt.trim()&&!(p.excerpt_en||'').trim())?1:0)+((p.content.trim()&&!(p.content_en||'').trim())?1:0),0)},
   {label:'Galerie',tab:'gallery' as Section,missing:data.gallery.filter(p=>p.tag.trim()&&!(p.tag_en||'').trim()).length},
   {label:'Pages personnalisées',tab:'pages' as Section,missing:data.pages.reduce((n,p)=>n+((p.title.trim()&&!(p.title_en||'').trim())?1:0)+((p.description.trim()&&!(p.description_en||'').trim())?1:0),0)},
+  {label:'Espace presse',tab:'press' as Section,missing:press.filter(i=>i.title.trim()&&!(i.titleEn||'').trim()).length+press.filter(i=>i.summary.trim()&&!(i.summaryEn||'').trim()).length},
+  {label:'Événements',tab:'events' as Section,missing:events.filter(i=>i.title.trim()&&!(i.titleEn||'').trim()).length+events.filter(i=>i.location.trim()&&!(i.locationEn||'').trim()).length+events.filter(i=>i.description.trim()&&!(i.descriptionEn||'').trim()).length},
+  {label:'Newsletter',tab:'newsletter' as Section,missing:([['description','descriptionEn'],['buttonLabel','buttonLabelEn']] as const).filter(([fr,en])=>(newsletter[fr]||'').trim()&&!(newsletter[en]??'').trim()).length},
  ];
  const trTotal=trItems.reduce((n,i)=>n+i.missing,0);
  async function action(fn:()=>Promise<unknown>){setBusy(true);try{await fn();await router.invalidate();dirtyRef.current=false;toast.success('Modifications enregistrées');}catch(e){toast.error(e instanceof Error?e.message:'Opération impossible.');}finally{setBusy(false);}}

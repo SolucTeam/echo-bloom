@@ -158,6 +158,7 @@ export function localizedBlogPost(p: BlogPost & { html?: string | null; htmlEn?:
     return {
       ...p, html,
       title: pickEn(p.title, p.titleEn), excerpt: pickEn(p.excerpt, p.excerptEn),
+      category: localizedCategory(p.category, lang) as BlogPost['category'],
       readingTime: enHtml ? `${Math.max(1, Math.round(words / 200))} min` : p.readingTime,
       dateLabel: new Date(p.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
     };
@@ -168,10 +169,24 @@ export function localizedBlogPost(p: BlogPost & { html?: string | null; htmlEn?:
   return {
     ...p,
     title: pickEn(p.title, p.titleEn), excerpt: pickEn(p.excerpt, p.excerptEn),
+    category: localizedCategory(p.category, lang) as BlogPost['category'],
     content: paragraphs.length ? paragraphs : p.content,
     readingTime: paragraphs.length ? `${Math.max(1, Math.round(words / 200))} min` : p.readingTime,
     dateLabel: new Date(p.date).toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' }),
   };
+}
+
+/** Libellés anglais des catégories d'articles (bilingue) ; catégorie inconnue → affichée telle quelle. */
+const CATEGORY_EN: Record<string, string> = {
+  'Pollution plastique': 'Plastic pollution',
+  'Biodiversité': 'Biodiversity',
+  'Climat': 'Climate',
+  'Initiatives': 'Initiatives',
+  'Éducation': 'Education',
+};
+export function localizedCategory(category: string, lang: Lang): string {
+  if (lang !== 'en') return category;
+  return CATEGORY_EN[category] ?? category;
 }
 
 export function getRelatedPosts(slug: string, limit = 3): BlogPost[] {

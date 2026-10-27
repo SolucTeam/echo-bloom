@@ -4,15 +4,15 @@ import { normalizeMenu } from '@/lib/programs';
 import { useSetting } from './ManagedSite';
 import { useLang } from './Language';
 import { Button } from '@/components/ui/button';
-import { readNewsletter } from '@/lib/newsletter';
+import { localizedNewsletter, readNewsletter } from '@/lib/newsletter';
 import { ExternalLink } from 'lucide-react';
 import logoMark from '@/assets/logo-mark.png';
 
 export function SiteFooter() {
-  const { t, tLabel } = useLang();
+  const { t, tLabel, lang } = useLang();
   const name=useSetting('site.name','Green Ivory'),tagline=useSetting('site.tagline',t('footer.tagline')),address=useSetting('site.address','Bingerville Cité Ital, Côte d’Ivoire'),phone=useSetting('site.phone','+225 07 772 689 96'),email=useSetting('site.email','info@greenivory.org');
   const facebook=useSetting('social.facebook'),linkedin=useSetting('social.linkedin'),instagram=useSetting('social.instagram'),youtube=useSetting('social.youtube'),menuValue=useSetting('site.footerMenu');
-  const newsletter=readNewsletter(useSetting('site.newsletter'));
+  const newsletter=localizedNewsletter(readNewsletter(useSetting('site.newsletter')), lang);
   let menu=[{label:'À propos',url:'/a-propos'},{label:'Programmes',url:'/programmes'},{label:'Actualités',url:'/actualites'},{label:'Devenir bénévole',url:'/devenir-benevole'}];
   try{if(menuValue)menu=normalizeMenu(JSON.parse(menuValue));}catch{}
   return (

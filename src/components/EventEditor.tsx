@@ -21,6 +21,7 @@ export function EventEditor({ items, setItems, busy, onSave }: { items: EventIte
       </div>
       <Button variant="outline" onClick={() => setItems([...items, { title: '', date: new Date().toISOString().slice(0, 10), location: '', description: '', url: '' }])}><Plus />Ajouter un événement</Button>
     </div>
+    <p className="text-sm text-muted-foreground">Version anglaise : laissez un champ « (EN) » vide pour conserver le texte français.</p>
     {items.map((item, index) => <div key={index} className="border border-border rounded-lg p-4 space-y-3">
       <div className="flex items-center justify-between gap-3">
         <span className="text-sm font-semibold">Événement {index + 1}</span>
@@ -31,11 +32,14 @@ export function EventEditor({ items, setItems, busy, onSave }: { items: EventIte
         </div>
       </div>
       <label className="block text-sm font-medium space-y-1"><span>Titre</span><input maxLength={300} className={field} value={item.title} onChange={e => patch(index, { title: e.target.value })} /></label>
+      <label className="block text-sm font-medium space-y-1"><span>Titre (EN)</span><input maxLength={300} className={field} placeholder={item.title || 'Version anglaise'} value={item.titleEn || ''} onChange={e => patch(index, { titleEn: e.target.value })} /></label>
       <div className="grid sm:grid-cols-2 gap-4">
         <label className="block text-sm font-medium space-y-1"><span>Date</span><input type="date" className={field} value={item.date} onChange={e => patch(index, { date: e.target.value })} /></label>
         <label className="block text-sm font-medium space-y-1"><span>Lieu</span><input maxLength={300} className={field} value={item.location} onChange={e => patch(index, { location: e.target.value })} /></label>
+        <label className="block text-sm font-medium space-y-1"><span>Lieu (EN)</span><input maxLength={300} className={field} placeholder={item.location || 'Version anglaise'} value={item.locationEn || ''} onChange={e => patch(index, { locationEn: e.target.value })} /></label>
       </div>
       <label className="block text-sm font-medium space-y-1"><span>Description</span><textarea rows={3} maxLength={5000} className={field} value={item.description} onChange={e => patch(index, { description: e.target.value })} /></label>
+      <label className="block text-sm font-medium space-y-1"><span>Description (EN)</span><textarea rows={3} maxLength={5000} className={field} placeholder={item.description || 'Version anglaise'} value={item.descriptionEn || ''} onChange={e => patch(index, { descriptionEn: e.target.value })} /></label>
       <label className="block text-sm font-medium space-y-1"><span>Lien (https://…)</span><input type="url" placeholder="https://" className={field} value={item.url} onChange={e => patch(index, { url: e.target.value })} /></label>
     </div>)}
     <Button disabled={busy} onClick={onSave}><Save />{busy ? 'Enregistrement…' : 'Enregistrer les événements'}</Button>

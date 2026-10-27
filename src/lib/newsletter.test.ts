@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DEFAULT_NEWSLETTER, newsletterSchema, readNewsletter } from './newsletter';
+import { DEFAULT_NEWSLETTER, newsletterSchema, readNewsletter, localizedNewsletter } from './newsletter';
 
 describe('newsletter configuration', () => {
   it('accepts an external subscription page', () => {
@@ -16,5 +16,15 @@ describe('newsletter configuration', () => {
   });
   it('keeps an unconfigured newsletter hidden', () => {
     expect(readNewsletter('').enabled).toBe(false);
+  });
+  it('keeps French copy in French mode and swaps filled English fields', () => {
+    expect(localizedNewsletter(DEFAULT_NEWSLETTER, 'fr').description).toBe(DEFAULT_NEWSLETTER.description);
+    const en = localizedNewsletter(DEFAULT_NEWSLETTER, 'en');
+    expect(en.description).toBe(DEFAULT_NEWSLETTER.descriptionEn);
+    expect(en.buttonLabel).toBe('Subscribe');
+  });
+  it('falls back to French when an English field is blank', () => {
+    const en = localizedNewsletter({ ...DEFAULT_NEWSLETTER, titleEn: '  ' }, 'en');
+    expect(en.title).toBe(DEFAULT_NEWSLETTER.title);
   });
 });

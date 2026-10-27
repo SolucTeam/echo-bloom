@@ -18,8 +18,12 @@ export function NewsletterEditor({value, onChange, onSave, busy}: {
     <div className="grid sm:grid-cols-2 gap-4">
       <label className="space-y-1 text-sm font-medium">Titre<input className={field} value={value.title} maxLength={120} onChange={e => onChange({...value, title:e.target.value})}/></label>
       <label className="space-y-1 text-sm font-medium">Texte du bouton<input className={field} value={value.buttonLabel} maxLength={80} onChange={e => onChange({...value, buttonLabel:e.target.value})}/></label>
+      <label className="space-y-1 text-sm font-medium">Titre (EN)<input className={field} placeholder={value.title || 'Version anglaise'} value={value.titleEn || ''} maxLength={120} onChange={e => onChange({...value, titleEn:e.target.value})}/></label>
+      <label className="space-y-1 text-sm font-medium">Texte du bouton (EN)<input className={field} placeholder={value.buttonLabel || 'Version anglaise'} value={value.buttonLabelEn || ''} maxLength={80} onChange={e => onChange({...value, buttonLabelEn:e.target.value})}/></label>
     </div>
     <label className="block space-y-1 text-sm font-medium">Présentation<textarea className={field} rows={3} maxLength={500} value={value.description} onChange={e => onChange({...value, description:e.target.value})}/></label>
+    <label className="block space-y-1 text-sm font-medium">Présentation (EN)<textarea className={field} rows={3} maxLength={500} placeholder={value.description || 'Version anglaise'} value={value.descriptionEn || ''} onChange={e => onChange({...value, descriptionEn:e.target.value})}/></label>
+    <p className="text-xs text-muted-foreground -mt-3">Version anglaise : laissez un champ « (EN) » vide pour conserver le texte français.</p>
     <div className="space-y-1">
       <label className="block space-y-1 text-sm font-medium">Formulaire intégré (inscription directement sur votre page)<input type="url" placeholder="https://… (adresse du formulaire Brevo « Intégré »)" className={field} value={value.embed} onChange={e => onChange({...value, embed:e.target.value})}/></label>
       <p className="text-xs text-muted-foreground">Dans Brevo : Contacts → Formulaires d’inscription → créez un formulaire de type « Intégré » → copiez l’adresse qui apparaît après <code>src=</code> dans le code fourni, et collez-la ici. Le formulaire d’abonnement s’affichera directement dans le pied de page.</p>

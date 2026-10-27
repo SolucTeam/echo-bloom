@@ -1,5 +1,5 @@
 import { useSetting } from '@/components/ManagedSite';
-import { readPress, type PressItem } from '@/lib/press-schema';
+import { localizedPress, readPress, type PressItem } from '@/lib/press-schema';
 import { useLang } from '@/components/Language';
 import { type Lang } from '@/lib/i18n';
 import { Link } from "@tanstack/react-router";
@@ -74,8 +74,8 @@ function ReleaseCard({ item }: { item: PressItem }) {
 
 /* Onglet « Presse » de la page Actualités : kit média, communiqués et contact. */
 export function PressSection() {
-  const { t } = useLang();
-  const items = readPress(useSetting('site.press')).slice().sort((a, b) => (a.date < b.date ? 1 : -1));
+  const { t, lang } = useLang();
+  const items = localizedPress(readPress(useSetting('site.press')), lang).slice().sort((a, b) => (a.date < b.date ? 1 : -1));
   const email = useSetting('site.email', 'info@greenivory.org');
   const phone = useSetting('site.phone', '+225 07 772 689 96');
   const [featured, ...rest] = items;

@@ -1,5 +1,5 @@
 import { useSetting } from '@/components/ManagedSite';
-import { readEvents, type EventItem } from '@/lib/event-schema';
+import { localizedEvents, readEvents, type EventItem } from '@/lib/event-schema';
 import { useLang } from '@/components/Language';
 import { type Lang } from '@/lib/i18n';
 import { Link } from "@tanstack/react-router";
@@ -108,8 +108,8 @@ function PastCard({ event }: { event: EventItem }) {
 
 /* Onglet « Événements » de la page Actualités : agenda à venir et éditions passées. */
 export function EventsSection() {
-  const { t } = useLang();
-  const events = readEvents(useSetting('site.events'));
+  const { t, lang } = useLang();
+  const events = localizedEvents(readEvents(useSetting('site.events')), lang);
   const today = todayKey();
   const upcoming = events.filter((event) => event.date >= today).sort((a, b) => (a.date > b.date ? 1 : -1));
   const past = events.filter((event) => event.date < today).sort((a, b) => (a.date < b.date ? 1 : -1));
