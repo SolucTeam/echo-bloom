@@ -53,7 +53,7 @@ export const DICT = {
 
   /* Programmes — page détail */
   'program.back': ['Tous les programmes', 'All programs'],
-  'program.sponsor': ['Devenir un sponsor', 'Become a sponsor'],
+  'program.sponsor': ['Devenir partenaire', 'Become a partner'],
   'meta.org': ['Organisation', 'Organization'],
   'meta.launch': ['Lancement', 'Launched'],
   'meta.pilot': ['Phase pilote', 'Pilot phase'],
