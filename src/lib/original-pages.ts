@@ -8,11 +8,11 @@ import asset_logo from "@/assets/logo.png";
 import asset_plastic from "@/assets/plastic.jpg";
 import asset_sentiers from "@/assets/sentiers.jpg";
 export const originalPages: CmsPageData[] = [
-  {path:'/projets',title:'Nos projets — Green Ivory',description:'Découvrez les projets Green Ivory pour l’environnement et l’emploi vert en Côte d’Ivoire.',share_image:'',published:false,blocks:[{id:'section-0',type:'text',title:'Nos projets',body:'Des initiatives concrètes pour protéger l’environnement et accompagner la jeunesse en Côte d’Ivoire.',image:'',alt:'',link:'',linkLabel:'',visible:true}]},
+  {path:'/programmes',title:'Nos programmes — Green Ivory',description:'Découvrez les programmes Green Ivory pour l’environnement et l’emploi vert en Côte d’Ivoire.',share_image:'',published:false,blocks:[{id:'section-0',type:'text',title:'Nos programmes',body:'Des initiatives concrètes pour protéger l’environnement et accompagner la jeunesse en Côte d’Ivoire.',image:'',alt:'',link:'',linkLabel:'',visible:true}]},
   {
     "path": "/",
     "title": "Green Ivory — Engageons-nous pour un avenir durable",
-    "description": "ONG ivoirienne pour la promotion de l’emploi vert. Découvrez nos projets contre la pollution plastique, pour la biodiversité et le climat.",
+    "description": "ONG ivoirienne pour la promotion de l’emploi vert. Découvrez nos programmes contre la pollution plastique, pour la biodiversité et le climat.",
     "blocks": [
       {
         "id": "section-0",
@@ -22,7 +22,7 @@ export const originalPages: CmsPageData[] = [
         "image": asset_hero,
         "alt": "Volontaires Green Ivory nettoyant une plage en Côte d’Ivoire",
         "link": "/devenir-partenaire",
-        "linkLabel": "Soutenir nos projets",
+        "linkLabel": "Soutenir nos programmes",
         "visible": true
       },
       {
@@ -61,11 +61,11 @@ export const originalPages: CmsPageData[] = [
       {
         "id": "section-4",
         "type": "text",
-        "title": "Nos projets au cœur de l’actualité.",
+        "title": "Nos programmes au cœur de l’actualité.",
         "body": "Les Journées Sans Plastique\n\nUne initiative majeure pour combattre la pollution plastique en Côte d’Ivoire. Réduction du plastique à usage unique, gestion des déchets, création d’emplois durables.\n\nLes Sentiers Verts\n\nProgramme pour promouvoir l’employabilité des jeunes, la citoyenneté active et la transition vers des modèles économiques durables.",
         "image": asset_journees,
         "alt": "Les Journées Sans Plastique",
-        "link": "/projets/journees-sans-plastique",
+        "link": "/programmes/journees-sans-plastique",
         "linkLabel": "Emploi vertLes Journées Sans PlastiqueUne initiative majeure pour combattre la pollution plastique en Côte d’Ivoire. Réduction du plastique à usage unique, gestion des déchets, création d’emplois durables.En savoir plus",
         "visible": true
       },
@@ -160,9 +160,9 @@ export const originalPages: CmsPageData[] = [
     "published": false
   },
   {
-    "path": "/projets/journees-sans-plastique",
+    "path": "/programmes/journees-sans-plastique",
     "title": "Journées Sans Plastique — Green Ivory",
-    "description": "Le projet phare de Green Ivory pour réduire la pollution plastique en Côte d’Ivoire : sensibilisation, collecte, recyclage et emplois verts.",
+    "description": "Le programme phare de Green Ivory pour réduire la pollution plastique en Côte d’Ivoire : sensibilisation, collecte, recyclage et emplois verts.",
     "blocks": [
       {
         "id": "section-0",
@@ -189,12 +189,12 @@ export const originalPages: CmsPageData[] = [
       {
         "id": "section-2",
         "type": "text",
-        "title": "Pourquoi ce projet ?",
-        "body": "Pourquoi ce projet ?\n\nLa pollution plastique est l’un des défis environnementaux majeurs de la Côte d’Ivoire. Plages, lagunes, rivières et villes sont envahis par le plastique à usage unique. Ce projet propose une réponse intégrée : sensibilisation massive, collecte structurée, valorisation par le recyclage, et création d’emplois durables pour la jeunesse.\n\nObjectifs spécifiques\n\nSensibiliser les populations aux dangers du plastique à usage unique.\n\nMettre en place un dispositif de collecte et de tri dans la ville de Grand-Bassam.\n\nFormer et employer des jeunes éco-ambassadeurs et agents de collecte.\n\nPromouvoir des alternatives durables (gourdes, sacs réutilisables, contenants).\n\nPlaider auprès des autorités locales pour des politiques publiques ambitieuses.\n\nRésultats attendus",
+        "title": "Pourquoi ce programme ?",
+        "body": "Pourquoi ce programme ?\n\nLa pollution plastique est l’un des défis environnementaux majeurs de la Côte d’Ivoire. Plages, lagunes, rivières et villes sont envahis par le plastique à usage unique. Ce programme propose une réponse intégrée : sensibilisation massive, collecte structurée, valorisation par le recyclage, et création d’emplois durables pour la jeunesse.\n\nObjectifs spécifiques\n\nSensibiliser les populations aux dangers du plastique à usage unique.\n\nMettre en place un dispositif de collecte et de tri dans la ville de Grand-Bassam.\n\nFormer et employer des jeunes éco-ambassadeurs et agents de collecte.\n\nPromouvoir des alternatives durables (gourdes, sacs réutilisables, contenants).\n\nPlaider auprès des autorités locales pour des politiques publiques ambitieuses.\n\nRésultats attendus",
         "image": "",
         "alt": "",
         "link": "/devenir-partenaire",
-        "linkLabel": "Soutenir ce projet",
+        "linkLabel": "Soutenir ce programme",
         "visible": true
       }
     ],
@@ -202,7 +202,7 @@ export const originalPages: CmsPageData[] = [
     "published": false
   },
   {
-    "path": "/projets/sentiers-verts",
+    "path": "/programmes/sentiers-verts",
     "title": "Sentiers Verts — Green Ivory",
     "description": "Le programme Sentiers Verts Jobs forme et accompagne 50 jeunes éco-entrepreneurs pour la transition durable en Côte d’Ivoire.",
     "blocks": [
@@ -231,12 +231,12 @@ export const originalPages: CmsPageData[] = [
       {
         "id": "section-2",
         "type": "text",
-        "title": "Pourquoi ce projet ?",
-        "body": "Pourquoi ce projet ?\n\nSentiers Verts Jobs est un projet innovant et ambitieux qui mise sur la jeunesse comme moteur de la transition écologique. Le programme combine formation, mentorat, accompagnement à la création d’entreprise et mise en réseau, pour bâtir une nouvelle génération d’éco-entrepreneurs ivoiriens capables d’imaginer et de déployer des solutions durables.\n\nObjectifs spécifiques\n\nFormer 50 jeunes aux métiers de l’économie verte et bleue.\n\nAccompagner la création et le développement d’éco-entreprises.\n\nRenforcer la citoyenneté active et l’engagement communautaire.\n\nToucher 200 000 jeunes en ligne et mobiliser la communauté U-Report.\n\nDocumenter les bonnes pratiques pour essaimage régional.\n\nRésultats attendus",
+        "title": "Pourquoi ce programme ?",
+        "body": "Pourquoi ce programme ?\n\nSentiers Verts Jobs est un programme innovant et ambitieux qui mise sur la jeunesse comme moteur de la transition écologique. Le programme combine formation, mentorat, accompagnement à la création d’entreprise et mise en réseau, pour bâtir une nouvelle génération d’éco-entrepreneurs ivoiriens capables d’imaginer et de déployer des solutions durables.\n\nObjectifs spécifiques\n\nFormer 50 jeunes aux métiers de l’économie verte et bleue.\n\nAccompagner la création et le développement d’éco-entreprises.\n\nRenforcer la citoyenneté active et l’engagement communautaire.\n\nToucher 200 000 jeunes en ligne et mobiliser la communauté U-Report.\n\nDocumenter les bonnes pratiques pour essaimage régional.\n\nRésultats attendus",
         "image": "",
         "alt": "",
         "link": "/devenir-partenaire",
-        "linkLabel": "Soutenir ce projet",
+        "linkLabel": "Soutenir ce programme",
         "visible": true
       }
     ],
@@ -244,35 +244,15 @@ export const originalPages: CmsPageData[] = [
     "published": false
   },
   {
-    "path": "/galerie",
-    "title": "Galerie — Green Ivory",
-    "description": "Photos et moments forts des actions de Green Ivory : dépollution, éco-ambassadeurs, agents de collecte, recyclage, formations.",
+    "path": "/actualites",
+    "title": "Actualités — Green Ivory",
+    "description": "Toute l'actualité de Green Ivory : articles, photos, communiqués de presse et événements à venir en Côte d'Ivoire.",
     "blocks": [
       {
         "id": "section-0",
         "type": "text",
-        "title": "Des images qui racontent nos actions.",
-        "body": "Plongez au cœur des moments forts de Green Ivory : terrain, formations, plaidoyer et rencontres.",
-        "image": "",
-        "alt": "",
-        "link": "",
-        "linkLabel": "",
-        "visible": true
-      }
-    ],
-    "share_image": "",
-    "published": false
-  },
-  {
-    "path": "/blog",
-    "title": "Blog — Green Ivory | Pollution plastique, biodiversité, climat",
-    "description": "Articles, décryptages et conseils éco-responsables sur la pollution plastique, la biodiversité et le climat en Côte d'Ivoire.",
-    "blocks": [
-      {
-        "id": "section-0",
-        "type": "text",
-        "title": "Articles, décryptages, et engagement.",
-        "body": "Découvrez des articles passionnants sur l'environnement, la lutte contre la pollution plastique, la biodiversité et le climat.",
+        "title": "Toute notre actualité.",
+        "body": "Articles, photos, communiqués de presse et événements : suivez la vie de Green Ivory et passez à l'action avec nous.",
         "image": "",
         "alt": "",
         "link": "",

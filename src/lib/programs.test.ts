@@ -1,0 +1,23 @@
+import { describe,expect,it } from 'vitest';
+import { programsSchema,visiblePrograms,findVisibleProgram,isPublicProgramPath } from './program-schema';
+import { DEFAULT_PROGRAMS } from '@/data/programs';
+import { groupProgramMenu,normalizeMenu,readPrograms } from './programs';
+describe('Program catalogue',()=>{
+ it('keeps all five brochure initiatives in the default collection',()=>expect(DEFAULT_PROGRAMS.map(p=>p.slug)).toEqual(['journees-sans-plastique','sentiers-verts','we-plant','green-schools','plaidoyer-environnemental']));
+ it('groups individual programme pages under one Programmes menu link',()=>expect(groupProgramMenu([{label:'Journées',url:'/programmes/journees-sans-plastique'},{label:'Sentiers',url:'/programmes/sentiers-verts'}])).toEqual([{label:'Programmes',url:'/programmes'}]));
+ it('rewrites legacy /projets menu links to /programmes and groups them',()=>expect(groupProgramMenu([{label:'Journées',url:'/projets/journees-sans-plastique'},{label:'Programmes',url:'/projets'}])).toEqual([{label:'Programmes',url:'/programmes'}]));
+ it('does not duplicate an existing programme menu entry',()=>expect(groupProgramMenu([{label:'Programmes',url:'/programmes'},{label:'Sentiers',url:'/programmes/sentiers-verts'}])).toEqual([{label:'Programmes',url:'/programmes'}]));
+ it('merges saved Blog, Galerie, Presse and Événements menu links into one Actualités entry',()=>expect(normalizeMenu([{label:'Galerie',url:'/galerie'},{label:'Blog',url:'/blog'},{label:'Presse',url:'/presse'},{label:'Événements',url:'/evenements'}])).toEqual([{label:'Actualités',url:'/actualites'}]));
+ it('keeps unrelated menu links when normalizing',()=>expect(normalizeMenu([{label:'Accueil',url:'/'},{label:'Blog',url:'/blog'},{label:'Contact',url:'/nous-joindre'}])).toEqual([{label:'Accueil',url:'/'},{label:'Actualités',url:'/actualites'},{label:'Contact',url:'/nous-joindre'}]));
+ it('hides disabled programmes',()=>expect(visiblePrograms([{...DEFAULT_PROGRAMS[0],visible:false},DEFAULT_PROGRAMS[1]]).map(p=>p.slug)).toEqual(['sentiers-verts']));
+ it('keeps an intentionally empty catalogue empty',()=>expect(readPrograms('[]')).toEqual([]));
+ it('rejects duplicate addresses',()=>expect(programsSchema.safeParse([DEFAULT_PROGRAMS[0],DEFAULT_PROGRAMS[0]]).success).toBe(false));
+ it('rejects unsafe image links',()=>expect(programsSchema.safeParse([{...DEFAULT_PROGRAMS[0],hero:'javascript:alert(1)'}]).success).toBe(false));
+ it('returns unavailable for an invalid programme address',()=>expect(findVisibleProgram(DEFAULT_PROGRAMS,'Adresse-Invalide')).toBeNull());
+ it('does not resolve a hidden original programme',()=>expect(findVisibleProgram([{...DEFAULT_PROGRAMS[0],visible:false}],'journees-sans-plastique')).toBeNull());
+ it('does not resolve a deleted original programme',()=>expect(findVisibleProgram([],'sentiers-verts')).toBeNull());
+ it('excludes hidden programme CMS pages from the sitemap',()=>expect(isPublicProgramPath('/programmes/journees-sans-plastique',[{...DEFAULT_PROGRAMS[0],visible:false}])).toBe(false));
+ it('keeps visible programme CMS pages in the sitemap',()=>expect(isPublicProgramPath('/programmes/sentiers-verts',DEFAULT_PROGRAMS)).toBe(true));
+ it('excludes legacy /projets pages from the sitemap because they redirect',()=>expect(isPublicProgramPath('/projets/sentiers-verts',DEFAULT_PROGRAMS)).toBe(false));
+ it('preserves saved programme ordering',()=>expect(readPrograms(JSON.stringify([...DEFAULT_PROGRAMS].reverse())).map(p=>p.slug)).toEqual([...DEFAULT_PROGRAMS].reverse().map(p=>p.slug)));
+});

@@ -3,9 +3,9 @@ import sentiers from '@/assets/sentiers.jpg';
 import biodiversity from '@/assets/biodiversity.jpg';
 import hero from '@/assets/hero.jpg';
 import founder from '@/assets/founder.jpg';
-import type { Project } from '@/lib/project-schema';
+import type { Program } from '@/lib/program-schema';
 
-const PROJETS_ORIGINE: Project[] = [
+const PROGRAMMES_ORIGINE: Program[] = [
 {slug:'journees-sans-plastique', visible:true,
         eyebrow: "Emploi vert",
         title: "Journées Sans Plastique",
@@ -19,7 +19,7 @@ const PROJETS_ORIGINE: Project[] = [
           "Réduire drastiquement la pollution plastique dans la ville de Grand-Bassam à travers un momentum autour des enjeux de la pollution plastique sur l’environnement, d’avril 2024 à mars 2027.",
         hero: journees,
         context:
-          "La pollution plastique est l’un des défis environnementaux majeurs de la Côte d’Ivoire. Plages, lagunes, rivières et villes sont envahis par le plastique à usage unique. Ce projet propose une réponse intégrée : sensibilisation massive, collecte structurée, valorisation par le recyclage, et création d’emplois durables pour la jeunesse.",
+          "La pollution plastique est l’un des défis environnementaux majeurs de la Côte d’Ivoire. Plages, lagunes, rivières et villes sont envahis par le plastique à usage unique. Ce programme propose une réponse intégrée : sensibilisation massive, collecte structurée, valorisation par le recyclage, et création d’emplois durables pour la jeunesse.",
         objectives: [
           "Sensibiliser les populations aux dangers du plastique à usage unique.",
           "Mettre en place un dispositif de collecte et de tri dans la ville de Grand-Bassam.",
@@ -45,7 +45,7 @@ const PROJETS_ORIGINE: Project[] = [
           "Avec 50 bénéficiaires principaux et 200 secondaires, le programme vise à toucher un large public de jeunes, notamment grâce à une portée en ligne de +200 000 personnes et une communauté de 3 000 000 de U-reporters en Côte d’Ivoire.",
         hero: sentiers,
         context:
-          "Sentiers Verts Jobs est un projet innovant et ambitieux qui mise sur la jeunesse comme moteur de la transition écologique. Le programme combine formation, mentorat, accompagnement à la création d’entreprise et mise en réseau, pour bâtir une nouvelle génération d’éco-entrepreneurs ivoiriens capables d’imaginer et de déployer des solutions durables.",
+          "Sentiers Verts Jobs est un programme innovant et ambitieux qui mise sur la jeunesse comme moteur de la transition écologique. Le programme combine formation, mentorat, accompagnement à la création d’entreprise et mise en réseau, pour bâtir une nouvelle génération d’éco-entrepreneurs ivoiriens capables d’imaginer et de déployer des solutions durables.",
         objectives: [
           "Former 50 jeunes aux métiers de l’économie verte et bleue.",
           "Accompagner la création et le développement d’éco-entreprises.",
@@ -59,7 +59,7 @@ const PROJETS_ORIGINE: Project[] = [
           { value: "3M", label: "U-reporters mobilisés" },
         ],}];
 // Initiatives complémentaires décrites dans la brochure Green Ivory 2026.
-const INITIATIVES_BROCHURE: Project[] = [
+const INITIATIVES_BROCHURE: Program[] = [
 {slug:'we-plant', visible:true,
         eyebrow: "Reboisement",
         title: "We Plant",
@@ -124,5 +124,5 @@ const INITIATIVES_BROCHURE: Project[] = [
           { value: "COP", label: "La voix des jeunes portée auprès des décideurs" },
         ],}];
 
-/** Catalogue complet : projets détaillés d'origine + initiatives complémentaires de la brochure 2026. */
-export const DEFAULT_PROJECTS: Project[] = [...PROJETS_ORIGINE, ...INITIATIVES_BROCHURE];
+/** Catalogue complet : programmes détaillés d'origine + initiatives complémentaires de la brochure 2026. */
+export const DEFAULT_PROGRAMS: Program[] = [...PROGRAMMES_ORIGINE, ...INITIATIVES_BROCHURE];

@@ -18,8 +18,9 @@ const LEAF_CSS = `
 @media (prefers-reduced-motion:reduce){.hl-leaf{animation:none}}
 `;
 
-const LEAF_LIMBE = "M58,70 C78,24 162,14 224,70 C162,126 78,116 58,70 Z";
-const LEAF_NERVURE = "M58,70 Q142,76 224,70";
+/** Silhouette de feuille de marque (limbe + nervure), réutilisée par les autres décors. */
+export const LEAF_LIMBE = "M58,70 C78,24 162,14 224,70 C162,126 78,116 58,70 Z";
+export const LEAF_NERVURE = "M58,70 Q142,76 224,70";
 
 const LEAVES = [
   { left: "3%", top: "16%", w: 66, d: "13s", delay: "-3s", r: "-18deg", b: false, cls: "text-primary/20" },

@@ -13,18 +13,23 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as SplatRouteImport } from './routes/$'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AProposRouteImport } from './routes/a-propos'
+import { Route as ActualitesRouteImport } from './routes/actualites'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as DevenirBenevoleRouteImport } from './routes/devenir-benevole'
 import { Route as DevenirPartenaireRouteImport } from './routes/devenir-partenaire'
+import { Route as EvenementsRouteImport } from './routes/evenements'
 import { Route as FaireUnDonRouteImport } from './routes/faire-un-don'
 import { Route as GalerieRouteImport } from './routes/galerie'
 import { Route as MerciRouteImport } from './routes/merci'
 import { Route as NousJoindreRouteImport } from './routes/nous-joindre'
+import { Route as PresseRouteImport } from './routes/presse'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as ApiMailWorkerRouteImport } from './routes/api/mail-worker'
 import { Route as BlogSlugRouteImport } from './routes/blog_.$slug'
+import { Route as ProgrammesIndexRouteImport } from './routes/programmes/index'
+import { Route as ProgrammesSlugRouteImport } from './routes/programmes/$slug'
 import { Route as ProjetsIndexRouteImport } from './routes/projets/index'
 import { Route as ProjetsSlugRouteImport } from './routes/projets/$slug'
 import { Route as ApiPublicContactRouteImport } from './routes/api/public/contact'
@@ -49,6 +54,11 @@ const AProposRoute = AProposRouteImport.update({
   path: '/a-propos',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ActualitesRoute = ActualitesRouteImport.update({
+  id: '/actualites',
+  path: '/actualites',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -67,6 +77,11 @@ const DevenirBenevoleRoute = DevenirBenevoleRouteImport.update({
 const DevenirPartenaireRoute = DevenirPartenaireRouteImport.update({
   id: '/devenir-partenaire',
   path: '/devenir-partenaire',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const EvenementsRoute = EvenementsRouteImport.update({
+  id: '/evenements',
+  path: '/evenements',
   getParentRoute: () => rootRouteImport,
 } as any)
 const FaireUnDonRoute = FaireUnDonRouteImport.update({
@@ -89,6 +104,11 @@ const NousJoindreRoute = NousJoindreRouteImport.update({
   path: '/nous-joindre',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PresseRoute = PresseRouteImport.update({
+  id: '/presse',
+  path: '/presse',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
@@ -107,6 +127,16 @@ const ApiMailWorkerRoute = ApiMailWorkerRouteImport.update({
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/blog_/$slug',
   path: '/blog/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgrammesIndexRoute = ProgrammesIndexRouteImport.update({
+  id: '/programmes/',
+  path: '/programmes/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProgrammesSlugRoute = ProgrammesSlugRouteImport.update({
+  id: '/programmes/$slug',
+  path: '/programmes/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ProjetsIndexRoute = ProjetsIndexRouteImport.update({
@@ -134,19 +164,24 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/a-propos': typeof AProposRoute
+  '/actualites': typeof ActualitesRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
+  '/evenements': typeof EvenementsRoute
   '/faire-un-don': typeof FaireUnDonRoute
   '/galerie': typeof GalerieRoute
   '/merci': typeof MerciRoute
   '/nous-joindre': typeof NousJoindreRoute
+  '/presse': typeof PresseRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/api/mail-worker': typeof ApiMailWorkerRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/programmes/$slug': typeof ProgrammesSlugRoute
   '/projets/$slug': typeof ProjetsSlugRoute
+  '/programmes/': typeof ProgrammesIndexRoute
   '/projets/': typeof ProjetsIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/volunteer': typeof ApiPublicVolunteerRoute
@@ -155,19 +190,24 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$': typeof SplatRoute
   '/a-propos': typeof AProposRoute
+  '/actualites': typeof ActualitesRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
+  '/evenements': typeof EvenementsRoute
   '/faire-un-don': typeof FaireUnDonRoute
   '/galerie': typeof GalerieRoute
   '/merci': typeof MerciRoute
   '/nous-joindre': typeof NousJoindreRoute
+  '/presse': typeof PresseRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin': typeof AuthenticatedAdminRoute
   '/api/mail-worker': typeof ApiMailWorkerRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/programmes/$slug': typeof ProgrammesSlugRoute
   '/projets/$slug': typeof ProjetsSlugRoute
+  '/programmes': typeof ProgrammesIndexRoute
   '/projets': typeof ProjetsIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/volunteer': typeof ApiPublicVolunteerRoute
@@ -178,19 +218,24 @@ export interface FileRoutesById {
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/$': typeof SplatRoute
   '/a-propos': typeof AProposRoute
+  '/actualites': typeof ActualitesRoute
   '/auth': typeof AuthRoute
   '/blog': typeof BlogRoute
   '/devenir-benevole': typeof DevenirBenevoleRoute
   '/devenir-partenaire': typeof DevenirPartenaireRoute
+  '/evenements': typeof EvenementsRoute
   '/faire-un-don': typeof FaireUnDonRoute
   '/galerie': typeof GalerieRoute
   '/merci': typeof MerciRoute
   '/nous-joindre': typeof NousJoindreRoute
+  '/presse': typeof PresseRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/api/mail-worker': typeof ApiMailWorkerRoute
   '/blog_/$slug': typeof BlogSlugRoute
+  '/programmes/$slug': typeof ProgrammesSlugRoute
   '/projets/$slug': typeof ProjetsSlugRoute
+  '/programmes/': typeof ProgrammesIndexRoute
   '/projets/': typeof ProjetsIndexRoute
   '/api/public/contact': typeof ApiPublicContactRoute
   '/api/public/volunteer': typeof ApiPublicVolunteerRoute
@@ -201,19 +246,24 @@ export interface FileRouteTypes {
     | '/'
     | '/$'
     | '/a-propos'
+    | '/actualites'
     | '/auth'
     | '/blog'
     | '/devenir-benevole'
     | '/devenir-partenaire'
+    | '/evenements'
     | '/faire-un-don'
     | '/galerie'
     | '/merci'
     | '/nous-joindre'
+    | '/presse'
     | '/sitemap.xml'
     | '/admin'
     | '/api/mail-worker'
     | '/blog/$slug'
+    | '/programmes/$slug'
     | '/projets/$slug'
+    | '/programmes/'
     | '/projets/'
     | '/api/public/contact'
     | '/api/public/volunteer'
@@ -222,19 +272,24 @@ export interface FileRouteTypes {
     | '/'
     | '/$'
     | '/a-propos'
+    | '/actualites'
     | '/auth'
     | '/blog'
     | '/devenir-benevole'
     | '/devenir-partenaire'
+    | '/evenements'
     | '/faire-un-don'
     | '/galerie'
     | '/merci'
     | '/nous-joindre'
+    | '/presse'
     | '/sitemap.xml'
     | '/admin'
     | '/api/mail-worker'
     | '/blog/$slug'
+    | '/programmes/$slug'
     | '/projets/$slug'
+    | '/programmes'
     | '/projets'
     | '/api/public/contact'
     | '/api/public/volunteer'
@@ -244,19 +299,24 @@ export interface FileRouteTypes {
     | '/_authenticated'
     | '/$'
     | '/a-propos'
+    | '/actualites'
     | '/auth'
     | '/blog'
     | '/devenir-benevole'
     | '/devenir-partenaire'
+    | '/evenements'
     | '/faire-un-don'
     | '/galerie'
     | '/merci'
     | '/nous-joindre'
+    | '/presse'
     | '/sitemap.xml'
     | '/_authenticated/admin'
     | '/api/mail-worker'
     | '/blog_/$slug'
+    | '/programmes/$slug'
     | '/projets/$slug'
+    | '/programmes/'
     | '/projets/'
     | '/api/public/contact'
     | '/api/public/volunteer'
@@ -267,18 +327,23 @@ export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   SplatRoute: typeof SplatRoute
   AProposRoute: typeof AProposRoute
+  ActualitesRoute: typeof ActualitesRoute
   AuthRoute: typeof AuthRoute
   BlogRoute: typeof BlogRoute
   DevenirBenevoleRoute: typeof DevenirBenevoleRoute
   DevenirPartenaireRoute: typeof DevenirPartenaireRoute
+  EvenementsRoute: typeof EvenementsRoute
   FaireUnDonRoute: typeof FaireUnDonRoute
   GalerieRoute: typeof GalerieRoute
   MerciRoute: typeof MerciRoute
   NousJoindreRoute: typeof NousJoindreRoute
+  PresseRoute: typeof PresseRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   ApiMailWorkerRoute: typeof ApiMailWorkerRoute
   BlogSlugRoute: typeof BlogSlugRoute
+  ProgrammesSlugRoute: typeof ProgrammesSlugRoute
   ProjetsSlugRoute: typeof ProjetsSlugRoute
+  ProgrammesIndexRoute: typeof ProgrammesIndexRoute
   ProjetsIndexRoute: typeof ProjetsIndexRoute
   ApiPublicContactRoute: typeof ApiPublicContactRoute
   ApiPublicVolunteerRoute: typeof ApiPublicVolunteerRoute
@@ -314,6 +379,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AProposRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/actualites': {
+      id: '/actualites'
+      path: '/actualites'
+      fullPath: '/actualites'
+      preLoaderRoute: typeof ActualitesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -340,6 +412,13 @@ declare module '@tanstack/react-router' {
       path: '/devenir-partenaire'
       fullPath: '/devenir-partenaire'
       preLoaderRoute: typeof DevenirPartenaireRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/evenements': {
+      id: '/evenements'
+      path: '/evenements'
+      fullPath: '/evenements'
+      preLoaderRoute: typeof EvenementsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/faire-un-don': {
@@ -370,6 +449,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof NousJoindreRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/presse': {
+      id: '/presse'
+      path: '/presse'
+      fullPath: '/presse'
+      preLoaderRoute: typeof PresseRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/sitemap.xml': {
       id: '/sitemap.xml'
       path: '/sitemap.xml'
@@ -396,6 +482,20 @@ declare module '@tanstack/react-router' {
       path: '/blog/$slug'
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/programmes/': {
+      id: '/programmes/'
+      path: '/programmes'
+      fullPath: '/programmes/'
+      preLoaderRoute: typeof ProgrammesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/programmes/$slug': {
+      id: '/programmes/$slug'
+      path: '/programmes/$slug'
+      fullPath: '/programmes/$slug'
+      preLoaderRoute: typeof ProgrammesSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/projets/': {
@@ -445,18 +545,23 @@ const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   SplatRoute: SplatRoute,
   AProposRoute: AProposRoute,
+  ActualitesRoute: ActualitesRoute,
   AuthRoute: AuthRoute,
   BlogRoute: BlogRoute,
   DevenirBenevoleRoute: DevenirBenevoleRoute,
   DevenirPartenaireRoute: DevenirPartenaireRoute,
+  EvenementsRoute: EvenementsRoute,
   FaireUnDonRoute: FaireUnDonRoute,
   GalerieRoute: GalerieRoute,
   MerciRoute: MerciRoute,
   NousJoindreRoute: NousJoindreRoute,
+  PresseRoute: PresseRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   ApiMailWorkerRoute: ApiMailWorkerRoute,
   BlogSlugRoute: BlogSlugRoute,
+  ProgrammesSlugRoute: ProgrammesSlugRoute,
   ProjetsSlugRoute: ProjetsSlugRoute,
+  ProgrammesIndexRoute: ProgrammesIndexRoute,
   ProjetsIndexRoute: ProjetsIndexRoute,
   ApiPublicContactRoute: ApiPublicContactRoute,
   ApiPublicVolunteerRoute: ApiPublicVolunteerRoute,

@@ -141,6 +141,9 @@
     content: "";
     @apply inline-block h-1.5 w-1.5 rounded-full bg-secondary;
   }
+  /* Sur-titre posé sur la photo du hero : texte clair et pastille feuille */
+  .eyebrow-light { @apply text-background/85; }
+  .eyebrow-light::before { @apply bg-leaf; }
   .grain {
     background-image: radial-gradient(circle at 1px 1px, color-mix(in oklab, var(--foreground) 8%, transparent) 1px, transparent 0);
     background-size: 24px 24px;
@@ -184,13 +187,37 @@
   .hero-stagger > .hero-words { animation: none; }
   .hero-word > span { animation: reveal-rise 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
   .hero-media-in { animation: hero-media 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both; }
+  /* Fond photo du hero : léger dézoom d'entrée (part de 1.06 pour ne jamais découvrir de vide) */
+  .hero-bg-in { animation: hero-bg 1.2s cubic-bezier(0.16, 1, 0.3, 1) both; }
 }
 @keyframes hero-media {
   from { opacity: 0; transform: translateY(18px) scale(0.97); }
   to { opacity: 1; transform: translateY(0) scale(1); }
 }
+@keyframes hero-bg {
+  from { opacity: 0; transform: scale(1.06); }
+  to { opacity: 1; transform: scale(1); }
+}
 @media (prefers-reduced-motion: reduce) {
   .reveal-armed:not(.reveal-in) .reveal-inner { opacity: 1; transform: none; }
+}
+
+/* Liane des trois axes (accueil) : trait qui se dessine à l'entrée dans
+   l'écran (pathLength normalisé) + feuilles de la marque qui se déploient
+   depuis leur tige puis se balancent. Sans JS ou mouvement réduit : état
+   final affiché directement, la liane restant purement décorative. */
+.axes-line { stroke-dasharray: 1; stroke-dashoffset: 1; }
+.axes-drawn .axes-line { stroke-dashoffset: 0; transition: stroke-dashoffset 1.6s ease-in-out; }
+.axes-pop { opacity: 0; transform: scale(0.4); transform-box: fill-box; transform-origin: 0% 50%; transition: opacity 0.5s ease, transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.axes-drawn .axes-pop { opacity: 1; transform: scale(1); }
+.axes-sway { transform-box: fill-box; transform-origin: 0% 50%; }
+@media (prefers-reduced-motion: no-preference) {
+  .axes-drawn .axes-sway { animation: axes-sway 5.5s ease-in-out var(--sway-d, 0s) infinite alternate; }
+}
+@keyframes axes-sway { from { transform: rotate(-5deg); } to { transform: rotate(6deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .axes-line { stroke-dashoffset: 0; transition: none; }
+  .axes-pop { opacity: 1; transform: none; transition: none; }
 }
 
 .cms-preserve-forms section:not(:has(form)):not(:has([data-form-closed])):not([data-partner-logos]):not([data-donation-collections]) { display: none; }
@@ -228,5 +255,23 @@
   ::view-transition-old(*),
   ::view-transition-new(*) {
     animation: none;
+  }
+}
+
+/* Bascule de langue : un voile bref rend l'échange de textes (et le reflow qui
+ * l'accompagne) perceptible comme un fondu doux plutôt qu'un saut brutal.
+ * Posé par Language.tsx au moment du clic, retiré une fois les textes échangés. */
+body {
+  transition: opacity 0.17s ease;
+}
+html.lang-fade body {
+  opacity: 0.4;
+}
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none;
+  }
+  html.lang-fade body {
+    opacity: 1;
   }
 }
