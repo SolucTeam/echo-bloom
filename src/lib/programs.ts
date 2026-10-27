@@ -1,13 +1,30 @@
-import { DEFAULT_PROJECTS } from '@/data/projects';
-import { projectsSchema, type Project } from './project-schema';
-export function readProjects(raw: string): Project[] {
-  if(!raw)return DEFAULT_PROJECTS;
-  try { return projectsSchema.parse(JSON.parse(raw)); } catch { return DEFAULT_PROJECTS; }
+import { DEFAULT_PROGRAMS } from '@/data/programs';
+import { programsSchema, type Program } from './program-schema';
+export function readPrograms(raw: string): Program[] {
+  if(!raw)return DEFAULT_PROGRAMS;
+  try { return programsSchema.parse(JSON.parse(raw)); } catch { return DEFAULT_PROGRAMS; }
 }
-export function groupProjectMenu(items: {label:string,url:string}[]) {
+/** Regroupe les pages de détail (nouvelles /programmes/* comme anciennes /projets/*) sous une seule entrée « Programmes ». */
+export function groupProgramMenu(items: {label:string,url:string}[]) {
   const result: {label:string,url:string}[]=[];
   for(const item of items){
-    if(item.url.startsWith('/projets/')){if(!items.some(i=>i.url==='/projets')&&!result.some(i=>i.url==='/projets'))result.push({label:'Projets',url:'/projets'});}
+    const url=item.url==='/projets'||item.url.startsWith('/projets/')?item.url.replace('/projets','/programmes'):item.url;
+    if(url.startsWith('/programmes/')){
+      const hasListing=items.some(i=>i.url==='/programmes'||i.url==='/projets');
+      if(!hasListing&&!result.some(i=>i.url==='/programmes'))result.push({label:'Programmes',url:'/programmes'});
+    }
+    else result.push({label:item.label,url});
+  }
+  return result;
+}
+/** Adapte les menus enregistrés : /projets* réécrits en /programmes* et regroupés, /blog, /galerie, /presse, /evenements fusionnés dans /actualites. */
+export function normalizeMenu(items: {label:string,url:string}[]) {
+  const grouped=groupProgramMenu(items);
+  const result: {label:string,url:string}[]=[];
+  for(const item of grouped){
+    if(['/blog','/galerie','/presse','/evenements'].includes(item.url)){
+      if(!result.some(i=>i.url==='/actualites'))result.push({label:'Actualités',url:'/actualites'});
+    }
     else result.push(item);
   }
   return result;
