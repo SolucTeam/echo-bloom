@@ -1,62 +1,1212 @@
 [
   {
-    "id": "33f10b35-f619-4cbd-9dbe-a113a45df7d8",
+    "id": "019308f9-36a9-47db-a4dd-788fe809661e",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Partenariats",
+    "image_url": "/images/partenaires-1.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Rencontre avec les représentants de l'Union européenne, partenaire du programme.",
+    "tag_en": "Partnerships"
+  },
+  {
+    "id": "02493088-97ae-40fa-b869-bc00ad87168f",
+    "collection": "Journées sans plastique",
+    "tag": "Recrutement",
+    "image_url": "/images/recrutement-4.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Recrutement des agents de collecte, roll-up des Journées sans plastique.",
+    "tag_en": "Recruitment"
+  },
+  {
+    "id": "031ee423-36ca-445f-8593-bf8b3f1a5daf",
     "collection": "Journées sans plastique",
     "tag": "Journées de dépollution",
-    "image_url": "/images/plastic.jpg",
-    "created_at": "2026-10-18T12:46:13.987562+00:00",
+    "image_url": "/images/collecte-16.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
     "caption": "",
-    "alt": "Journées de dépollution",
-    "tag_en": null
+    "alt": "Tri et ensachage des déchets plastiques pendant la campagne de collecte.",
+    "tag_en": "Clean-up days"
   },
   {
-    "id": "42c86150-7ff8-4db1-ae22-de26df622e88",
+    "id": "034728ab-2613-4954-9537-9cc38a3051eb",
     "collection": "Sentiers verts",
     "tag": "Visites de terrain",
-    "image_url": "/images/climate.jpg",
-    "created_at": "2026-10-18T12:46:14.401069+00:00",
+    "image_url": "/images/sentiers-9.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
     "caption": "",
-    "alt": "Visites de terrain",
-    "tag_en": null
+    "alt": "Marche en forêt des participants des Sentiers verts, t-shirts Green Ivory",
+    "tag_en": "Field visits"
   },
   {
-    "id": "4d9f2dcd-aa4b-4718-8dfb-d9bc0c94cf0c",
+    "id": "0393e13c-1bfc-4858-ba2d-87df7ad85a4d",
     "collection": "Journées sans plastique",
     "tag": "Journées de dépollution",
-    "image_url": "/images/hero.jpg",
-    "created_at": "2026-10-18T12:46:13.329117+00:00",
+    "image_url": "/images/collecte-4.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
     "caption": "",
-    "alt": "Journées de dépollution",
-    "tag_en": null
+    "alt": "Tri et ensachage des déchets plastiques pendant la campagne de collecte.",
+    "tag_en": "Clean-up days"
   },
   {
-    "id": "565fb784-c58b-4f7d-bac8-37040597d3a7",
+    "id": "07e1b60d-1212-48fb-8856-d311b8fc3aab",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-11.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Allocution lors de la conférence de presse de Green Ivory.",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "09cab2a7-5cf2-4810-bf43-d048026ba252",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-1.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Conférence de presse « Vers une Côte d'Ivoire sans pollution plastique ».",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "0b4dcc4a-91de-4d03-84fe-0ddc6523bebf",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-2.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Agents de collecte transférant les sacs de bouteilles plastiques collectées.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "0c1bcd4c-329b-4160-a7d5-d3fa47ecf4a1",
     "collection": "Sentiers verts",
     "tag": "Visites de terrain",
-    "image_url": "/images/biodiversity.jpg",
-    "created_at": "2026-10-18T12:46:14.61064+00:00",
+    "image_url": "/images/sentiers-4.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
     "caption": "",
-    "alt": "Visites de terrain",
-    "tag_en": null
+    "alt": "Une participante prend la parole en forêt pendant une sortie Sentiers verts",
+    "tag_en": "Field visits"
   },
   {
-    "id": "5dd3b73d-d880-4a4a-afe2-c5087b72b578",
+    "id": "15878a4d-c8fa-4f1f-a95d-058b08207bb8",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-13.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Conférence de presse « Vers une Côte d'Ivoire sans pollution plastique ».",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "182cff51-9dde-4fd3-a92c-0f3931a67a8b",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-3.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Échanges pendant la formation des agents de collecte.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "184ca974-add3-480c-bbe2-d6625b6bc771",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-5.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Session de formation des agents de collecte des Journées sans plastique.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "1872ad4a-f48d-4e91-8c71-83ce5dfd8d13",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-14.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Un formateur présente le protocole de collecte aux nouveaux agents.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "1892659e-8bb5-4dea-bf9a-5e9ceeead3a5",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-16.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Échanges avec les journalistes au lancement du programme.",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "212edba0-ec30-472d-826f-42979a407a06",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-20.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Tri et ensachage des déchets plastiques pendant la campagne de collecte.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "212fd648-f47d-4507-bdc6-3bed6d62f665",
+    "collection": "We Plant",
+    "tag": "Plantations d'arbres",
+    "image_url": "/images/weplant-1.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Plantation d'un jeune arbre par l'équipe We Plant en zone verte",
+    "tag_en": "Tree plantings"
+  },
+  {
+    "id": "249718ea-ff32-4063-a0f4-cb2a1908062b",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-19.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Équipe des Journées sans plastique réunie sur le site de collecte.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "2517fcc0-a2f8-448f-8729-3bb12dc980ea",
+    "collection": "We Plant",
+    "tag": "Plantations d'arbres",
+    "image_url": "/images/weplant-3.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Plantation collective d'espèces locales lors d'une sortie We Plant",
+    "tag_en": "Tree plantings"
+  },
+  {
+    "id": "25215b6c-aa52-4c14-b8c0-c8fc1c90e1c4",
+    "collection": "Journées sans plastique",
+    "tag": "Sensibilisation",
+    "image_url": "/images/sensibilisation-15.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Prise de parole lors d'une campagne de sensibilisation au marché.",
+    "tag_en": "Awareness campaigns"
+  },
+  {
+    "id": "269f0076-e1be-45d2-985a-c1a5c59250a1",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-8.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Agents de collecte en formation, roll-up du programme à l'appui.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "28785c32-09f4-450a-b5b8-e51d83394b83",
+    "collection": "Journées sans plastique",
+    "tag": "Bénéficiaires",
+    "image_url": "/images/beneficiaires-2.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Cérémonie de certification des bénéficiaires aux côtés des partenaires.",
+    "tag_en": "Beneficiaries"
+  },
+  {
+    "id": "28e5c75a-84bf-482a-9129-11272e9b4321",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-9.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Bénévoles ramassant les déchets sur la plage lors d'une Journée sans plastique.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "37068d37-578c-4455-8082-16e3efc92846",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-10.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Un formateur présente le protocole de collecte aux nouveaux agents.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "371be244-32ae-4b0c-a299-ee454f4202c4",
     "collection": "Sentiers verts",
     "tag": "Éco-entrepreneurs",
-    "image_url": "/images/sentiers.jpg",
-    "created_at": "2026-10-18T12:46:14.525374+00:00",
+    "image_url": "/images/sentiers-2.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
     "caption": "",
-    "alt": "Éco-entrepreneurs",
-    "tag_en": null
+    "alt": "Remise des financements aux jeunes éco-entrepreneurs, objectifs de développement durable à l'appui",
+    "tag_en": "Eco-entrepreneurs"
   },
   {
-    "id": "9bfa4e07-08c1-4105-988e-029124451d0d",
-    "collection": "Journées sans plastique",
-    "tag": "Agents de collecte",
-    "image_url": "/images/journees.jpg",
-    "created_at": "2026-10-18T12:46:13.894091+00:00",
+    "id": "3d7840c4-7700-472b-895a-6ff662fd8c1d",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Partenariats",
+    "image_url": "/images/partenaires-2.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
     "caption": "",
-    "alt": "Agents de collecte",
-    "tag_en": null
+    "alt": "Poignée de main avec un partenaire institutionnel, drapeaux à l'appui.",
+    "tag_en": "Partnerships"
+  },
+  {
+    "id": "3e0633f1-ced2-463a-8ea3-d5042242a40c",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-1.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Session de formation des agents de collecte des Journées sans plastique.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "3e2b4f70-eaae-401e-9e51-8fadbc4ee11c",
+    "collection": "Journées sans plastique",
+    "tag": "Recrutement",
+    "image_url": "/images/recrutement-2.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Entretien de recrutement des agents de collecte.",
+    "tag_en": "Recruitment"
+  },
+  {
+    "id": "478b06f5-8095-4b09-ab9c-8609e8c90e44",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-20.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Agents de collecte en formation, roll-up du programme à l'appui.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "48fb62e5-b806-418a-a11f-ef6eeff442b4",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-17.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Bénévoles ramassant les déchets sur la plage lors d'une Journée sans plastique.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "4a126635-2127-4e0c-8601-9b87c41283f3",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-18.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Les partenaires du programme face à la presse.",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "52d78aa6-9abc-4863-9df0-591015c7621b",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-22.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Un formateur présente le protocole de collecte aux nouveaux agents.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "52f469fa-4bc1-40d0-9512-eb5e246f607d",
+    "collection": "Sentiers verts",
+    "tag": "Visites de terrain",
+    "image_url": "/images/sentiers-3.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Équipe des Sentiers verts rassemblée et levant les bras après une sortie",
+    "tag_en": "Field visits"
+  },
+  {
+    "id": "5590cad3-79ad-4fff-b907-8c6b0301247a",
+    "collection": "Journées sans plastique",
+    "tag": "Sensibilisation",
+    "image_url": "/images/sensibilisation-5.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Sensibilisation #Zéro plastique sur le terrain.",
+    "tag_en": "Awareness campaigns"
+  },
+  {
+    "id": "573599e9-7395-4878-811a-706a163d6c59",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-6.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Les partenaires du programme face à la presse.",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "5831cdd8-5213-4aaa-9488-7ff22b23f869",
+    "collection": "Journées sans plastique",
+    "tag": "Sensibilisation",
+    "image_url": "/images/sensibilisation-6.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Sensibilisation des riverains face à un canal pollué par le plastique.",
+    "tag_en": "Awareness campaigns"
+  },
+  {
+    "id": "5838845a-b439-4ace-8cce-de9182847b49",
+    "collection": "Journées sans plastique",
+    "tag": "Sensibilisation",
+    "image_url": "/images/sensibilisation-8.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Sensibilisation des commerçants et des habitants au plastique à usage unique.",
+    "tag_en": "Awareness campaigns"
+  },
+  {
+    "id": "58b9150b-cca2-4163-8a29-0891ec7a7093",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-13.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Session de formation des agents de collecte des Journées sans plastique.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "59de0a1a-49f9-42b0-8c8c-ea1e625257bd",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-6.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Un formateur présente le protocole de collecte aux nouveaux agents.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "5e509cbd-553e-4deb-9af2-27df391b905f",
+    "collection": "Journées sans plastique",
+    "tag": "Sensibilisation",
+    "image_url": "/images/sensibilisation-7.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Prise de parole lors d'une campagne de sensibilisation au marché.",
+    "tag_en": "Awareness campaigns"
+  },
+  {
+    "id": "62fd2224-3bb4-4144-86ac-b2355687f214",
+    "collection": "Journées sans plastique",
+    "tag": "Guichet de recyclage",
+    "image_url": "/images/guichet-2.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Une habitante rapporte ses bouteilles au guichet de recyclage.",
+    "tag_en": "Recycling drop-off"
+  },
+  {
+    "id": "633ea16e-8623-428c-b1db-22f99c6bc97c",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-12.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Agents de collecte en formation, roll-up du programme à l'appui.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "63408230-3516-42ba-8b81-40b510985e10",
+    "collection": "Journées sans plastique",
+    "tag": "Bénéficiaires",
+    "image_url": "/images/beneficiaires-6.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Cérémonie de certification des bénéficiaires aux côtés des partenaires.",
+    "tag_en": "Beneficiaries"
+  },
+  {
+    "id": "6aeaebde-f987-453a-bdf7-f043f168bfc4",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Partenariats",
+    "image_url": "/images/plaidoyer-4.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Représentants de Green Ivory devant l'enseigne d'un partenaire",
+    "tag_en": "Partnerships"
+  },
+  {
+    "id": "6b88c919-82b2-4f0d-955c-8668a653fb20",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-16.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Agents de collecte en formation, roll-up du programme à l'appui.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "6ed23eb6-a70a-45c1-9b28-39c4b399db61",
+    "collection": "Green Schools",
+    "tag": "Sorties scolaires",
+    "image_url": "/images/greenschool-2.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Groupe d'élèves réunis devant le roll-up Green Ivory pendant une sortie scolaire",
+    "tag_en": "School outings"
+  },
+  {
+    "id": "72100064-3d29-419d-9cb5-d9b0c6741175",
+    "collection": "Journées sans plastique",
+    "tag": "Bénéficiaires",
+    "image_url": "/images/beneficiaires-4.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Certificats remis aux bénéficiaires du programme, partenaires à l'appui.",
+    "tag_en": "Beneficiaries"
+  },
+  {
+    "id": "73851052-d1a9-4ffa-8009-cfd0f2c14341",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-17.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Conférence de presse « Vers une Côte d'Ivoire sans pollution plastique ».",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "7406d5d5-fd7e-45d5-8278-615f6c187c63",
+    "collection": "Journées sans plastique",
+    "tag": "Sensibilisation",
+    "image_url": "/images/sensibilisation-13.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Sensibilisation #Zéro plastique sur le terrain.",
+    "tag_en": "Awareness campaigns"
+  },
+  {
+    "id": "7bf38349-5d14-4215-b6df-f0544b8331e9",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-3.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Allocution lors de la conférence de presse de Green Ivory.",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "7d05e886-f251-486a-9251-5546ec30e6c7",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Rencontres institutionnelles",
+    "image_url": "/images/plaidoyer-6.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Rencontre de plaidoyer à l'hôtel de ville de Grand-Bassam",
+    "tag_en": "Institutional meetings"
+  },
+  {
+    "id": "7d7d7789-492b-4e26-836c-d89605d3d0c9",
+    "collection": "Journées sans plastique",
+    "tag": "Bénéficiaires",
+    "image_url": "/images/beneficiaires-5.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Remise d'un certificat à une bénéficiaire du programme Journées sans plastique.",
+    "tag_en": "Beneficiaries"
+  },
+  {
+    "id": "7d84a506-f0c8-456a-ac32-d972be172c9a",
+    "collection": "Sentiers verts",
+    "tag": "Éco-entrepreneurs",
+    "image_url": "/images/sentiers-6.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Présentation de projet à l'Impact Hub Abidjan, partenaire Unicef",
+    "tag_en": "Eco-entrepreneurs"
+  },
+  {
+    "id": "7f4044f0-d2fa-49c4-9127-fd4f9a91f56c",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Rencontres institutionnelles",
+    "image_url": "/images/plaidoyer-5.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Échange avec une autorité publique, aux couleurs de Green Ivory",
+    "tag_en": "Institutional meetings"
+  },
+  {
+    "id": "7f5f7568-e7a4-4186-b03d-680383602f7a",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-3.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Équipe des Journées sans plastique réunie sur le site de collecte.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "7f6eca57-16cc-4080-be0c-9af6597350de",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-12.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Tri et ensachage des déchets plastiques pendant la campagne de collecte.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "83b9b2c9-f3e2-40d4-981b-e8ac44a951bc",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-17.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Session de formation des agents de collecte des Journées sans plastique.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "83cf0a7f-7675-497c-88f2-f3646191f9b9",
+    "collection": "Journées sans plastique",
+    "tag": "Sensibilisation",
+    "image_url": "/images/sensibilisation-3.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Prise de parole lors d'une campagne de sensibilisation au marché.",
+    "tag_en": "Awareness campaigns"
+  },
+  {
+    "id": "8925fe17-dbbd-4cbe-b274-fcefe982edd9",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Partenariats",
+    "image_url": "/images/plaidoyer-2.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Deux membres de Green Ivory lors d'une visite chez un partenaire",
+    "tag_en": "Partnerships"
+  },
+  {
+    "id": "8be90978-7b99-46ec-94d6-98af3375960b",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-12.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Échanges avec les journalistes au lancement du programme.",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "8dc6a10d-5d8c-4d7f-a63c-eecd45c9b105",
+    "collection": "Journées sans plastique",
+    "tag": "Ambassadeurs",
+    "image_url": "/images/jsp-1.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Une ambassadrice des Journées sans plastique avec sa gourde devant le panneau du programme",
+    "tag_en": "Ambassadors"
+  },
+  {
+    "id": "910618ed-6d31-4131-80f8-dc6d77dd2b7b",
+    "collection": "Journées sans plastique",
+    "tag": "Guichet de recyclage",
+    "image_url": "/images/guichet-4.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Devanture du guichet de recyclage des Journées sans plastique.",
+    "tag_en": "Recycling drop-off"
+  },
+  {
+    "id": "94412f0b-864d-4071-b869-39026cf09614",
+    "collection": "Journées sans plastique",
+    "tag": "Sensibilisation",
+    "image_url": "/images/sensibilisation-2.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Sensibilisation des riverains face à un canal pollué par le plastique.",
+    "tag_en": "Awareness campaigns"
+  },
+  {
+    "id": "96c40b42-efaf-4a3e-b1c1-ee7c9e3d25cf",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-9.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Conférence de presse « Vers une Côte d'Ivoire sans pollution plastique ».",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "96ddaf2b-d175-4f34-8697-ab0f8ba307e5",
+    "collection": "We Plant",
+    "tag": "Plantations d'arbres",
+    "image_url": "/images/weplant-4.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Plantation d'arbres en lisière de forêt avec les bénévoles de Green Ivory",
+    "tag_en": "Tree plantings"
+  },
+  {
+    "id": "995286dd-5b02-46ae-ac52-12338991cc0a",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-15.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Équipe des Journées sans plastique réunie sur le site de collecte.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "99bdea37-1da3-46a1-971f-4e06551a90c8",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-19.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Échanges pendant la formation des agents de collecte.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "9a0e104d-8601-4422-9d7f-086528effdf9",
+    "collection": "Green Schools",
+    "tag": "Interventions en classe",
+    "image_url": "/images/greenschool-1.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Une animatrice Green Ivory sensibilise une classe à la pollution plastique",
+    "tag_en": "Classroom sessions"
+  },
+  {
+    "id": "9bbd3e13-9827-4ff6-9a68-26d77424f2dc",
+    "collection": "Journées sans plastique",
+    "tag": "Guichet de recyclage",
+    "image_url": "/images/guichet-3.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Le guichet de recyclage, point de dépôt des bouteilles plastiques.",
+    "tag_en": "Recycling drop-off"
+  },
+  {
+    "id": "9c1f53b0-9d77-44bb-934a-ae4cac1c83db",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-2.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Un formateur présente le protocole de collecte aux nouveaux agents.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "a312b7f4-67a2-4eca-b1b4-fb62019bb172",
+    "collection": "Sentiers verts",
+    "tag": "Visites de terrain",
+    "image_url": "/images/sentiers-7.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Participants en t-shirts verts des Sentiers verts en discussion sur le site",
+    "tag_en": "Field visits"
+  },
+  {
+    "id": "a727bcb4-787b-47e0-9e38-30613bb8c597",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-6.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Agents de collecte transférant les sacs de bouteilles plastiques collectées.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "a7b49824-ee7e-4bf2-a276-a54febe600f6",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-14.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Les partenaires du programme face à la presse.",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "b078a7ea-cbb4-4f18-8add-312e6baf4646",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-13.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Bénévoles ramassant les déchets sur la plage lors d'une Journée sans plastique.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "b08d069d-35ab-43c3-b2f2-e6b2a62ad1ea",
+    "collection": "Journées sans plastique",
+    "tag": "Bénéficiaires",
+    "image_url": "/images/beneficiaires-3.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Une bénéficiaire reçoit son certificat lors de la Journée mondiale de l'océan.",
+    "tag_en": "Beneficiaries"
+  },
+  {
+    "id": "b49476ed-63c6-4ef3-bc1d-c1b2f3e85c6b",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Partenariats",
+    "image_url": "/images/partenaires-3.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Remise officielle du don de l'Union européenne aux Journées sans plastique.",
+    "tag_en": "Partnerships"
+  },
+  {
+    "id": "b52585af-0d6a-44af-b301-ceadec2a71d0",
+    "collection": "Sentiers verts",
+    "tag": "Visites de terrain",
+    "image_url": "/images/sentiers-1.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Participants des Sentiers verts réunis après une sortie de terrain",
+    "tag_en": "Field visits"
+  },
+  {
+    "id": "b6c20762-f245-43b4-bd74-de37541e7cb7",
+    "collection": "Green Schools",
+    "tag": "Interventions en classe",
+    "image_url": "/images/greenschool-3.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Élèves levant la main pendant une intervention Green Ivory en classe",
+    "tag_en": "Classroom sessions"
+  },
+  {
+    "id": "b721fc06-2cd9-4f9d-a0e2-8243a5e7036f",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-18.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Un formateur présente le protocole de collecte aux nouveaux agents.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "b8224919-4c0c-400d-a6d1-658ee71b2bc9",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-10.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Les partenaires du programme face à la presse.",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "b90821fa-1dd5-46e6-a49b-a70ca1a0f688",
+    "collection": "Sentiers verts",
+    "tag": "Visites de terrain",
+    "image_url": "/images/sentiers-5.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Trois participants des Sentiers verts avec leurs badges participant",
+    "tag_en": "Field visits"
+  },
+  {
+    "id": "ba010c26-e66e-4b13-aa45-1bbc4db678e6",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-10.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Agents de collecte transférant les sacs de bouteilles plastiques collectées.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "ba9020dc-9f2d-4008-b70c-90b66efc7156",
+    "collection": "Sentiers verts",
+    "tag": "Éco-entrepreneurs",
+    "image_url": "/images/sentiers-8.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Remise du chèque Unicef au projet Circulnature et à sa machine de recyclage",
+    "tag_en": "Eco-entrepreneurs"
+  },
+  {
+    "id": "bb957321-e030-4831-825a-34aa9fb6f94f",
+    "collection": "Journées sans plastique",
+    "tag": "Sensibilisation",
+    "image_url": "/images/sensibilisation-16.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Sensibilisation des commerçants et des habitants au plastique à usage unique.",
+    "tag_en": "Awareness campaigns"
+  },
+  {
+    "id": "bf435599-ef8f-4a65-bdff-1d3a74b2496a",
+    "collection": "Journées sans plastique",
+    "tag": "Sensibilisation",
+    "image_url": "/images/sensibilisation-14.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Sensibilisation des riverains face à un canal pollué par le plastique.",
+    "tag_en": "Awareness campaigns"
+  },
+  {
+    "id": "c39d81b4-837c-495d-beb1-e666f7562aa0",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-4.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Agents de collecte en formation, roll-up du programme à l'appui.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "c83e933c-bbfc-41e6-8e7f-8d3fd88750b1",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-19.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Allocution lors de la conférence de presse de Green Ivory.",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "c83f8884-2a45-4ae3-8c24-bca1e8ab1ff8",
+    "collection": "Journées sans plastique",
+    "tag": "Sensibilisation",
+    "image_url": "/images/sensibilisation-9.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Sensibilisation #Zéro plastique sur le terrain.",
+    "tag_en": "Awareness campaigns"
+  },
+  {
+    "id": "ca67caef-6dd9-4049-8e29-07e07b5a8122",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Partenariats",
+    "image_url": "/images/partenaires-4.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Visite d'un partenaire institutionnel chez Green Ivory.",
+    "tag_en": "Partnerships"
+  },
+  {
+    "id": "ccef8e48-9431-4df8-aa10-a34efab884d4",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Rencontres institutionnelles",
+    "image_url": "/images/plaidoyer-1.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Green Ivory présente ses propositions de plaidoyer à des décideurs institutionnels",
+    "tag_en": "Institutional meetings"
+  },
+  {
+    "id": "cdc3a593-b6a0-465d-a494-86fe2b47c613",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-4.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Échanges avec les journalistes au lancement du programme.",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "cfb10a80-e0f6-428d-984a-e1f6e424d5cb",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-14.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Agents de collecte transférant les sacs de bouteilles plastiques collectées.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "d1bb25c7-b3e5-458a-9cf1-b8a17e649dae",
+    "collection": "Journées sans plastique",
+    "tag": "Sensibilisation",
+    "image_url": "/images/sensibilisation-10.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Sensibilisation des riverains face à un canal pollué par le plastique.",
+    "tag_en": "Awareness campaigns"
+  },
+  {
+    "id": "d3a1b59b-3ec8-4185-a9c0-68b89b04c31b",
+    "collection": "Journées sans plastique",
+    "tag": "Recrutement",
+    "image_url": "/images/recrutement-5.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Présentation du programme aux candidats agents de collecte.",
+    "tag_en": "Recruitment"
+  },
+  {
+    "id": "d42ee8af-f087-49a6-90c6-5450b004fb43",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Partenariats",
+    "image_url": "/images/partenaires-5.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Rencontre avec les représentants de l'Union européenne, partenaire du programme.",
+    "tag_en": "Partnerships"
+  },
+  {
+    "id": "d888e4dd-90a6-4109-8d84-910a175eae85",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-5.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Bénévoles ramassant les déchets sur la plage lors d'une Journée sans plastique.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "d8a675a1-8ff3-411a-a4a7-fd0a143d1dff",
+    "collection": "Journées sans plastique",
+    "tag": "Bénéficiaires",
+    "image_url": "/images/beneficiaires-1.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Remise d'un certificat à une bénéficiaire du programme Journées sans plastique.",
+    "tag_en": "Beneficiaries"
+  },
+  {
+    "id": "d9d4bf05-181b-4d42-bb01-42c4af2644b5",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-21.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Session de formation des agents de collecte des Journées sans plastique.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "df6299a6-8e15-4459-87a5-793e597fc7da",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-8.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Échanges avec les journalistes au lancement du programme.",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "e013ce00-afc6-479e-86da-4855c5783f8b",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Partenariats",
+    "image_url": "/images/partenaires-6.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Poignée de main avec un partenaire institutionnel, drapeaux à l'appui.",
+    "tag_en": "Partnerships"
+  },
+  {
+    "id": "e058f5a1-4f23-43ca-86dd-99da5c3283ab",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-2.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Les partenaires du programme face à la presse.",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "e1a91969-f5e8-4f08-9d84-cada484faff6",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-1.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Bénévoles ramassant les déchets sur la plage lors d'une Journée sans plastique.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "e1d18c35-4fe3-4c68-88b1-b650247eb33f",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-15.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Allocution lors de la conférence de presse de Green Ivory.",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "e50166c9-583f-479e-b227-c7550dfd7e4e",
+    "collection": "Journées sans plastique",
+    "tag": "Sensibilisation",
+    "image_url": "/images/sensibilisation-1.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Sensibilisation #Zéro plastique sur le terrain.",
+    "tag_en": "Awareness campaigns"
+  },
+  {
+    "id": "e76259bf-63ce-4a7a-af13-21d4f1f9655e",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-7.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Équipe des Journées sans plastique réunie sur le site de collecte.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "e977b9e7-c5a0-4a72-aca5-380361d12cfb",
+    "collection": "Journées sans plastique",
+    "tag": "Recrutement",
+    "image_url": "/images/recrutement-1.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Présentation du programme aux candidats agents de collecte.",
+    "tag_en": "Recruitment"
+  },
+  {
+    "id": "eb24edac-fa2b-4f78-8d48-9a6e7b5e60b2",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-11.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Équipe des Journées sans plastique réunie sur le site de collecte.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "eb3ca9b9-d52f-49b0-a3c1-ba199d7c302e",
+    "collection": "We Plant",
+    "tag": "Plantations d'arbres",
+    "image_url": "/images/weplant-2.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Équipe We Plant réunie autour d'un jeune plant tout juste mis en terre",
+    "tag_en": "Tree plantings"
+  },
+  {
+    "id": "ecb12ffa-6d7e-4cb4-81f8-56725422de3a",
+    "collection": "Journées sans plastique",
+    "tag": "Guichet de recyclage",
+    "image_url": "/images/guichet-1.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "L'équipe du guichet de recyclage des Journées sans plastique.",
+    "tag_en": "Recycling drop-off"
+  },
+  {
+    "id": "ef685a3d-ef8c-4121-9317-f554bc1d708a",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-11.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Échanges pendant la formation des agents de collecte.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "efe8be1c-c8a0-4631-9a95-6f7e34e5a58f",
+    "collection": "Journées sans plastique",
+    "tag": "Sensibilisation",
+    "image_url": "/images/sensibilisation-4.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Sensibilisation des commerçants et des habitants au plastique à usage unique.",
+    "tag_en": "Awareness campaigns"
+  },
+  {
+    "id": "f054c8be-27df-4464-8dc8-d87cf00245aa",
+    "collection": "Journées sans plastique",
+    "tag": "Recrutement",
+    "image_url": "/images/recrutement-3.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Accueil des candidats au recrutement des agents de collecte.",
+    "tag_en": "Recruitment"
+  },
+  {
+    "id": "f2d47ab6-3d6b-4431-870b-f902ecf2ec76",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-15.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Échanges pendant la formation des agents de collecte.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "f3192abd-9423-43a4-9a91-efec1d0020e8",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-7.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Échanges pendant la formation des agents de collecte.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "f40216d9-152e-4578-bd0e-4131947684dd",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-7.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Allocution lors de la conférence de presse de Green Ivory.",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "f645767e-2169-4011-8ea2-b19ebc4effa8",
+    "collection": "Journées sans plastique",
+    "tag": "Sensibilisation",
+    "image_url": "/images/sensibilisation-11.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Prise de parole lors d'une campagne de sensibilisation au marché.",
+    "tag_en": "Awareness campaigns"
+  },
+  {
+    "id": "f7b28d33-e43d-43e2-80de-e5efcb5f76ba",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-18.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Agents de collecte transférant les sacs de bouteilles plastiques collectées.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "f9e9ccba-17f5-4fa6-b486-4bff1bfb82bb",
+    "collection": "Journées sans plastique",
+    "tag": "Journées de dépollution",
+    "image_url": "/images/collecte-8.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Tri et ensachage des déchets plastiques pendant la campagne de collecte.",
+    "tag_en": "Clean-up days"
+  },
+  {
+    "id": "fa59c220-9f69-42a6-9479-ad816ff15c93",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Conférence de presse",
+    "image_url": "/images/presse-5.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Conférence de presse « Vers une Côte d'Ivoire sans pollution plastique ».",
+    "tag_en": "Press conference"
+  },
+  {
+    "id": "faa4c1d6-b22c-4eb9-badc-c156a336ced3",
+    "collection": "Journées sans plastique",
+    "tag": "Sensibilisation",
+    "image_url": "/images/sensibilisation-12.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Sensibilisation des commerçants et des habitants au plastique à usage unique.",
+    "tag_en": "Awareness campaigns"
+  },
+  {
+    "id": "fd280322-fc5d-42f8-a7ee-bc9a81039c66",
+    "collection": "Journées sans plastique",
+    "tag": "Formation des agents",
+    "image_url": "/images/formation-9.jpg",
+    "created_at": "2026-10-28T01:47:49.856657+00:00",
+    "caption": "",
+    "alt": "Session de formation des agents de collecte des Journées sans plastique.",
+    "tag_en": "Agent training"
+  },
+  {
+    "id": "ffca71d5-eeff-45f2-8115-d46c9ab231b6",
+    "collection": "Plaidoyer environnemental",
+    "tag": "Rencontres institutionnelles",
+    "image_url": "/images/plaidoyer-3.jpg",
+    "created_at": "2026-10-27T16:56:36.881102+00:00",
+    "caption": "",
+    "alt": "Salle de réunion lors d'un échange de plaidoyer avec des partenaires",
+    "tag_en": "Institutional meetings"
   }
 ]
