@@ -1,9 +1,9 @@
 // Chemins publics stables : identiques en dev et en production, insensibles aux hash de build.
 import type { Lang } from '../lib/i18n';
-const plastic = "/images/plastic.jpg";
+const plastic = "/images/jsp-1.jpg";
 const biodiv = "/images/biodiversity.jpg";
 const climate = "/images/climate.jpg";
-const journees = "/images/journees.jpg";
+const journees = "/images/jsp-equipe.jpg";
 const sentiers = "/images/sentiers.jpg";
 
 export type BlogCategory =
