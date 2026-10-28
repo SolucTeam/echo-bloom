@@ -2,6 +2,11 @@ export type GalleryImage = { src: string; tag: string; alt?: string; caption?: s
 export type GalleryCollection = { title: string; tags: string[]; images: GalleryImage[] };
 type GalleryPhoto = { collection: string; image_url: string; tag: string; alt?: string; caption?: string };
 
+/** Vignette légère pour les grilles : les photos servies depuis /images/ ont une miniature /images/thumbs/ de même nom. */
+export function galleryThumb(src: string): string {
+  return src.startsWith('/images/') ? `/images/thumbs/${src.slice('/images/'.length)}` : src;
+}
+
 export function galleryCollections(originals: GalleryCollection[], photos: GalleryPhoto[], imported: boolean): GalleryCollection[] {
   const titles = [...new Set([...(imported ? [] : originals.map(c => c.title)), ...photos.map(p => p.collection)])];
   return titles.map(title => {

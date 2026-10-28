@@ -1,10 +1,10 @@
 // Chemins publics stables : identiques en dev et en production, insensibles aux hash de build.
 import type { Lang } from '../lib/i18n';
-const plastic = "/images/jsp-1.jpg";
-const biodiv = "/images/biodiversity.jpg";
-const climate = "/images/climate.jpg";
-const journees = "/images/jsp-equipe.jpg";
-const sentiers = "/images/sentiers.jpg";
+const plastic = "/images/sensibilisation-1.jpg";
+const biodiv = "/images/sentiers-9.jpg";
+const climate = "/images/weplant-1.jpg";
+const journees = "/images/collecte-14.jpg";
+const sentiers = "/images/greenschool-2.jpg";
 
 export type BlogCategory =
   | "Pollution plastique"

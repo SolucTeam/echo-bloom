@@ -14,7 +14,7 @@ import { Calendar, User, ArrowRight, Search, Tag, ChevronLeft, ChevronRight, X, 
 import { POSTS, CATEGORIES, type BlogCategory } from "@/data/blog-posts";
 import { readPress } from '@/lib/press-schema';
 import { readEvents } from '@/lib/event-schema';
-import { galleryCollections, type GalleryImage } from '@/lib/gallery';
+import { galleryCollections, galleryThumb, type GalleryImage } from '@/lib/gallery';
 import { Button } from '@/components/ui/button';
 import journees from "@/assets/journees.jpg";
 import sentiers from "@/assets/sentiers.jpg";
@@ -298,14 +298,134 @@ function ArticlesSection({ posts: dbPosts, imported }: { posts: BlogPost[]; impo
 }
 
 /* ── Onglet Photos ── */
+const GALLERY_PAGE = 24;
+
+/** Galerie unifiée : filtres par collection et par thème, maçonnerie légère (vignettes), aperçu plein écran et pagination. */
 function GallerySection({ cols }: { cols: ReturnType<typeof galleryCollections> }) {
   const { t, lang } = useLang();
-  return cols.length === 0 ? (
-    <section className="container-x py-16">
-      <p className="text-center text-muted-foreground">{t('gallery.empty')}</p>
+  const [col, setCol] = useState('Tous');
+  const [tag, setTag] = useState('Tous');
+  const [limit, setLimit] = useState(GALLERY_PAGE);
+  const [open, setOpen] = useState<number | null>(null);
+
+  const all = useMemo(() => cols.flatMap((c) => c.images.map((img) => ({ ...img, collection: c.title }))), [cols]);
+  const tags = useMemo(() => {
+    const pool = col === 'Tous' ? all : all.filter((i) => i.collection === col);
+    return ['Tous', ...new Set(pool.map((i) => i.tag).filter((x) => x && x !== 'Tous'))];
+  }, [all, col]);
+  const filtered = useMemo(() => all.filter((i) => (col === 'Tous' || i.collection === col) && (tag === 'Tous' || i.tag === tag)), [all, col, tag]);
+  const shown = filtered.slice(0, limit);
+
+  // Échap ferme l'aperçu, ←/→ passent d'une photo à l'autre, et le défilement est verrouillé tant qu'il est ouvert.
+  useEffect(() => {
+    if (open === null) return;
+    const count = filtered.length;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(null);
+      else if (e.key === "ArrowRight" && count > 1) setOpen((o) => (o === null ? o : (o + 1) % count));
+      else if (e.key === "ArrowLeft" && count > 1) setOpen((o) => (o === null ? o : (o - 1 + count) % count));
+    };
+    window.addEventListener("keydown", onKey);
+    const previousOverflow = document.documentElement.style.overflow;
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      document.documentElement.style.overflow = previousOverflow;
+    };
+  }, [open, filtered.length]);
+
+  if (cols.length === 0) {
+    return (
+      <section className="container-x py-16">
+        <p className="text-center text-muted-foreground">{t('gallery.empty')}</p>
+      </section>
+    );
+  }
+
+  const pickCol = (name: string) => { setCol(name); setTag('Tous'); setLimit(GALLERY_PAGE); setOpen(null); };
+
+  return (
+    <section className="container-x py-14 lg:py-16">
+      <Reveal>
+        <div>
+          <h2 className="text-3xl lg:text-4xl font-bold">{t('gallery.heading')}</h2>
+          <p className="mt-2 text-sm text-muted-foreground">{all.length} {t('gallery.photo')}{all.length > 1 ? 's' : ''}</p>
+        </div>
+      </Reveal>
+
+      {/* Collections : un filtre par programme, avec le nombre de photos */}
+      <div className="mt-8 flex flex-wrap gap-2">
+        <Button
+          variant="outline"
+          aria-pressed={col === 'Tous'}
+          onClick={() => pickCol('Tous')}
+          className={`rounded-full px-4 py-2.5 text-xs font-semibold border transition ${
+            col === 'Tous' ? 'bg-primary text-primary-foreground border-primary' : 'bg-background border-border hover:bg-accent'
+          }`}
+        >
+          {t('gallery.allCollections')}
+        </Button>
+        {cols.map((c) => (
+          <Button
+            key={c.title}
+            variant="outline"
+            aria-pressed={col === c.title}
+            onClick={() => pickCol(c.title)}
+            className={`rounded-full px-4 py-2.5 text-xs font-semibold border transition ${
+              col === c.title ? 'bg-primary text-primary-foreground border-primary' : 'bg-background border-border hover:bg-accent'
+            }`}
+          >
+            {localizedCollectionTitle(c.title, lang)}
+            <span className="ml-1.5 text-[10px] font-normal opacity-70">{c.images.length}</span>
+          </Button>
+        ))}
+      </div>
+
+      {/* Thèmes : affinage par activité au sein de la sélection courante */}
+      {tags.length > 2 && (
+        <div className="mt-3 flex flex-wrap gap-2">
+          {tags.map((tg) => (
+            <button
+              key={tg}
+              type="button"
+              aria-pressed={tag === tg}
+              onClick={() => { setTag(tg); setLimit(GALLERY_PAGE); setOpen(null); }}
+              className={`rounded-full border px-3 py-1.5 text-xs transition ${
+                tag === tg ? 'border-primary bg-accent font-semibold text-primary' : 'border-border text-muted-foreground hover:bg-accent/60'
+              }`}
+            >
+              {tg === 'Tous' ? t('gallery.allThemes') : tg}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Maçonnerie : hauteurs naturelles (pas de recadrage), vignettes légères, aperçu plein écran au clic */}
+      <div className="mt-8 columns-2 gap-4 md:columns-3 xl:columns-4">
+        {shown.map((img, i) => (
+          <button
+            key={img.src}
+            type="button"
+            onClick={() => setOpen(i)}
+            aria-label={t('gallery.enlarge', { img: img.alt || img.tag })}
+            className="bento group relative mb-4 block w-full cursor-zoom-in overflow-hidden break-inside-avoid focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          >
+            <img src={galleryThumb(img.src)} alt={img.alt || img.tag} loading="lazy" className="w-full transition duration-500 group-hover:scale-105" />
+            {img.caption && <span className="absolute inset-x-0 bottom-0 line-clamp-2 bg-gradient-to-t from-black/70 to-transparent p-3 text-left text-xs text-white">{img.caption}</span>}
+          </button>
+        ))}
+      </div>
+
+      {filtered.length > shown.length && (
+        <div className="mt-4 flex justify-center">
+          <Button variant="outline" onClick={() => setLimit((l) => l + GALLERY_PAGE)} className="rounded-full px-6 py-3 text-sm font-semibold">
+            {t('gallery.showMore')} (+{Math.min(GALLERY_PAGE, filtered.length - shown.length)})
+          </Button>
+        </div>
+      )}
+
+      {open !== null && <Lightbox images={filtered} index={open} onClose={() => setOpen(null)} onNavigate={setOpen} />}
     </section>
-  ) : (
-    cols.map((c) => <Collection key={c.title} {...c} title={localizedCollectionTitle(c.title, lang)} />)
   );
 }
 
@@ -313,6 +433,9 @@ function GallerySection({ cols }: { cols: ReturnType<typeof galleryCollections> 
 const COLLECTION_EN: Record<string, string> = {
   'Journées sans plastique': 'Plastic-Free Days',
   'Sentiers verts': 'Green Trails',
+  'Plaidoyer environnemental': 'Environmental advocacy',
+  'We Plant': 'We Plant',
+  'Green Schools': 'Green Schools',
 };
 function localizedCollectionTitle(title: string, lang: string): string {
   if (lang !== 'en') return title;
@@ -378,72 +501,5 @@ function Lightbox({ images, index, onClose, onNavigate }: { images: GalleryImage
         </figcaption>
       </figure>
     </div>
-  );
-}
-
-function Collection({ title, tags, images }: { title: string; tags: string[]; images: GalleryImage[] }) {
-  const { t } = useLang();
-  const [active, setActive] = useState("Tous");
-  const [open, setOpen] = useState<number | null>(null);
-  const filtered = active === "Tous" ? images : images.filter((i) => i.tag === active);
-
-  // Échap ferme l'aperçu, ←/→ passent d'une photo à l'autre, et le défilement est verrouillé tant qu'il est ouvert.
-  useEffect(() => {
-    if (open === null) return;
-    const count = filtered.length;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(null);
-      else if (e.key === "ArrowRight" && count > 1) setOpen((o) => (o === null ? o : (o + 1) % count));
-      else if (e.key === "ArrowLeft" && count > 1) setOpen((o) => (o === null ? o : (o - 1 + count) % count));
-    };
-    window.addEventListener("keydown", onKey);
-    const previousOverflow = document.documentElement.style.overflow;
-    document.documentElement.style.overflow = "hidden";
-    return () => {
-      window.removeEventListener("keydown", onKey);
-      document.documentElement.style.overflow = previousOverflow;
-    };
-  }, [open, filtered.length]);
-
-  return (
-    <section className="container-x py-14 lg:py-16">
-      <Reveal>
-        <div>
-          <h2 className="text-3xl lg:text-4xl font-bold">{title}</h2>
-          <p className="mt-2 text-sm text-muted-foreground">{images.length} {t('gallery.photo')}{images.length > 1 ? 's' : ''}</p>
-        </div>
-      </Reveal>
-      <div className="mt-6 flex flex-wrap gap-2">
-        {tags.map((tag) => (
-          <Button
-            variant="outline"
-            aria-pressed={active === tag}
-            key={tag}
-            onClick={() => { setActive(tag); setOpen(null); }}
-            className={`rounded-full px-4 py-2.5 text-xs font-semibold border transition ${
-              active === tag ? "bg-primary text-primary-foreground border-primary" : "bg-background border-border hover:bg-accent"
-            }`}
-          >
-            {tag === "Tous" ? t('common.all') : tag}
-          </Button>
-        ))}
-      </div>
-      {/* Grille uniforme : toutes les photos au même format carré, cliquables pour l'aperçu */}
-      <div className="mt-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {filtered.map((img, i) => (
-          <button
-            key={i}
-            type="button"
-            onClick={() => setOpen(i)}
-            aria-label={t('gallery.enlarge', { img: img.alt || img.tag })}
-            className="bento group relative aspect-square overflow-hidden cursor-zoom-in focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-          >
-            <img src={img.src} alt={img.alt || img.tag} loading="lazy" className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
-            {img.caption && <span className="absolute inset-x-0 bottom-0 line-clamp-2 bg-gradient-to-t from-black/70 to-transparent p-3 text-left text-xs text-white">{img.caption}</span>}
-          </button>
-        ))}
-      </div>
-      {open !== null && <Lightbox images={filtered} index={open} onClose={() => setOpen(null)} onNavigate={setOpen} />}
-    </section>
   );
 }
