@@ -1,9 +1,11 @@
 import { pageHead } from '@/components/ManagedSite';
 import { RouteError, RouteNotFound } from '@/components/RouteFeedback';
-import { loadPage } from '@/lib/site.functions';
+import { loadPage, loadPosts } from '@/lib/site.functions';
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowRight, Leaf, Recycle, Trees, ThermometerSun, Users, Sprout, Globe2, Flame, Zap, ShieldCheck, Handshake, Heart } from "lucide-react";
-import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import { ArrowRight, ChevronLeft, ChevronRight, Leaf, Recycle, Trees, ThermometerSun, Users, Sprout, Globe2, Flame, Zap, ShieldCheck, Handshake, Heart } from "lucide-react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from "react";
+import type { BlogPost } from "@/data/blog-posts";
+import { localizedBlogPost, localizedCategory } from "@/data/blog-posts";
 import hero from "@/assets/hero.jpg";
 import accueil2 from "@/assets/accueil2.jpg";
 import accueil3 from "@/assets/accueil3.jpg";
@@ -23,7 +25,10 @@ import { Reveal } from '@/components/Reveal';
 import { Button } from '@/components/ui/button';
 
 export const Route = createFileRoute("/")({
-  loader:async()=>({cmsPage:await loadPage({data:'/'})}),
+  loader:async()=>{
+    const [cmsPage, postsResult] = await Promise.all([loadPage({ data: '/' }), loadPosts()]);
+    return { cmsPage, posts: postsResult.posts };
+  },
   head: ({ loaderData }) => pageHead(loaderData?.cmsPage ?? null, 'Green Ivory — Engageons-nous pour un avenir durable', 'ONG ivoirienne pour la promotion de l’emploi vert. Découvrez nos programmes contre la pollution plastique, pour la biodiversité et le climat.', '/', { title: 'Green Ivory — Commit to a sustainable future', description: 'Ivorian NGO promoting green jobs. Discover our programs against plastic pollution, for biodiversity and the climate.' }),
   component: Home,
   errorComponent: RouteError,
@@ -32,6 +37,7 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const { t, lang } = useLang();
+  const posts = Route.useLoaderData().posts;
   const programs=visiblePrograms(readPrograms(useSetting('site.programs')||useSetting('site.projects'))).map(p=>localizedProgram(p,lang));
   const texts=readHomeTexts(useSetting('home.texts'));
   const L=localizedHomeTexts(texts,readHomeTexts(useSetting('home.textsEn')),lang);
@@ -212,6 +218,9 @@ function Home() {
           <Link to="/programmes">{t('home.allPrograms')} <ArrowRight className="h-4 w-4"/></Link>
         </Button>
       </section>
+
+      {/* Dernières actualités — carrousel défilant des derniers articles, pause au survol, respect du mouvement réduit */}
+      <NewsCarouselSection posts={posts} />
 
       {/* Chiffres clés */}
       <section className="container-x py-6 lg:py-10">
@@ -400,6 +409,156 @@ function ValueCard({ icon, label, text }: { icon: React.ReactNode; label: string
       <h3 className="mt-4 text-lg font-bold">{label}</h3>
       <p className="mt-2 text-sm text-muted-foreground">{text}</p>
     </div>
+  );
+}
+
+/* ── Dernières actualités — carrousel scroll-snap : flèches, défilement tactile natif, autoplay suspendu au survol ── */
+function NewsCarouselSection({ posts }: { posts: BlogPost[] }) {
+  const { t, lang } = useLang();
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [paused, setPaused] = useState(false);
+  const [canPrev, setCanPrev] = useState(false);
+  const [canNext, setCanNext] = useState(false);
+
+  const slides = useMemo(
+    () => [...posts].sort((a, b) => (a.date < b.date ? 1 : -1)).slice(0, 6).map((p) => localizedBlogPost(p, lang)),
+    [posts, lang],
+  );
+
+  const syncArrows = () => {
+    const el = trackRef.current;
+    if (!el) return;
+    setCanPrev(el.scrollLeft > 8);
+    setCanNext(el.scrollLeft < el.scrollWidth - el.clientWidth - 8);
+  };
+
+  useEffect(() => {
+    syncArrows();
+    const el = trackRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', syncArrows, { passive: true });
+    window.addEventListener('resize', syncArrows);
+    return () => {
+      el.removeEventListener('scroll', syncArrows);
+      window.removeEventListener('resize', syncArrows);
+    };
+  }, [slides.length]);
+
+  const slideWidth = () => {
+    const slide = trackRef.current?.querySelector<HTMLElement>('[data-slide]');
+    return slide ? slide.getBoundingClientRect().width + 24 : 360;
+  };
+  const nudge = (dir: 1 | -1) => trackRef.current?.scrollBy({ left: dir * slideWidth(), behavior: 'smooth' });
+
+  // Défilement automatique : suspendu au survol/toucher et désactivé si l'utilisateur préfère réduire le mouvement.
+  useEffect(() => {
+    if (paused || slides.length < 2) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const id = window.setInterval(() => {
+      const el = trackRef.current;
+      if (!el) return;
+      if (el.scrollLeft >= el.scrollWidth - el.clientWidth - 8) el.scrollTo({ left: 0, behavior: 'smooth' });
+      else nudge(1);
+    }, 5500);
+    return () => window.clearInterval(id);
+  }, [paused, slides.length]);
+
+  if (slides.length === 0) return null;
+
+  return (
+    <section
+      className="container-x py-6 lg:py-10"
+      onMouseEnter={() => setPaused(true)}
+      onMouseLeave={() => setPaused(false)}
+      onTouchStart={() => setPaused(true)}
+    >
+      <Reveal>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <span className="eyebrow">{t('home.news.eyebrow')}</span>
+            <h2 className="mt-3 max-w-3xl text-4xl font-bold tracking-tight lg:text-5xl">
+              {t('home.news.title')}
+            </h2>
+          </div>
+          <div className="flex items-center gap-3">
+            <div className="hidden items-center gap-2 sm:flex">
+              <button
+                type="button"
+                onClick={() => nudge(-1)}
+                disabled={!canPrev}
+                aria-label={t('home.news.prev')}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background transition hover:border-primary/50 hover:text-primary disabled:opacity-40 disabled:hover:border-border disabled:hover:text-foreground"
+              >
+                <ChevronLeft className="h-4 w-4" />
+              </button>
+              <button
+                type="button"
+                onClick={() => nudge(1)}
+                disabled={!canNext}
+                aria-label={t('home.news.next')}
+                className="inline-flex h-11 w-11 items-center justify-center rounded-full border border-border bg-background transition hover:border-primary/50 hover:text-primary disabled:opacity-40 disabled:hover:border-border disabled:hover:text-foreground"
+              >
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            </div>
+            <Button asChild variant="outline" className="h-11 rounded-full px-6 text-sm font-semibold">
+              <Link to="/actualites" search={{ vue: 'articles' }}>{t('home.allNews')} <ArrowRight className="h-4 w-4" /></Link>
+            </Button>
+          </div>
+        </div>
+      </Reveal>
+
+      <Reveal delay={100}>
+        <div
+          ref={trackRef}
+          role="region"
+          aria-label={t('home.news.eyebrow')}
+          className="mt-8 flex snap-x snap-mandatory gap-6 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+        >
+          {slides.map((p) => (
+            <article
+              key={p.slug}
+              data-slide
+              className="bento group flex w-[85%] shrink-0 snap-start flex-col overflow-hidden sm:w-[55%] lg:w-[calc((100%-3rem)/3)]"
+            >
+              <Link
+                to="/blog/$slug"
+                params={{ slug: p.slug }}
+                className="relative block h-52 shrink-0 overflow-hidden"
+                aria-hidden="true"
+                tabIndex={-1}
+              >
+                <img
+                  src={p.image}
+                  alt=""
+                  loading="lazy"
+                  className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                <span className="pointer-events-none absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[11px] font-semibold text-primary shadow-sm">
+                  {localizedCategory(p.category, lang)}
+                </span>
+              </Link>
+              <div className="flex flex-1 flex-col p-6">
+                <span className="text-xs text-muted-foreground">{p.dateLabel}</span>
+                <h3 className="mt-2 text-lg font-bold leading-snug break-words">
+                  <Link to="/blog/$slug" params={{ slug: p.slug }} className="transition hover:text-primary">
+                    {p.title}
+                  </Link>
+                </h3>
+                <p className="mt-2 line-clamp-3 flex-1 text-sm leading-relaxed text-muted-foreground">{p.excerpt}</p>
+                <Link
+                  to="/blog/$slug"
+                  params={{ slug: p.slug }}
+                  className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary"
+                >
+                  {t('news.readArticle')} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                </Link>
+              </div>
+            </article>
+          ))}
+        </div>
+      </Reveal>
+    </section>
   );
 }
 

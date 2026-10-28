@@ -32,6 +32,11 @@ export const DICT = {
   'home.ctaSupport': ['Soutenir nos programmes', 'Support our programs'],
   'home.ctaDiscover': ['Découvrir nos programmes', 'Discover our programs'],
   'home.allPrograms': ['Tous nos programmes', 'All our programs'],
+  'home.allNews': ['Toutes les actualités', 'All news'],
+  'home.news.eyebrow': ['Actualités', 'News'],
+  'home.news.title': ['Dernières nouvelles du terrain.', 'Fresh news from the field.'],
+  'home.news.prev': ['Actualité précédente', 'Previous article'],
+  'home.news.next': ['Actualité suivante', 'Next article'],
   'common.learnMore': ['En savoir plus', 'Learn more'],
 
   /* Programmes — listing */
@@ -95,6 +100,8 @@ export const DICT = {
   'gallery.empty': ['Aucune photo pour le moment — revenez bientôt.', 'No photos yet — check back soon.'],
   'gallery.photo': ['photo', 'photo'],
   'gallery.enlarge': ['Agrandir la photo : {img}', 'Enlarge photo: {img}'],
+  'gallery.eyebrow': ['Galerie', 'Gallery'],
+  'gallery.collections': ['collections', 'collections'],
   'gallery.heading': ['Notre galerie photo', 'Our photo gallery'],
   'gallery.allCollections': ['Toutes les photos', 'All photos'],
   'gallery.allThemes': ['Tous les thèmes', 'All themes'],

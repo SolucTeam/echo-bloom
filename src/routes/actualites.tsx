@@ -162,7 +162,7 @@ function ArticlesSection({ posts: dbPosts, imported }: { posts: BlogPost[]; impo
 
   return (
     <>
-      {/* Recherche et filtres par catégorie, en fila aérienne au-dessus de la liste */}
+      {/* Recherche et filtres par catégorie, en file aérienne au-dessus de la liste */}
       <section className="container-x pt-8 pb-2">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="relative w-full max-w-xl">
@@ -181,10 +181,10 @@ function ArticlesSection({ posts: dbPosts, imported }: { posts: BlogPost[]; impo
               <button
                 key={c}
                 onClick={() => setCategory(c as BlogCategory | "Tous")}
-                className={`inline-flex items-center rounded-full px-4 py-2 text-xs font-semibold transition ${
+                className={`inline-flex items-center rounded-full border px-4 py-2 text-xs font-semibold transition ${
                   category === c
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-accent text-foreground hover:bg-accent/70"
+                    ? "border-primary bg-primary text-primary-foreground shadow-sm"
+                    : "border-border bg-background text-muted-foreground hover:border-primary/40 hover:text-foreground"
                 }`}
               >
                 {c === "Tous" ? t('common.all') : localizedCategory(c, lang)}
@@ -194,37 +194,31 @@ function ArticlesSection({ posts: dbPosts, imported }: { posts: BlogPost[]; impo
         </div>
       </section>
 
-      <section className="container-x py-8 lg:py-10">
+      <section className="container-x py-8 lg:py-12">
         {!filtered[0] ? (
           <div className="bento p-10 text-center text-muted-foreground">
             {t('news.noResults')}
           </div>
         ) : (
-          <div className="space-y-10">
-            {/* À la une — l'article le plus récent de la sélection, en grand format éditorial */}
+          <div>
+            {/* À la une — couverture éditoriale : titre monumental à gauche, photo pleine hauteur à droite */}
             <Reveal>
               <article className="bento group grid overflow-hidden lg:grid-cols-2">
-                <div className="relative h-64 sm:h-72 lg:h-full lg:min-h-[400px] overflow-hidden">
-                  <Link to="/blog/$slug" params={{ slug: filtered[0].slug }} className="block h-full w-full">
-                    <img
-                      src={filtered[0].image}
-                      alt={filtered[0].title}
-                      loading="lazy"
-                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                  </Link>
-                  <span className="pointer-events-none absolute left-4 top-4 rounded-full bg-primary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-widest text-primary-foreground shadow-sm">
-                    {t('news.featured')}
-                  </span>
-                </div>
-                <div className="flex flex-col p-7 lg:p-10">
-                  <span className="eyebrow">{localizedCategory(filtered[0].category, lang)}</span>
-                  <h2 className="mt-4 text-2xl lg:text-3xl font-bold leading-tight break-words">
-                    <Link to="/blog/$slug" params={{ slug: filtered[0].slug }} className="hover:text-primary">
+                <div className="order-2 flex flex-col justify-center p-7 sm:p-10 lg:order-1 lg:p-12">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="inline-flex items-center rounded-full bg-primary px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-widest text-primary-foreground shadow-sm">
+                      {t('news.featured')}
+                    </span>
+                    <span className="text-[11px] font-bold uppercase tracking-widest text-muted-foreground">
+                      {localizedCategory(filtered[0].category, lang)}
+                    </span>
+                  </div>
+                  <h2 className="mt-5 text-3xl font-bold leading-[1.08] tracking-tight break-words sm:text-4xl lg:text-[2.8rem]">
+                    <Link to="/blog/$slug" params={{ slug: filtered[0].slug }} className="transition hover:text-primary">
                       {filtered[0].title}
                     </Link>
                   </h2>
-                  <p className="mt-4 flex-1 leading-relaxed text-muted-foreground">{filtered[0].excerpt}</p>
+                  <p className="mt-5 max-w-xl leading-relaxed text-muted-foreground">{filtered[0].excerpt}</p>
                   <div className="mt-6 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-muted-foreground">
                     <span className="inline-flex items-center gap-1">
                       <Calendar className="h-3.5 w-3.5" /> {filtered[0].dateLabel}
@@ -233,54 +227,68 @@ function ArticlesSection({ posts: dbPosts, imported }: { posts: BlogPost[]; impo
                       <User className="h-3.5 w-3.5" /> {filtered[0].author}
                     </span>
                   </div>
-                  <Link
-                    to="/blog/$slug"
-                    params={{ slug: filtered[0].slug }}
-                    className="mt-6 inline-flex w-fit items-center gap-2 py-1 -my-1 text-sm font-semibold text-primary"
-                  >
-                    {t('news.readArticle')} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
-                  </Link>
+                  <Button asChild className="mt-8 h-11 w-fit rounded-full px-6 text-sm font-semibold shadow-md">
+                    <Link to="/blog/$slug" params={{ slug: filtered[0].slug }}>
+                      {t('news.readArticle')} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                    </Link>
+                  </Button>
                 </div>
+                <Link
+                  to="/blog/$slug"
+                  params={{ slug: filtered[0].slug }}
+                  aria-hidden="true"
+                  tabIndex={-1}
+                  className="relative order-1 block h-64 overflow-hidden sm:h-80 lg:order-2 lg:h-full lg:min-h-[460px]"
+                >
+                  <img
+                    src={filtered[0].image}
+                    alt=""
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+                </Link>
               </article>
             </Reveal>
 
+            {/* Le reste de la sélection, en sommaire de magazine : vignette, numéro, thème, titre, extrait */}
             {filtered.length > 1 && (
-              <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              <div className="mt-10 divide-y divide-border/70 border-y border-border/70 lg:mt-14">
                 {filtered.slice(1).map((p, i) => (
-                  <Reveal key={p.slug} delay={(i % 3) * 80} className="h-full [&>.reveal-inner]:h-full">
-                    <article className="bento group flex h-full flex-col overflow-hidden">
-                      <div className="relative h-52 overflow-hidden">
-                        <Link to="/blog/$slug" params={{ slug: p.slug }} className="block h-full w-full">
-                          <img
-                            src={p.image}
-                            alt={p.title}
-                            loading="lazy"
-                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                          />
-                        </Link>
-                        <span className="pointer-events-none absolute left-3 top-3 rounded-full bg-background/90 px-3 py-1 text-[11px] font-semibold text-primary shadow-sm">
-                          {localizedCategory(p.category, lang)}
-                        </span>
-                      </div>
-                      <div className="flex flex-1 flex-col p-6">
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted-foreground">
-                          <span className="inline-flex items-center gap-1">
-                            <Calendar className="h-3.5 w-3.5" /> {p.dateLabel}
-                          </span>
-                          <span className="inline-flex items-center gap-1">
-                            <User className="h-3.5 w-3.5" /> {p.author}
-                          </span>
+                  <Reveal key={p.slug} delay={Math.min(i, 3) * 60}>
+                    <article className="group grid items-center gap-x-5 gap-y-4 py-7 sm:grid-cols-[9.5rem_2.75rem_1fr] lg:grid-cols-[11rem_3.5rem_1fr] lg:gap-x-8 lg:py-9">
+                      <Link
+                        to="/blog/$slug"
+                        params={{ slug: p.slug }}
+                        aria-hidden="true"
+                        tabIndex={-1}
+                        className="relative block aspect-[4/3] overflow-hidden rounded-2xl"
+                      >
+                        <img
+                          src={p.image}
+                          alt=""
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        />
+                      </Link>
+                      <span aria-hidden="true" className="hidden select-none text-3xl font-bold tabular-nums text-primary/25 lg:block">
+                        {'0' + (i + 2)}
+                      </span>
+                      <div className="min-w-0">
+                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] font-bold uppercase tracking-widest">
+                          <span className="text-primary">{localizedCategory(p.category, lang)}</span>
+                          <span aria-hidden="true" className="h-1 w-1 rounded-full bg-border" />
+                          <span className="font-semibold normal-case tracking-normal text-muted-foreground">{p.dateLabel}</span>
                         </div>
-                        <h3 className="mt-3 text-lg font-bold leading-snug">
-                          <Link to="/blog/$slug" params={{ slug: p.slug }} className="hover:text-primary">
+                        <h3 className="mt-2 text-xl font-bold leading-snug break-words lg:text-2xl">
+                          <Link to="/blog/$slug" params={{ slug: p.slug }} className="transition hover:text-primary">
                             {p.title}
                           </Link>
                         </h3>
-                        <p className="mt-2.5 line-clamp-3 flex-1 text-sm text-muted-foreground">{p.excerpt}</p>
+                        <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{p.excerpt}</p>
                         <Link
                           to="/blog/$slug"
                           params={{ slug: p.slug }}
-                          className="mt-4 inline-flex items-center gap-1 py-1 -my-1 text-sm font-semibold text-primary"
+                          className="mt-3 inline-flex items-center gap-1.5 py-0.5 text-sm font-semibold text-primary"
                         >
                           {t('news.readArticle')} <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
                         </Link>
@@ -345,53 +353,81 @@ function GallerySection({ cols }: { cols: ReturnType<typeof galleryCollections> 
   const pickCol = (name: string) => { setCol(name); setTag('Tous'); setLimit(GALLERY_PAGE); setOpen(null); };
 
   return (
-    <section className="container-x py-14 lg:py-16">
+    <section className="container-x py-10 lg:py-14">
       <Reveal>
-        <div>
-          <h2 className="text-3xl lg:text-4xl font-bold">{t('gallery.heading')}</h2>
-          <p className="mt-2 text-sm text-muted-foreground">{all.length} {t('gallery.photo')}{all.length > 1 ? 's' : ''}</p>
+        <div className="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <span className="eyebrow">{t('gallery.eyebrow')}</span>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight lg:text-4xl">{t('gallery.heading')}</h2>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            {filtered.length} {t('gallery.photo')}{filtered.length > 1 ? 's' : ''} · {cols.length} {t('gallery.collections')}
+          </p>
         </div>
       </Reveal>
 
-      {/* Collections : un filtre par programme, avec le nombre de photos */}
-      <div className="mt-8 flex flex-wrap gap-2">
-        <Button
-          variant="outline"
+      {/* Collections en couvertures : chaque programme devient une vignette cliquable, la première mosaïque affiche tout */}
+      <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
+        <button
+          type="button"
           aria-pressed={col === 'Tous'}
           onClick={() => pickCol('Tous')}
-          className={`rounded-full px-4 py-2.5 text-xs font-semibold border transition ${
-            col === 'Tous' ? 'bg-primary text-primary-foreground border-primary' : 'bg-background border-border hover:bg-accent'
-          }`}
+          className={`bento relative h-28 overflow-hidden lg:h-32 ${col === 'Tous' ? 'ring-2 ring-primary ring-offset-2 ring-offset-background' : 'opacity-95 transition hover:opacity-100'}`}
         >
-          {t('gallery.allCollections')}
-        </Button>
-        {cols.map((c) => (
-          <Button
-            key={c.title}
-            variant="outline"
-            aria-pressed={col === c.title}
-            onClick={() => pickCol(c.title)}
-            className={`rounded-full px-4 py-2.5 text-xs font-semibold border transition ${
-              col === c.title ? 'bg-primary text-primary-foreground border-primary' : 'bg-background border-border hover:bg-accent'
-            }`}
-          >
-            {localizedCollectionTitle(c.title, lang)}
-            <span className="ml-1.5 text-[10px] font-normal opacity-70">{c.images.length}</span>
-          </Button>
-        ))}
+          <span className="absolute inset-0 grid grid-cols-2 gap-0.5" aria-hidden="true">
+            {all.slice(0, 4).map((img) => (
+              <img key={img.src} src={galleryThumb(img.src)} alt="" loading="lazy" className="h-full w-full object-cover" />
+            ))}
+          </span>
+          <span className="absolute inset-0 bg-background/60" aria-hidden="true" />
+          <span className="absolute inset-0 flex flex-col items-center justify-center px-2 text-center">
+            <span className="text-xs font-bold leading-tight">{t('gallery.allCollections')}</span>
+            <span className="mt-0.5 text-[11px] font-semibold tabular-nums text-muted-foreground">{all.length}</span>
+          </span>
+        </button>
+        {cols.map((c) => {
+          const active = col === c.title;
+          return (
+            <button
+              key={c.title}
+              type="button"
+              aria-pressed={active}
+              onClick={() => pickCol(active ? 'Tous' : c.title)}
+              className={`bento group relative h-28 overflow-hidden lg:h-32 ${active ? 'ring-2 ring-primary ring-offset-2 ring-offset-background' : ''}`}
+            >
+              <img
+                src={galleryThumb(c.images[0]?.src ?? '')}
+                alt=""
+                loading="lazy"
+                className="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+              />
+              <span className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-transparent" aria-hidden="true" />
+              <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-1.5 p-2.5 text-left">
+                <span className="line-clamp-2 text-[11px] font-bold leading-tight text-white">
+                  {localizedCollectionTitle(c.title, lang)}
+                </span>
+                <span className="shrink-0 rounded-full bg-white/20 px-1.5 py-0.5 text-[10px] font-bold tabular-nums text-white backdrop-blur-sm">
+                  {c.images.length}
+                </span>
+              </span>
+            </button>
+          );
+        })}
       </div>
 
       {/* Thèmes : affinage par activité au sein de la sélection courante */}
       {tags.length > 2 && (
-        <div className="mt-3 flex flex-wrap gap-2">
+        <div className="mt-5 flex flex-wrap gap-2">
           {tags.map((tg) => (
             <button
               key={tg}
               type="button"
               aria-pressed={tag === tg}
               onClick={() => { setTag(tg); setLimit(GALLERY_PAGE); setOpen(null); }}
-              className={`rounded-full border px-3 py-1.5 text-xs transition ${
-                tag === tg ? 'border-primary bg-accent font-semibold text-primary' : 'border-border text-muted-foreground hover:bg-accent/60'
+              className={`rounded-full px-3.5 py-1.5 text-xs font-semibold transition ${
+                tag === tg
+                  ? 'bg-primary text-primary-foreground shadow-sm'
+                  : 'bg-accent/70 text-muted-foreground hover:bg-accent hover:text-foreground'
               }`}
             >
               {tg === 'Tous' ? t('gallery.allThemes') : tg}
@@ -400,7 +436,7 @@ function GallerySection({ cols }: { cols: ReturnType<typeof galleryCollections> 
         </div>
       )}
 
-      {/* Maçonnerie : hauteurs naturelles (pas de recadrage), vignettes légères, aperçu plein écran au clic */}
+      {/* Maçonnerie : hauteurs naturelles (pas de recadrage), vignettes légères, thème révélé au survol, aperçu plein écran au clic */}
       <div className="mt-8 columns-2 gap-4 md:columns-3 xl:columns-4">
         {shown.map((img, i) => (
           <button
@@ -411,13 +447,18 @@ function GallerySection({ cols }: { cols: ReturnType<typeof galleryCollections> 
             className="bento group relative mb-4 block w-full cursor-zoom-in overflow-hidden break-inside-avoid focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           >
             <img src={galleryThumb(img.src)} alt={img.alt || img.tag} loading="lazy" className="w-full transition duration-500 group-hover:scale-105" />
-            {img.caption && <span className="absolute inset-x-0 bottom-0 line-clamp-2 bg-gradient-to-t from-black/70 to-transparent p-3 text-left text-xs text-white">{img.caption}</span>}
+            <span
+              className="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 via-black/25 to-transparent p-3 pt-10 text-left opacity-0 transition duration-300 group-hover:opacity-100"
+              aria-hidden="true"
+            >
+              <span className="line-clamp-1 text-[11px] font-bold uppercase tracking-widest text-white">{img.tag}</span>
+            </span>
           </button>
         ))}
       </div>
 
       {filtered.length > shown.length && (
-        <div className="mt-4 flex justify-center">
+        <div className="mt-6 flex justify-center">
           <Button variant="outline" onClick={() => setLimit((l) => l + GALLERY_PAGE)} className="rounded-full px-6 py-3 text-sm font-semibold">
             {t('gallery.showMore')} (+{Math.min(GALLERY_PAGE, filtered.length - shown.length)})
           </Button>
